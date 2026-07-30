@@ -53,19 +53,27 @@
     font-size:19px; line-height:1.55; border-radius:6px 6px 0 0;
     border:3px solid var(--line); border-bottom:none;
     box-shadow: 0 0 0 1px rgba(217,137,188,0.25) inset, 0 -8px 30px rgba(0,0,0,0.5);
-    /* Anchored to the bottom of #game-container with no cap, a long answer
-       (or an answer plus a full list of follow-up questions) just grows the
-       box upward past the container's top edge — on a short mobile
-       viewport that pushes the start of the text off-screen with no way to
-       scroll back up to it. Capping height and scrolling internally instead
-       keeps the whole box on-screen regardless of how much text it holds. */
-    max-height:80%; overflow-y:auto; overscroll-behavior:contain;
-    box-sizing:border-box;
+    /* Anchored to the bottom of #game-container, a long answer just grows
+       the box upward — on a short mobile viewport it could push past the
+       container's top edge with no way to scroll back up to the start of
+       the text. Capping height here and scrolling only #dialog-scrollarea
+       (below) keeps the whole box on-screen and keeps the × close button
+       fixed in place rather than scrolling away with the text. */
+    max-height:80%; box-sizing:border-box;
+    display:flex; flex-direction:column;
   }
   #dialog::before{
     content:""; position:absolute; inset:5px; border:1px solid rgba(217,137,188,0.35); border-bottom:none;
     pointer-events:none; border-radius:4px 4px 0 0;
   }
+  #dialogCloseBtn{
+    position:absolute; top:8px; right:8px; z-index:2;
+    width:28px; height:28px; border-radius:50%; padding:0;
+    background:rgba(0,0,0,0.55); border:1px solid var(--line); color:var(--ink-soft);
+    font-size:18px; line-height:1; cursor:pointer; display:flex; align-items:center; justify-content:center;
+  }
+  #dialogCloseBtn:hover{ color:var(--ink); border-color:var(--foxglove); }
+  #dialog-scrollarea{ overflow-y:auto; overscroll-behavior:contain; min-height:0; padding-right:26px; }
   #dialog b{ color:var(--foxglove); display:block; font-family:'Playfair Display', Georgia, serif; font-size:19px; font-weight:700; letter-spacing:.01em; margin-bottom:8px; }
   #dialog .close-hint{ margin-top:12px; font-size:12px; font-family:'Lora', Georgia, serif; color:var(--ink-soft); letter-spacing:.03em; }
   #dialog-body{ min-height:1.6em; }
@@ -78,6 +86,7 @@
     object-fit:cover;
   }
   #dialog-text{ flex:1; min-width:0; }
+  #dialog-qa{ display:block; }
   #dialog-questions{ display:none; flex-direction:column; gap:6px; margin-top:12px; }
   .dialog-question-btn{
     text-align:left; font-family:'Lora', Georgia, serif; font-size:14px; font-style:italic;
@@ -85,6 +94,24 @@
     padding:7px 12px; border-radius:4px; cursor:pointer; transition:background .15s, border-color .15s;
   }
   .dialog-question-btn:hover{ background:rgba(217,137,188,0.18); border-color:var(--foxglove); }
+  /* On a short landscape phone, stacking the answer text above a full list
+     of question buttons (the normal desktop reading order) can demand more
+     vertical space than the viewport has at all, even with the scroll area
+     above. Putting the questions in a narrow left column and the answer in
+     a boxed, wider right column instead caps the height needed at whichever
+     of the two is taller, not their sum. `order` (not DOM order) does the
+     rearranging, so the underlying markup/reading order stays the same for
+     desktop and screen readers. */
+  @media (max-height:480px){
+    #dialog.has-questions #dialog-qa{ display:flex; flex-direction:row; align-items:flex-start; gap:10px; }
+    #dialog.has-questions #dialog-questions{
+      order:1; flex:0 0 40%; margin-top:0;
+    }
+    #dialog.has-questions #dialog-body{
+      order:2; flex:1; min-width:0;
+      background:rgba(255,255,255,0.04); border:1px solid var(--line); border-radius:6px; padding:8px 10px;
+    }
+  }
   .dialog-question-btn.asked{ color:var(--ink-soft); opacity:.6; }
 
   #titleScreen{
@@ -591,13 +618,18 @@
       <div id="talkedToPanel"></div>
       <div id="prompt"></div>
       <div id="dialog">
-        <div id="dialog-inner">
-          <img id="dialog-portrait" alt="">
-          <div id="dialog-text">
-            <b id="dialog-title"></b>
-            <div id="dialog-body"></div>
-            <div id="dialog-questions"></div>
-            <div class="close-hint">Press Space or click to skip · again to close</div>
+        <button id="dialogCloseBtn" aria-label="Close" title="Close">×</button>
+        <div id="dialog-scrollarea">
+          <div id="dialog-inner">
+            <img id="dialog-portrait" alt="">
+            <div id="dialog-text">
+              <b id="dialog-title"></b>
+              <div id="dialog-qa">
+                <div id="dialog-body"></div>
+                <div id="dialog-questions"></div>
+              </div>
+              <div class="close-hint">Press Space or click to continue · × to close</div>
+            </div>
           </div>
         </div>
       </div>

@@ -97,6 +97,8 @@ export default class RoomScene extends Phaser.Scene {
     this.dialogPortraitEl = document.getElementById('dialog-portrait');
     this.dialogQuestionsEl = document.getElementById('dialog-questions');
     this.dialogEl.onclick = () => this.advanceDialog();
+    const dialogCloseBtn = document.getElementById('dialogCloseBtn');
+    if (dialogCloseBtn) dialogCloseBtn.onclick = (e) => { e.stopPropagation(); this.closeDialog(); };
 
     this.puzzleModalEl = document.getElementById('puzzleModal');
     this.puzzleHintEl = document.getElementById('puzzleHint');
@@ -746,7 +748,13 @@ export default class RoomScene extends Phaser.Scene {
     }
 
     this.dialogQuestionsEl.innerHTML = '';
-    if (questions && questions.length) {
+    const hasQuestions = !!(questions && questions.length);
+    // Toggles the compact-viewport side-by-side layout (questions left,
+    // answer boxed on the right — see index.html's max-height:480px rule);
+    // a plain examine/first-glance dialog with no questions keeps the
+    // simple single-column look regardless of viewport size.
+    this.dialogEl.classList.toggle('has-questions', hasQuestions);
+    if (hasQuestions) {
       questions.forEach(q => {
         const btn = document.createElement('button');
         btn.className = 'dialog-question-btn' + (q.asked ? ' asked' : '');
