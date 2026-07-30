@@ -470,9 +470,40 @@
   .puzzle-input:focus{ outline:none; border-color:var(--foxglove); }
   .puzzle-feedback{ min-height:1.4em; font-family:'Lora', Georgia, serif; font-size:13px; color:var(--danger); font-style:italic; margin:4px 0 6px 0; }
   .puzzle-actions{ display:flex; gap:12px; justify-content:center; margin-top:10px; }
+
+  /* Rotate-to-landscape hint. The manor rooms are a wide 3:2 view, so on a
+     phone held upright they shrink to a letterboxed strip. Nudge touch users
+     to turn sideways. Hidden by default; only shown on coarse-pointer (touch)
+     devices in portrait — never on desktop, and it vanishes once rotated. */
+  #rotate-hint{ display:none; }
+  @media (hover:none) and (pointer:coarse) and (orientation:portrait){
+    #rotate-hint{
+      display:flex; position:fixed; inset:0; z-index:9999;
+      flex-direction:column; align-items:center; justify-content:center; gap:22px;
+      background:#0a0908; color:var(--ink); text-align:center; padding:32px;
+      font-family:'Lora', Georgia, serif;
+    }
+    #rotate-hint .rotate-glyph{
+      font-size:64px; line-height:1; color:var(--foxglove);
+      animation:rotate-tip 2.4s ease-in-out infinite;
+    }
+    #rotate-hint h2{
+      margin:0; font-family:'Playfair Display', Georgia, serif; font-weight:700;
+      font-size:26px; letter-spacing:.01em; color:var(--sepia);
+    }
+    #rotate-hint p{ margin:0; font-size:16px; line-height:1.5; color:var(--ink-soft); max-width:16em; }
+  }
+  @keyframes rotate-tip{
+    0%,55%{ transform:rotate(0deg); } 75%,100%{ transform:rotate(-90deg); }
+  }
 </style>
 </head>
 <body>
+<div id="rotate-hint" aria-hidden="true">
+  <div class="rotate-glyph">📱</div>
+  <h2>Turn your device sideways</h2>
+  <p>Ravensmoor Hall plays best in landscape.</p>
+</div>
 <div id="app">
   <div id="game-container">
     <div id="hud">
