@@ -23,7 +23,17 @@
      restriction the rest of the page just gave up. */
   button, #dialog, .accuse-suspect, .saved-story-row, .suspect-row{ touch-action:manipulation; }
 
-  #app{ position:relative; width:100vw; height:100vh; display:flex; align-items:center; justify-content:center; background:#0a0908; }
+  /* vh is the LARGEST possible viewport in mobile Safari — as if its
+     address bar / bottom toolbar were never shown — so anything sized or
+     positioned off a raw vh figure can end up partly behind that chrome
+     once it's actually on screen (bottom-anchored HUD buttons a few
+     pixels short, clipped by the toolbar). dvh tracks the real, currently
+     visible area instead and updates live as that chrome shows/hides.
+     Repeating each declaration with dvh right after the vh version is a
+     safe progressive enhancement: browsers without dvh support just treat
+     that second line as invalid and keep the vh one; browsers that do
+     support it use the more accurate value. */
+  #app{ position:relative; width:100vw; height:100vh; height:100dvh; display:flex; align-items:center; justify-content:center; background:#0a0908; }
   #game-container{
     position:relative; box-shadow:0 0 80px rgba(0,0,0,0.7);
     /* width, aspect-ratio, and max-height used to fight each other: with
@@ -36,6 +46,7 @@
        width = height * 1.5) via min() makes width itself the single source
        of truth, so aspect-ratio always derives a height that already fits. */
     width:min(94vw, 1120px, 94vh * 1.5); aspect-ratio: 3 / 2;
+    width:min(94vw, 1120px, 94dvh * 1.5);
   }
   #game-container canvas{ display:block; image-rendering: pixelated; image-rendering: crisp-edges; }
 
@@ -56,11 +67,19 @@
     /* Anchored to the bottom of #game-container, a long answer just grows
        the box upward — on a short mobile viewport it could push past the
        container's top edge with no way to scroll back up to the start of
-       the text. Capping height here and scrolling only #dialog-scrollarea
-       (below) keeps the whole box on-screen and keeps the × close button
-       fixed in place rather than scrolling away with the text. */
-    max-height:80%; box-sizing:border-box;
-    display:flex; flex-direction:column;
+       the text. max-height + overflow:hidden here (rather than a % height
+       computed off #game-container, whose own height comes from
+       aspect-ratio — a combination Safari can fail to resolve, silently
+       treating the % as unconstrained and leaving the box's real content
+       invisible above the fold) gives this box an unambiguous, definite
+       height that #dialog-scrollarea below can then reliably fill at 100%
+       and scroll within — keeping the × close button fixed in place
+       rather than scrolling away with the text. vh is a fallback for
+       browsers without dvh; dvh (where supported) tracks the actual
+       visible area as Safari's address bar collapses/expands, instead of
+       vh's fixed-at-load value. */
+    max-height:75vh; max-height:75dvh;
+    overflow:hidden; box-sizing:border-box;
   }
   #dialog::before{
     content:""; position:absolute; inset:5px; border:1px solid rgba(217,137,188,0.35); border-bottom:none;
@@ -73,7 +92,7 @@
     font-size:18px; line-height:1; cursor:pointer; display:flex; align-items:center; justify-content:center;
   }
   #dialogCloseBtn:hover{ color:var(--ink); border-color:var(--foxglove); }
-  #dialog-scrollarea{ overflow-y:auto; overscroll-behavior:contain; min-height:0; padding-right:26px; }
+  #dialog-scrollarea{ max-height:100%; overflow-y:auto; overscroll-behavior:contain; -webkit-overflow-scrolling:touch; padding-right:26px; }
   #dialog b{ color:var(--foxglove); display:block; font-family:'Playfair Display', Georgia, serif; font-size:19px; font-weight:700; letter-spacing:.01em; margin-bottom:8px; }
   #dialog .close-hint{ margin-top:12px; font-size:12px; font-family:'Lora', Georgia, serif; color:var(--ink-soft); letter-spacing:.03em; }
   #dialog-body{ min-height:1.6em; }
@@ -345,6 +364,28 @@
   .retalk-btn .retalk-initial{
     width:100%; height:100%; display:flex; align-items:center; justify-content:center;
     color:var(--sepia); font-family:'Playfair Display', Georgia, serif; font-weight:700; font-size:18px;
+  }
+  /* #room-nav, #talkedToPanel, etc. are all positioned with fixed pixel
+     offsets sized for a roomy desktop-scale #game-container. On a short
+     landscape phone the container itself shrinks to a fraction of that, so
+     those same fixed offsets eat up proportionally much more of it — a
+     56px-wide, top:60px retalk panel can end up close enough to a top:14px
+     nav row to visually overlap it. Shrinking both and giving the retalk
+     panel more clearance fixes that without changing anything on desktop. */
+  @media (max-height:480px){
+    #room-nav{ top:6px; left:8px; right:8px; }
+    #room-nav button{ font-size:11px; padding:4px 8px; }
+    #room-name{ font-size:12px; padding:4px 10px; }
+    #talkedToPanel{ top:40px; bottom:44px; right:6px; width:38px; gap:6px; }
+    .retalk-btn{ width:34px; height:34px; }
+    .retalk-btn .retalk-initial{ font-size:14px; }
+    /* Same fixed-offset squeeze applies to the bottom-right action row and
+       the progress badge — shrinking them leaves more margin against the
+       bottom edge, which mobile Safari's own collapsing toolbar chrome can
+       eat into (see #app/#game-container's dvh notes above). */
+    #actionButtons{ bottom:8px; right:8px; gap:5px; }
+    #actionButtons button{ font-size:10px; padding:5px 8px; }
+    #progressBadge{ bottom:8px; left:8px; font-size:10px; padding:4px 8px; }
   }
 
   /* --- Notebook --- */

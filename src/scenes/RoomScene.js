@@ -96,6 +96,7 @@ export default class RoomScene extends Phaser.Scene {
     this.dialogBodyEl = document.getElementById('dialog-body');
     this.dialogPortraitEl = document.getElementById('dialog-portrait');
     this.dialogQuestionsEl = document.getElementById('dialog-questions');
+    this.dialogScrollareaEl = document.getElementById('dialog-scrollarea');
     this.dialogEl.onclick = () => this.advanceDialog();
     const dialogCloseBtn = document.getElementById('dialogCloseBtn');
     if (dialogCloseBtn) dialogCloseBtn.onclick = (e) => { e.stopPropagation(); this.closeDialog(); };
@@ -737,6 +738,11 @@ export default class RoomScene extends Phaser.Scene {
     this.dialogTitleEl.textContent = title;
     this.dialogBodyEl.innerHTML = '<span class="cursor"></span>';
     this.dialogEl.style.display = 'block';
+    // A new conversation should always open scrolled to the top, not
+    // wherever a previous (possibly longer) answer left the scroll
+    // position — otherwise a short answer could open already scrolled past
+    // its own content, looking blank.
+    if (this.dialogScrollareaEl) this.dialogScrollareaEl.scrollTop = 0;
     this.promptEl.style.display = 'none';
     const talkedToPanelEl = document.getElementById('talkedToPanel');
     if (talkedToPanelEl) talkedToPanelEl.style.display = 'none';
