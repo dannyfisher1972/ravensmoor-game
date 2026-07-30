@@ -37,13 +37,6 @@ export default class BootScene extends Phaser.Scene {
   constructor() { super('Boot'); }
 
   preload() {
-    this.load.spritesheet('characters', 'assets/characters.png', {
-      frameWidth: 16,
-      frameHeight: 16,
-      margin: 0,
-      spacing: 1
-    });
-
     this.failedKeys = new Set();
     this.load.on('loaderror', (file) => this.failedKeys.add(file.key));
 

@@ -31,11 +31,9 @@ document.querySelectorAll('.spouse-word').forEach((el) => {
   el.textContent = victoriaStatus === 'wife' ? 'wife' : 'girlfriend';
 });
 
-// Note: no global `pixelArt: true` here. That forces nearest-neighbor filtering
-// on every texture, which is right for the tiny 16x16 sprite art but ruins the
-// photorealistic AI-generated backgrounds (crunchy/aliased instead of smooth).
-// Backgrounds get normal smooth filtering by default; RoomScene explicitly sets
-// nearest-neighbor only on the 'characters' spritesheet so that stays crisp.
+// Note: no global `pixelArt: true` here — it would force nearest-neighbor
+// filtering on every texture, which would ruin the photorealistic
+// AI-generated backgrounds and portraits (crunchy/aliased instead of smooth).
 const config = {
   type: Phaser.AUTO,
   parent: 'game-container',
