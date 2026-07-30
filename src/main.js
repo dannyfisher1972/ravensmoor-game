@@ -156,7 +156,7 @@ document.getElementById('caseFileBtn').addEventListener('click', () => {
 // or accusation grid. A same-origin dev server returning 200 for a missing
 // file (instead of a 404) would otherwise show a broken-image icon here.
 function portraitSrc(c) {
-  return `/assets/ai-art/${c.portraitKey.replace('portrait-', '')}.png`;
+  return `${import.meta.env.BASE_URL}assets/ai-art/${c.portraitKey.replace('portrait-', '')}.png`;
 }
 function portraitFallbackSrc(c) {
   const color = '#' + c.tint.toString(16).padStart(6, '0');
@@ -254,7 +254,7 @@ function renderInventory() {
     ? owned.map((item) => `
         <div class="accuse-suspect${armedItem === item.id ? ' armed' : ''}" data-item="${item.id}">
           ${item.icon
-            ? `<img src="/assets/ai-art/${item.icon}" alt="${item.name}">`
+            ? `<img src="${import.meta.env.BASE_URL}assets/ai-art/${item.icon}" alt="${item.name}">`
             : '<div class="accuse-icon">🗝</div>'}
           <span>${item.name}</span>
         </div>

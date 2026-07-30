@@ -41,10 +41,10 @@ export default class BootScene extends Phaser.Scene {
     this.load.on('loaderror', (file) => this.failedKeys.add(file.key));
 
     Object.entries(ROOM_BACKGROUNDS).forEach(([key, file]) => {
-      this.load.image(key, 'assets/ai-art/' + file);
+      this.load.image(key, import.meta.env.BASE_URL + 'assets/ai-art/' + file);
     });
     Object.entries(PORTRAITS).forEach(([key, file]) => {
-      this.load.image(key, 'assets/ai-art/' + file);
+      this.load.image(key, import.meta.env.BASE_URL + 'assets/ai-art/' + file);
     });
   }
 

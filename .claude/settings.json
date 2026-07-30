@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__Claude_Browser__read_console_messages",
+      "mcp__Claude_Browser__get_page_text",
+      "mcp__Claude_Browser__read_page",
+      "mcp__Claude_Browser__preview_logs",
+      "mcp__Claude_Browser__read_network_requests",
+      "mcp__Claude_Browser__preview_list",
+      "mcp__Claude_Browser__find",
+      "mcp__Claude_Browser__tabs_context",
+      "mcp__computer-use__screenshot",
+      "mcp__claude-in-chrome__read_console_messages",
+      "mcp__claude-in-chrome__get_page_text",
+      "mcp__claude-in-chrome__read_page",
+      "mcp__claude-in-chrome__read_network_requests",
+      "mcp__claude-in-chrome__find",
+      "mcp__claude-in-chrome__tabs_context_mcp",
+      "mcp__claude-in-chrome__navigate",
+      "mcp__claude-in-chrome__list_connected_browsers",
+      "mcp__claude-in-chrome__shortcuts_list"
+    ]
+  }
+}
