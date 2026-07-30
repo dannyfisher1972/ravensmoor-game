@@ -29,6 +29,23 @@ function randomVictoriaStatus() {
   return Math.random() < 0.5 ? 'wife' : 'girlfriend';
 }
 
+// Beta/QA hook: ?scenario=N in the URL forces that killerIndex instead of
+// rolling randomly, so a specific tester can be pointed at a specific
+// scenario for coverage testing (see STORY-TRACKER.md for the index).
+// Invisible to normal play — no query param means no change in behavior.
+function pickKillerIndex() {
+  try {
+    const forced = new URLSearchParams(window.location.search).get('scenario');
+    if (forced !== null) {
+      const n = parseInt(forced, 10);
+      if (Number.isInteger(n) && n >= 0 && n < NUM_KILLER_VARIANTS) return n;
+    }
+  } catch {
+    // no-op — fall through to a random pick
+  }
+  return Math.floor(Math.random() * NUM_KILLER_VARIANTS);
+}
+
 function nextStoryId() {
   try {
     const raw = localStorage.getItem(NEXT_ID_KEY);
@@ -48,7 +65,7 @@ function freshSlotData(name) {
     evidence: [], talkedTo: [], room: null, roomsVisited: [], achievements: [],
     accusationAttempts: 0, askedQuestions: [], bodyDiscovered: false, inventory: [],
     optionalRolls: {}, dialogueRolls: {},
-    killerIndex: Math.floor(Math.random() * NUM_KILLER_VARIANTS),
+    killerIndex: pickKillerIndex(),
     victoriaStatus: randomVictoriaStatus()
   };
 }
@@ -333,7 +350,7 @@ export function resetProgress(name) {
   bodyDiscovered = false;
   for (const key of Object.keys(OPTIONAL_ROLLS)) delete OPTIONAL_ROLLS[key];
   for (const key of Object.keys(DIALOGUE_ROLLS)) delete DIALOGUE_ROLLS[key];
-  killerIndex = Math.floor(Math.random() * NUM_KILLER_VARIANTS);
+  killerIndex = pickKillerIndex();
   victoriaStatus = randomVictoriaStatus();
   if (name && name.trim()) storyName = name.trim();
   persist();
