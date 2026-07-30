@@ -172,7 +172,7 @@ export const SOLUTIONS = [
       'EN-10': "Up close, the bluish tinge at his lips is unmistakable, and the bitter smell is stronger here than anywhere else in the room. Whatever was in that teacup, it worked fast — and quietly."
     },
     explanation: [
-      "It was Eleanor — though not for any reason the family ever imagined. That unexplained payment was never severance, or a loan, or a bonus — it was payment in full. A note in Edmund's own hand, sealed and hidden in the kitchen, thanked her for understanding what he needed, and asked her to make it look natural, for the family's sake. He hadn't been murdered. He'd asked her to do this.",
+      "It was Eleanor — though not for any reason the family ever imagined. That unexplained payment was never severance, or a loan, or a bonus. A sealed note in Edmund's own hand, hidden in the kitchen, thanked her for a kindness he said he could repay no other way, and asked that whatever people assumed about the money, she let them keep assuming it. Nobody in that house ever thought to ask what he actually meant by it — until now.",
       'The empty foxglove vial and the second glass both trace back to the greenhouse, same as always. A second key to the poison cabinet, worn quietly on her own ring for years, is the only thing that explains how she came by it so easily.',
       "Her own tidy record of every task that night doesn't include brewing his evening tea — yet the tray came from her kitchen all the same. Twenty-six years of loyalty, and in the end, it was the one request she couldn't refuse him."
     ]

@@ -241,6 +241,27 @@ function renderProgress() {
 onStateChange(renderProgress);
 renderProgress();
 
+// --- Onboarding hint dismissal ----------------------------------------------
+// #hint / #hint-touch sit at a fixed spot near the top of the game area (see
+// index.html) — fine as a one-time nudge, but on a short mobile landscape
+// viewport that fixed position can land right on top of a room's own
+// top-row clues, and CSS alone has no way to know the player already got
+// the message. Once they've found anything or talked to anyone, they've
+// demonstrated they know to tap glowing things — hide it for good so it
+// stops covering clues for the rest of the playthrough.
+const hintEl = document.getElementById('hint');
+const hintTouchEl = document.getElementById('hint-touch');
+function renderHintVisibility() {
+  const seenIt = FOUND_EVIDENCE.size > 0 || TALKED_TO.size > 0;
+  // Clearing back to '' (rather than never touching it) lets a brand new
+  // investigation slot show the hint again instead of staying hidden from
+  // a previous playthrough's progress.
+  hintEl.style.display = seenIt ? 'none' : '';
+  hintTouchEl.style.display = seenIt ? 'none' : '';
+}
+onStateChange(renderHintVisibility);
+renderHintVisibility();
+
 // --- Inventory ------------------------------------------------------------
 // Carryable items (rooms.js's `pickup` flag) live in the same evidence
 // catalog as every other clue, so the inventory panel just filters
@@ -364,6 +385,7 @@ function renderNotebook() {
                   <b>${e.name}</b>
                   <span class="notebook-tags">
                     ${e.redHerring ? '<span class="dead-end-tag">Dead End</span>' : ''}
+                    ${e.alibiBreak ? '<span class="alibi-break-tag">Alibi Break</span>' : ''}
                     ${e.pickup ? '<span class="item-tag">Item</span>' : ''}
                     ${implicatesTag}
                   </span>
@@ -536,18 +558,22 @@ function renderTimeline() {
   renderContradictions();
 }
 
-// A followup tagged `contradiction: true` (see questions.js) is always the
-// same lines every game, so surfacing it here is flavor/food-for-thought,
-// never a guilt tell — it just collects the "wait, those two accounts don't
-// quite match" moments the player already unlocked, instead of relying on
-// them to remember it from a conversation several rooms back.
+// Two independent sources feed this section: a followup tagged
+// `contradiction: true` (see questions.js — always the same lines every
+// game, so it's flavor/food-for-thought, never a guilt tell) and a piece of
+// physical evidence tagged `alibiBreak: true` (see rooms.js — a clue whose
+// own note sets someone's claimed account against a contrary fact). Either
+// way, this just collects the "wait, those two accounts don't quite match"
+// moments the player already unlocked in one place, instead of relying on
+// them to remember a conversation or a clue from several rooms back.
 const contradictionsSectionEl = document.getElementById('contradictionsSection');
 const contradictionsListEl = document.getElementById('contradictionsList');
 function renderContradictions() {
-  const noticed = FOLLOWUPS.filter((f) => f.contradiction && ASKED_QUESTIONS.has(`${f.target}|${f.id}`));
-  contradictionsSectionEl.style.display = noticed.length ? '' : 'none';
-  if (!noticed.length) return;
-  contradictionsListEl.innerHTML = noticed.map((f) => {
+  const noticedFollowups = FOLLOWUPS.filter((f) => f.contradiction && ASKED_QUESTIONS.has(`${f.target}|${f.id}`));
+  const noticedEvidence = ALL_EVIDENCE.filter((e) => e.alibiBreak && FOUND_EVIDENCE.has(e.id));
+  contradictionsSectionEl.style.display = (noticedFollowups.length || noticedEvidence.length) ? '' : 'none';
+  if (!noticedFollowups.length && !noticedEvidence.length) return;
+  const followupHtml = noticedFollowups.map((f) => {
     const target = CHARACTERS.find((c) => c.name === f.target);
     const answer = target?.answers?.[f.id] || '';
     return `
@@ -557,6 +583,13 @@ function renderContradictions() {
       </div>
     `;
   }).join('');
+  const evidenceHtml = noticedEvidence.map((e) => `
+    <div class="contradiction-entry">
+      <span class="contradiction-icon">⚠</span>
+      <span class="contradiction-body"><em>${e.name}</em> — ${resolveNoteForNotebook(e)}</span>
+    </div>
+  `).join('');
+  contradictionsListEl.innerHTML = followupHtml + evidenceHtml;
 }
 
 // --- Notebook view switching ------------------------------------------------
@@ -690,10 +723,30 @@ function renderAccuseAvailability() {
 renderAccuseAvailability();
 onStateChange(renderAccuseAvailability);
 
-// Below this fraction of total evidence, confirming asks once more before
-// committing — a nudge against guessing blind, not a hard block. Clicking
-// "Confirm Accusation" again (now relabeled) goes through.
+// Below this fraction of evidence actually pointing at the accused person,
+// confirming asks once more before committing — a nudge against guessing
+// blind, not a hard block. Clicking "Confirm Accusation" again (now
+// relabeled) goes through.
 const LOW_EVIDENCE_THRESHOLD = 1 / 3;
+
+// What actually supports naming a given suspect: clues exclusive to them
+// being this game's killer (requires.killer, gated so they can never
+// appear for anyone else), plus any clue that names them via `implicates` —
+// deliberately excluding redHerring entries, since those resolve as dead
+// ends and shouldn't count toward a case against anyone. This is checked
+// per accused suspect rather than as a flat "% of all evidence found"
+// count, so a player who found exactly the handful of clues that actually
+// implicate their pick isn't nagged the same as someone guessing blind —
+// and, just as important, someone who found lots of OTHER suspects'
+// evidence but nothing on their actual pick still gets asked to reconsider.
+function suspectEvidence(suspectName) {
+  return ALL_EVIDENCE.filter((e) => {
+    if (e.redHerring) return false;
+    const namesThisSuspect = e.implicates &&
+      (Array.isArray(e.implicates) ? e.implicates.includes(suspectName) : e.implicates === suspectName);
+    return namesThisSuspect || e.requires?.killer === suspectName;
+  });
+}
 
 function resetAccuseConfirmState() {
   accusePendingConfirm = false;
@@ -787,11 +840,15 @@ function epilogueIntro(count, total, correct) {
 accuseConfirmBtn.addEventListener('click', () => {
   if (!selectedSuspect) return;
 
-  const fraction = ALL_EVIDENCE.length > 0 ? FOUND_EVIDENCE.size / ALL_EVIDENCE.length : 1;
+  const relevant = suspectEvidence(selectedSuspect.name);
+  const relevantFound = relevant.filter((e) => FOUND_EVIDENCE.has(e.id)).length;
+  const fraction = relevant.length > 0 ? relevantFound / relevant.length : 0;
   if (fraction < LOW_EVIDENCE_THRESHOLD && !accusePendingConfirm) {
     playClick();
     accusePendingConfirm = true;
-    accuseWarningEl.textContent = `You've only found ${FOUND_EVIDENCE.size} of ${ALL_EVIDENCE.length} clues. Accuse anyway?`;
+    accuseWarningEl.textContent = relevant.length > 0
+      ? `You've only found ${relevantFound} of ${relevant.length} clues actually pointing to ${selectedSuspect.name}. Accuse anyway?`
+      : `Nothing you've found so far points to ${selectedSuspect.name}. Accuse anyway?`;
     accuseWarningEl.style.display = 'block';
     accuseConfirmBtn.textContent = 'Yes, Accuse Anyway';
     return;

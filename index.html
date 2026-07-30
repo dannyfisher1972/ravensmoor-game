@@ -53,6 +53,14 @@
     font-size:19px; line-height:1.55; border-radius:6px 6px 0 0;
     border:3px solid var(--line); border-bottom:none;
     box-shadow: 0 0 0 1px rgba(217,137,188,0.25) inset, 0 -8px 30px rgba(0,0,0,0.5);
+    /* Anchored to the bottom of #game-container with no cap, a long answer
+       (or an answer plus a full list of follow-up questions) just grows the
+       box upward past the container's top edge — on a short mobile
+       viewport that pushes the start of the text off-screen with no way to
+       scroll back up to it. Capping height and scrolling internally instead
+       keeps the whole box on-screen regardless of how much text it holds. */
+    max-height:80%; overflow-y:auto; overscroll-behavior:contain;
+    box-sizing:border-box;
   }
   #dialog::before{
     content:""; position:absolute; inset:5px; border:1px solid rgba(217,137,188,0.35); border-bottom:none;
@@ -357,6 +365,11 @@
   .dead-end-tag{
     display:inline-block; font-family:'Lora', Georgia, serif; font-size:9px; letter-spacing:.05em;
     color:var(--ink-soft); border:1px solid var(--line); border-radius:3px; padding:2px 6px; margin-left:6px;
+    text-transform:uppercase; vertical-align:middle;
+  }
+  .alibi-break-tag{
+    display:inline-block; font-family:'Lora', Georgia, serif; font-size:9px; letter-spacing:.05em;
+    color:var(--danger); border:1px solid rgba(217,135,122,0.5); border-radius:3px; padding:2px 6px;
     text-transform:uppercase; vertical-align:middle;
   }
 

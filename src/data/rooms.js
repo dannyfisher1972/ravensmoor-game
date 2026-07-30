@@ -116,7 +116,8 @@ export const ROOMS = {
         name: "Harriet's spectacles case",
         note: "Harriet swears she never left her room upstairs all night — yet her own spectacles case turned up here, in the study, of all places.",
         requires: { killer: 'Harriet Voss' },
-        implicates: 'Harriet Voss'
+        implicates: 'Harriet Voss',
+        alibiBreak: true
       },
       {
         id: 'E-50',
@@ -179,8 +180,8 @@ export const ROOMS = {
       },
       {
         id: 'E-79',
-        fx: 0.21,
-        fy: 0.36,
+        fx: 0.53,
+        fy: 0.82,
         name: 'That same page, read properly',
         note: '"IF SOMETHING HAPPENS TO ME THIS WEEK, LOOK CLOSER AT WHO STANDS TO LOSE THE MOST." Three letters back from what\'s written, same as his note said.',
         requires: { evidence: 'E-75' }
@@ -293,7 +294,8 @@ export const ROOMS = {
         name: "Eleanor's hearth tally",
         note: "Her own nightly ledger of every fire laid in the house — the west parlor isn't on it. Vivienne claims she spent the whole night reading there by the fire.",
         requires: { killer: 'Vivienne Thorne' },
-        implicates: 'Vivienne Thorne'
+        implicates: 'Vivienne Thorne',
+        alibiBreak: true
       },
       {
         id: 'E-74',
@@ -338,7 +340,8 @@ export const ROOMS = {
         name: 'A brandy glass, poured but untouched',
         note: 'Left on the round table since before eleven. Odd, for a woman who claims to have worked steadily until nearly midnight.',
         requires: { killer: 'Diana Reyes' },
-        implicates: 'Diana Reyes'
+        implicates: 'Diana Reyes',
+        alibiBreak: true
       },
       {
         id: 'W-10',
@@ -347,7 +350,8 @@ export const ROOMS = {
         name: 'The library fire, banked low',
         note: 'Barely more than embers all evening — an odd thing, if he and Diana truly worked here past midnight in this weather. Odder still that anything burned at all, if neither of them ever lit it.',
         requires: { killer: 'Nathaniel Cole' },
-        implicates: 'Nathaniel Cole'
+        implicates: 'Nathaniel Cole',
+        alibiBreak: true
       },
       {
         id: 'E-70',
@@ -551,7 +555,8 @@ export const ROOMS = {
         name: 'A packet of headache powder, unopened',
         note: 'Eleanor left it on her nightstand that morning, same as always. Victoria claims she came up here with a wretched headache — she never touched it.',
         requires: { killer: 'Victoria Thorne' },
-        implicates: 'Victoria Thorne'
+        implicates: 'Victoria Thorne',
+        alibiBreak: true
       },
       {
         id: 'E-69',
@@ -588,8 +593,8 @@ export const ROOMS = {
       },
       {
         id: 'E-77',
-        fx: 0.31,
-        fy: 0.61,
+        fx: 0.15,
+        fy: 0.72,
         name: 'The same page, read properly',
         note: '"EVERY ONE OF THEM HAS A REASON TONIGHT. I HAVE STOPPED PRETENDING NOT TO SEE IT." Once you know the trick, it reads plain as day.',
         requires: { evidence: 'E-75' }
@@ -701,7 +706,8 @@ export const ROOMS = {
         name: 'A quiet word from the staff',
         note: "They confirm a late-night card game in the servants' hall — not the room Harriet claimed to be in.",
         requires: { npc: 'Harriet Voss' },
-        implicates: 'Harriet Voss'
+        implicates: 'Harriet Voss',
+        alibiBreak: true
       },
       {
         // Deliberately ambiguous — this shows up in every game once you've
@@ -723,7 +729,7 @@ export const ROOMS = {
         fx: 0.32,
         fy: 0.62,
         name: "A sealed note, in Edmund's hand",
-        note: "It thanks her for understanding what he needed, and asks her to make it look natural, for the family's sake. Whatever that large payment was actually for, this is the only place it's spelled out.",
+        note: "Thanks her for a kindness he says he can repay no other way, and asks that whatever people assume about that payment, she let them keep assuming it. Whatever passed between them, he wanted it kept exactly as quiet as she's kept it.",
         requires: { killer: 'Eleanor Pemberton' },
         implicates: 'Eleanor Pemberton'
       },
@@ -734,7 +740,8 @@ export const ROOMS = {
         name: 'Her own tidy record of the evening',
         note: "Every task accounted for, down to the minute — except brewing his evening tea. Yet the tray came from her kitchen all the same.",
         requires: { killer: 'Eleanor Pemberton' },
-        implicates: 'Eleanor Pemberton'
+        implicates: 'Eleanor Pemberton',
+        alibiBreak: true
       },
       {
         id: 'I-03',
@@ -843,7 +850,8 @@ export const ROOMS = {
         name: 'A half-smoked cigarette',
         note: 'Still warm, dropped by the tool cart — not by the garage, where he claimed to have gone to smoke alone.',
         requires: { killer: 'Marcus Thorne' },
-        implicates: 'Marcus Thorne'
+        implicates: 'Marcus Thorne',
+        alibiBreak: true
       },
       {
         id: 'W-04',
@@ -852,7 +860,8 @@ export const ROOMS = {
         name: "The stable boy's account",
         note: 'Sent out near midnight to fetch a tarp, he swears the garage was dark and empty — no sign of Marcus, despite what he told you.',
         requires: { killer: 'Marcus Thorne' },
-        implicates: 'Marcus Thorne'
+        implicates: 'Marcus Thorne',
+        alibiBreak: true
       },
       {
         id: 'E-65',
@@ -941,7 +950,8 @@ export const ROOMS = {
         name: 'The hanging lamp, unlit',
         note: "Its oil reservoir is still full to the brim — this lamp hasn't burned all evening, yet Priya swears she was out here tending the orchids past midnight.",
         requires: { killer: 'Priya Thorne-Kapoor' },
-        implicates: 'Priya Thorne-Kapoor'
+        implicates: 'Priya Thorne-Kapoor',
+        alibiBreak: true
       },
       {
         id: 'E-31',
@@ -959,7 +969,8 @@ export const ROOMS = {
         name: 'Her fountain pen',
         note: 'Found by the potting shed, the one she always carries — she swears she never left the library.',
         requires: { killer: 'Diana Reyes', killerMethod: 'poison' },
-        implicates: 'Diana Reyes'
+        implicates: 'Diana Reyes',
+        alibiBreak: true
       },
       {
         id: 'E-54',
@@ -1024,7 +1035,8 @@ export const ROOMS = {
         name: 'His bed, unslept in',
         note: 'He claims he turned in shortly after Marcus left him — but the sheets are undisturbed, still made from that morning.',
         requires: { killer: 'Julian Voss' },
-        implicates: 'Julian Voss'
+        implicates: 'Julian Voss',
+        alibiBreak: true
       },
       {
         id: 'E-66',
