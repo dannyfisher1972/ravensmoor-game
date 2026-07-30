@@ -174,6 +174,15 @@ export default class RoomScene extends Phaser.Scene {
       marker.on('pointerover', () => { if (!FOUND_EVIDENCE.has(h.id)) this.setPrompt(h.itemLock ? h.name : 'Examine: ' + h.name); });
       marker.on('pointerout', () => this.setPrompt(null));
       marker.on('pointerdown', () => {
+        // The marker sits directly on top of whatever it represents (see the
+        // screenshot that prompted this: the glow dot was right over Edmund
+        // while his "look closer" dialog was already open), so a player
+        // re-clicking the same spot to "make it go away" was re-triggering
+        // the SAME interaction from scratch instead of closing the dialog —
+        // it looked like clicking did nothing at all. Any click while a
+        // dialog's already up now just advances/closes it, same as clicking
+        // the dialog box itself would.
+        if (this.isDialogOpen()) { this.advanceDialog(); return; }
         if (h.puzzle && !FOUND_EVIDENCE.has(h.id)) {
           this.openPuzzle(entry);
         } else if (h.id === 'E-01') {
@@ -209,7 +218,10 @@ export default class RoomScene extends Phaser.Scene {
     });
     marker.on('pointerover', () => this.setPrompt('Look closer'));
     marker.on('pointerout', () => this.setPrompt(null));
-    marker.on('pointerdown', () => this.discoverBody());
+    marker.on('pointerdown', () => {
+      if (this.isDialogOpen()) { this.advanceDialog(); return; }
+      this.discoverBody();
+    });
   }
 
   // The first-glance note has no title-card treatment of its own — it reads
@@ -565,7 +577,10 @@ export default class RoomScene extends Phaser.Scene {
     npc.setInteractive({ useHandCursor: true });
     npc.on('pointerover', () => this.setPrompt('Talk to ' + npc.npcName));
     npc.on('pointerout', () => this.setPrompt(null));
-    npc.on('pointerdown', () => this.talkToNPC(npc));
+    npc.on('pointerdown', () => {
+      if (this.isDialogOpen()) { this.advanceDialog(); return; }
+      this.talkToNPC(npc);
+    });
     return npc;
   }
 
@@ -650,6 +665,10 @@ export default class RoomScene extends Phaser.Scene {
     const cam = this.cameras.main;
     const base = cam.zoom;
     this.tweens.add({ targets: cam, zoom: base * 1.08, duration: 190, yoyo: true, ease: 'Sine.easeInOut' });
+  }
+
+  isDialogOpen() {
+    return !!this.dialogEl && this.dialogEl.style.display === 'block';
   }
 
   showDialog(title, body, portraitUrl, questions) {
