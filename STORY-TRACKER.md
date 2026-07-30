@@ -22,7 +22,7 @@ narrative note in an issue tracker que.
 
 ## Testing specific scenarios directly
 
-Normal play randomizes which of the 11 scenarios you get. To deliberately
+Normal play randomizes which of the 37 scenarios you get. To deliberately
 test one, append `?scenario=N` to the game's URL before starting a new
 investigation (see the index below for N). This only affects which killer
 gets picked — everything else plays normally. Existing saved investigations
@@ -30,6 +30,13 @@ are unaffected; the override only applies the moment a *new* random story is
 rolled.
 
 ## Scenario index (killerIndex → `?scenario=N`)
+
+Every real suspect now has up to 4 possible methods — a different secret,
+a different weapon, a different way the night could have gone — so no
+single wound or object is ever a permanent tell for one person across
+replays (see "Cross-cutting" below for the design rule this follows).
+Entries 0–10 are the original set; 11–36 are the added second/third/fourth
+stories for each character.
 
 | N | Killer | Method | One-line motive |
 |---|---|---|---|
@@ -44,6 +51,32 @@ rolled.
 | 8 | Eleanor Pemberton | poison | Not really a murder — Edmund asked her to do it |
 | 9 | No One | none | Genuine accident (weak heart); no killer at all |
 | 10 | Diana Reyes (Geneva) | blunt-force | Decades-old buried clinical trial data, blackmail leverage that stopped working |
+| 11 | Priya Thorne-Kapoor | blunt-force | Edmund stole credit for her hybrid patent |
+| 12 | Priya Thorne-Kapoor | stabbing | Forced into an arranged business marriage |
+| 13 | Priya Thorne-Kapoor | strangulation | Caught selling seed stock to a rival lab |
+| 14 | Victoria Thorne | strangulation | A secret prior marriage (bigamy) about to be exposed |
+| 15 | Victoria Thorne | blunt-force | Forged a loan against the estate, caught |
+| 16 | Victoria Thorne | stabbing | Protecting Nathaniel from disbarment/ruin |
+| 17 | Marcus Thorne | poison | Gambling debts about to be read aloud publicly |
+| 18 | Marcus Thorne | staged-accident | Threatened with a competency evaluation (unfit to inherit) |
+| 19 | Marcus Thorne | strangulation | Drunken rage during the study argument |
+| 20 | Vivienne Thorne | staged-accident | A paternity secret Edmund had just uncovered |
+| 21 | Vivienne Thorne | smothering | Eviction from Ravensmoor entirely |
+| 22 | Vivienne Thorne | stabbing | Publicly replaced by Edmund's new engagement |
+| 23 | Harriet Voss | stabbing | Caught secretly selling family heirlooms |
+| 24 | Harriet Voss | poison | An old personal scandal about to slip out |
+| 25 | Harriet Voss | blunt-force | Property-sale argument escalated past words |
+| 26 | Julian Voss | poison | A dangerous debt (loan sharks) needed cash that night |
+| 27 | Julian Voss | blunt-force | Caught mid-theft, panicked |
+| 28 | Julian Voss | stabbing | Confronted directly about the pawnshop thefts |
+| 29 | Nathaniel Cole | blunt-force | An earlier forged will just discovered |
+| 30 | Nathaniel Cole | poison | Threatened with public disbarment |
+| 31 | Nathaniel Cole | strangulation | Edmund threatened to expose the affair to Victoria's husband |
+| 32 | Diana Reyes | stabbing | A secret life-insurance policy on Edmund |
+| 33 | Diana Reyes | strangulation | Double-crossing Kessler-Vance for a third rival firm |
+| 34 | Eleanor Pemberton | asphyxiation | Fired after 26 years, no pension |
+| 35 | Eleanor Pemberton | blunt-force | Embezzling to support a secret family |
+| 36 | Eleanor Pemberton | fall | Blackmail dynamic reversed — she held leverage on the family |
 
 ---
 
@@ -170,15 +203,77 @@ pass specifically checking this).
 
 ---
 
+### 11–36 — Second, third, and fourth stories for the existing cast
+
+**Why these exist:** beta feedback flagged that the wound/weapon
+description alone was enough to name the killer without gathering any
+other evidence, once a player had seen a given character's one-and-only
+method in an earlier game (e.g. "blunt force" always meant Marcus). Diana
+already had two unrelated stories (Kessler-Vance / Geneva); this pass gives
+every other real suspect the same treatment — up to 4 possible methods
+each, so the crime-scene description is never a permanent tell for one
+person.
+
+**Status:** All 26 written and harness-verified (full evidence seeded per
+scenario, evidence count matches total, correct accusation confirmed) —
+see #11 (Priya/blunt-force), #20 (Vivienne/staged-accident, delayed
+discovery), #36 (Eleanor/fall, delayed discovery), and a re-check of #2
+(Marcus's *original* story, confirming the `killerMethod` retrofit below
+didn't break it. Not every one of the 26 has had an individual full
+playtest pass yet — spot-checked a representative sample across rooms,
+methods, and the discoveryDelayed mechanic rather than all 26 individually.
+
+**Design pattern used for all 26:**
+- Each character's *original* motive clue (gated on `npc`, not `killer`)
+  stays visible in every one of their stories — real people accumulate more
+  than one real grievance over 4 variants, they don't swap secrets.
+- Each character's existing alibi-break clue is reused as-is across all
+  their stories — where someone claims to have been doesn't depend on
+  which weapon they reached for, so it never needed a method-specific
+  rewrite.
+- Each new story adds exactly one new dedicated evidence hotspot combining
+  the weapon *and* that story's specific motive-reveal in a single find,
+  gated on both `killer` and `killerMethod`.
+- `sceneNotes` (E-01/EN-06/EN-10) rewritten per method so the crime scene
+  reads consistently with whatever actually happened that game.
+- Poison-method variants (Marcus/17, Julian/26) reuse the existing shared
+  poison-chain evidence (E-06/E-02/W-03) for free, same as the original 5
+  poison killers — only their own "ties it to me" clue is new.
+
+**Watch for:** whether 26 new stories in one pass feel tonally consistent
+with the original 11 (deliberately written shorter/more economical — 2
+explanation paragraphs instead of 3 — to manage the sheer volume; flag if
+any read as thin rather than concise). Also watch for whether players
+notice/appreciate the variety at all, versus just experiencing it as "huh,
+different this time" without registering *why* — the whole point was
+breaking the wound-equals-killer shortcut, so beta feedback specifically
+asking "wait, does X always do Y?" (and getting "no" as the answer) is the
+signal this worked.
+**Beta notes:**
+-
+
+---
+
 ## Cross-cutting / structural threads
 
 Things that touch more than one scenario or the game's shared systems.
 
-- **Diana's dual-scenario disambiguation.** Any NEW evidence added to
-  either of her scenarios in the future must be gated on `killerMethod` as
-  well as `killer: 'Diana Reyes'`, or it will leak into her other story.
-  This is the one place in the data model where "same killer name" isn't
-  enough to distinguish content.
+- **Every real suspect now has multiple possible methods, not just
+  Diana.** Any NEW evidence added to ANY character's story must be gated
+  on `killerMethod` as well as `killer: 'X'` if it's method/weapon-specific
+  (not just `killer` alone), or it will leak into that character's *other*
+  stories. Retrofitted this onto all the original single-method killers'
+  existing weapon clues (E-50, E-51, E-55, E-56, E-70, E-74, E-31, E-25,
+  E-69, E-24, E-54, E-68, W-11) when their alternate stories were added —
+  double-check this rule before adding a 5th story to anyone, or a 2nd to
+  Priya/Victoria/Marcus/Vivienne/Harriet/Julian/Nathaniel/Eleanor beyond
+  what's already there.
+- **Alibi-break clues are the one thing that stays `killer`-only (no
+  `killerMethod`).** Where someone claims to have been that night doesn't
+  change based on which weapon they used, so these are deliberately shared
+  across all of a character's stories (W-06, W-09, E-26, W-04, W-05, W-08,
+  W-10, W-07, E-34, E-33). Don't add a `killerMethod` restriction to these
+  unless the alibi story itself is genuinely method-specific.
 - **Puzzle/cipher solvability.** The three numeric puzzles and the cipher
   system all rely on their hint clues being *always visible* (no
   `optional: true` gating) so they're guaranteed solvable every game. If a

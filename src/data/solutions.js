@@ -220,5 +220,397 @@ export const SOLUTIONS = [
       "The anonymous note found in his room — \"I know what you did in Geneva. Meet me at midnight or everyone learns.\" — was typed on her own machine in the library; the ribbon's crooked lowercase e matches it exactly. Edmund's brass globe paperweight — the one that always sat on his own desk — turned up wiped clean and hidden behind her own shelves, the dent in it lining up with the blow that caught him at the temple. She hadn't grabbed the nearest thing in a panic. She'd carried it in with her.",
       "She swore she never left the library before midnight — but a full glass of brandy sat forgotten there since before eleven, poured and never touched by a woman supposedly buried in paperwork until midnight. Thirty years of partnership, and in the end, the secret mattered more to her than the man who'd trusted her to keep it."
     ]
+  },
+
+  // --- Second, third, and fourth stories for the cast above -----------------
+  // Every real suspect below already has one method (see their entry
+  // earlier in this file). These give each of them up to three more —
+  // a different secret, a different weapon, a different way it could have
+  // gone — so no single wound or object is ever a permanent tell for one
+  // person across replays. Their ORIGINAL motive clues (gated on npc, not
+  // killer) stay visible in every one of their stories, same as always —
+  // real people accumulate more than one real grievance. Alibi-break clues
+  // are reused as-is across a character's stories too: where someone
+  // claims to have been doesn't depend on which weapon they reached for.
+
+  {
+    killer: 'Priya Thorne-Kapoor',
+    method: 'blunt-force',
+    keyEvidence: ['E-86', 'E-33', 'E-23'],
+    sceneNotes: {
+      'E-01': "He's slumped forward in his chair, exactly as the housekeeper found him. At a glance it looks peaceful enough — but a faint, curved bruise mars his temple, an odd shape for a simple fall.",
+      'EN-06': "Set down neatly enough, save for a thin ring of dried clay dust beside them — as if something freshly broken had rested there a moment before it was cleared away.",
+      'EN-10': "Up close, the bruise is unmistakably curved, not flat — heavy stoneware or ceramic, swung hard, and only once."
+    },
+    explanation: [
+      "It was Priya. The patent filing said everything Edmund never would to her face — he'd taken credit for her own hybrid and meant to sell it out from under her, erasing her name from years of work in a single contract.",
+      "A shattered urn, swept hastily behind the potting bench, still had traces of the same clay dust found on Edmund's own reading glasses — and the curved bruise at his temple matched its shape exactly. Whatever she'd built in that greenhouse, she wasn't going to watch him take it too."
+    ]
+  },
+  {
+    killer: 'Priya Thorne-Kapoor',
+    method: 'stabbing',
+    keyEvidence: ['E-87', 'E-33', 'E-23'],
+    sceneNotes: {
+      'E-01': "He's slumped forward in his chair, exactly as the housekeeper found him. A dark stain has spread through his shirtfront, deeper and stranger than spilled wine.",
+      'EN-06': "Folded and set aside with unusual care, further from his hand than he'd normally leave them — whoever did this had a moment alone with him first.",
+      'EN-10': "Up close, the wound is narrow and deep, a single decisive thrust rather than a wild swing. Whoever held the blade knew exactly where to aim, and didn't hesitate."
+    },
+    explanation: [
+      "It was Priya. The torn merger contract made it plain — Edmund had promised her hand in marriage to secure a distributor's backing, her name signed in his own hand, never asking hers first.",
+      "The pruning shears, wiped clean and hung back on their hook, still carried a fresh nick in the blade. Whatever he thought he could arrange for her without asking, she made sure it was the last decision he ever made for her."
+    ]
+  },
+  {
+    killer: 'Priya Thorne-Kapoor',
+    method: 'strangulation',
+    keyEvidence: ['E-88', 'E-33', 'E-23'],
+    sceneNotes: {
+      'E-01': "He's slumped forward in his chair, exactly as the housekeeper found him. A thin, dark line rings his throat, half-hidden by his collar.",
+      'EN-06': "Knocked askew and left folded crookedly on the blotter — he never got the chance to set them down properly.",
+      'EN-10': "Up close, the mark at his throat is a single thin cord's width, drawn tight from behind. Whoever did this stood over him while he was still seated, and never let go until it was over."
+    },
+    explanation: [
+      "It was Priya. The shipping manifest, hidden beneath her own workbench, confirmed what Edmund had only just discovered — two years of rare seed stock sold quietly to a rival lab. He meant to call her a traitor in front of the entire family that very night.",
+      "A length of garden wire, cut clean from the coil in the greenhouse, was never found again — until the thin mark it left at Edmund's throat told the rest of the story. She stood over him until it was finished, and never looked away."
+    ]
+  },
+
+  {
+    killer: 'Victoria Thorne',
+    method: 'strangulation',
+    keyEvidence: ['E-89', 'E-34', 'E-15'],
+    sceneNotes: {
+      'E-01': "He's slumped forward in his chair, exactly as the housekeeper found him. A thin, dark line rings his throat, mostly hidden beneath his collar.",
+      'EN-06': "Knocked askew, one arm bent — he never got the chance to set them down properly.",
+      'EN-10': "Up close, the mark at his throat is a single narrow band, drawn tight from behind. Whoever did this stood close, and waited until it was over."
+    },
+    explanation: [
+      "It was Victoria. Edmund had finally tracked down proof of a marriage she'd never told anyone about — a husband from years before she ever met him — and meant to have it annulled publicly, dragging her name through every paper in the county by morning.",
+      "A silk sash, missing from her own dressing gown and quietly replaced, matched the single narrow mark at Edmund's throat exactly. Seven years of careful appearances, and in the end, the truth that undid her had nothing to do with Nathaniel at all."
+    ]
+  },
+  {
+    killer: 'Victoria Thorne',
+    method: 'blunt-force',
+    keyEvidence: ['E-90', 'E-34', 'E-15'],
+    sceneNotes: {
+      'E-01': "He's slumped forward in his chair, exactly as the housekeeper found him. A small, round bruise sits just above his ear, easy to miss under the lamp light.",
+      'EN-06': "Knocked loose and left folded crookedly on the blotter, as if set down in a hurry rather than a habit.",
+      'EN-10': "Up close, the bruise is round and shallow — something smooth and heavy, not sharp. A single blow, close range, someone he never expected to swing at all."
+    },
+    explanation: [
+      "It was Victoria. Edmund had noticed the forgery on the loan document himself — her signature for his, competent enough to nearly pass — and meant to have her accounts frozen the moment the banks opened.",
+      "Her own silver hand mirror, wiped clean but for a hairline crack down the handle, matched the round, shallow bruise at Edmund's temple. He never saw the blow coming from the one drawer he never thought to check."
+    ]
+  },
+  {
+    killer: 'Victoria Thorne',
+    method: 'stabbing',
+    keyEvidence: ['E-91', 'E-34', 'E-15'],
+    sceneNotes: {
+      'E-01': "He's slumped forward in his chair, exactly as the housekeeper found him. A dark stain has soaked through his shirt, just left of center.",
+      'EN-06': "Set down with unusual care, further from his hand than habit would explain.",
+      'EN-10': "Up close, the wound is narrow, precise, angled from above — someone standing over him, not struggling with him."
+    },
+    explanation: [
+      "It was Victoria — though not entirely for herself. Edmund's drafted complaint to the bar association would have ended Nathaniel's career and very possibly his freedom, on top of exposing them both. She'd risked plenty for that affair already; she wasn't going to let Edmund be the one to finish it.",
+      "A bent hairpin, small enough to overlook, matched the narrow, precise wound at Edmund's chest — a single thrust from someone standing over him, not struggling with him. Whatever else was true about her, when it came to protecting Nathaniel, she didn't hesitate."
+    ]
+  },
+
+  {
+    killer: 'Marcus Thorne',
+    method: 'poison',
+    keyEvidence: ['E-92', 'E-26', 'E-11'],
+    sceneNotes: {
+      'E-01': "He's still slumped forward in his chair, exactly as the housekeeper found him. No sign of struggle — his hands rest naturally around an empty nightcap glass. His lips have a faint bluish tinge, and there's a bitter smell that has nothing to do with the whisky itself.",
+      'EN-06': "He wasn't attacked — he set them down calmly. Whoever did this was someone he trusted enough not to react to.",
+      'EN-10': "Up close, the bluish tinge at his lips is unmistakable, and the bitter smell is strongest here. Whatever was in that glass, it worked fast — and quietly."
+    },
+    explanation: [
+      "It was Marcus. Edmund meant to read his gambling debts aloud at the very announcement meant to name an heir — public ruin before any inheritance at all, trust or no trust.",
+      "A fresh chip in the nightcap decanter's stopper and a bitter film on the rim traced straight back to him. He'd always been better with a bottle than a plan — and it turned out that was all he needed."
+    ]
+  },
+  {
+    killer: 'Marcus Thorne',
+    method: 'staged-accident',
+    discoveryDelayed: true,
+    firstGlanceNote: "He's slumped in his chair, still as anything. It could almost be nothing — an old man who fell asleep over his letters. Something makes you take a second look.",
+    keyEvidence: ['E-93', 'W-04', 'E-11'],
+    sceneNotes: {
+      'E-01': "He's slumped forward in his chair, exactly as the housekeeper found him — except for a thin, dark graze at his temple, half-hidden by his hair. It could almost pass for a stumble, if you didn't know better.",
+      'EN-06': "Snapped clean at one hinge and shoved under a stack of papers — not the careful placement of a man who treated them like his own hands.",
+      'EN-10': "The graze lines up exactly with the sharp corner of the mantel — too exactly, for a man who never left his chair. Someone wanted this to look like an accident, and very nearly managed it."
+    },
+    explanation: [
+      "It was Marcus. Edmund's unsent letter to a city specialist requested a formal competency evaluation — not concern for his son's health, but a plan to have him declared unfit to inherit anything at all.",
+      "Half-burned matches scattered near the garage suggest a long, nervous wait before he could go through with it. The graze at Edmund's temple, lined up exactly with the mantel's corner, was made to look like nobody's fault. It very nearly was."
+    ]
+  },
+  {
+    killer: 'Marcus Thorne',
+    method: 'strangulation',
+    keyEvidence: ['E-94', 'E-26', 'E-11'],
+    sceneNotes: {
+      'E-01': "He's slumped forward in his chair, exactly as the housekeeper found him. A dark, uneven mark rings his throat, only visible once you look closely.",
+      'EN-06': "Knocked to the floor entirely, one lens cracked — whoever did this wasn't thinking about tidiness.",
+      'EN-10': "Up close, the mark at his throat is wide and uneven, not a clean cord — bare hands, not a weapon. Whoever did this wasn't calm about it."
+    },
+    explanation: [
+      "It was Marcus. Nobody who was at dinner disputes it — the argument in the study was the loudest anyone could remember, and Marcus had been drinking since before the first course.",
+      "A shattered whisky glass, flung hard enough to scatter across the gravel outside, matched the uneven, bare-handed mark at Edmund's throat. Whatever started as shouting didn't end that way."
+    ]
+  },
+
+  {
+    killer: 'Vivienne Thorne',
+    method: 'staged-accident',
+    discoveryDelayed: true,
+    firstGlanceNote: "He's slumped in his chair, utterly still. It looks peaceful enough from here — head bowed, hands loose in his lap. Almost too peaceful.",
+    keyEvidence: ['E-95', 'W-05', 'E-30'],
+    sceneNotes: {
+      'E-01': "He's slumped forward in his chair, exactly as the housekeeper found him — except for a thin, dark graze at his temple. It could almost pass for a stumble.",
+      'EN-06': "Snapped at the hinge, shoved carelessly aside — not how he usually left them.",
+      'EN-10': "The graze lines up with the mantel's corner exactly. Someone wanted this to look accidental."
+    },
+    explanation: [
+      "It was Vivienne. A decades-old hospital record, hidden behind a loose floorboard for years, finally caught up with her — proof of a parentage secret Edmund had only just uncovered, and meant to reveal to his own children that very night, whatever it cost the family name.",
+      "The graze at Edmund's temple lined up exactly with the mantel's corner — too exactly for the fall it was made to resemble — and a single strand of her unmistakable red hair, caught on that same corner, put her right there when it happened. Whatever this marriage became, she was never going to let him unmake her place in it with a single conversation."
+    ]
+  },
+  {
+    killer: 'Vivienne Thorne',
+    method: 'smothering',
+    keyEvidence: ['E-96', 'W-05', 'E-30'],
+    sceneNotes: {
+      'E-01': "He's slumped forward in his chair, exactly as the housekeeper found him. No wounds, no struggle — but his color is wrong, a faint mottled flush that doesn't belong on a man who simply dozed off.",
+      'EN-06': "Folded and set down with unusual care, further from his hand than habit. Whoever did this had a moment alone with him first.",
+      'EN-10': "Up close, a single fine thread — pale, from an old shawl, not his own clothing — is caught at his jaw. Whatever pressed over his face wasn't there long. It didn't need to be."
+    },
+    explanation: [
+      "It was Vivienne. The eviction notice, drafted and dated for the end of the month, would have put her out of Ravensmoor entirely — no rooms, no claim, nowhere left to be underfoot.",
+      "A pale shawl thread, caught at Edmund's jaw, matched one missing from her own sitting room. Being poor never frightened her. Having nowhere left to go finally did."
+    ]
+  },
+  {
+    killer: 'Vivienne Thorne',
+    method: 'stabbing',
+    keyEvidence: ['E-97', 'W-05', 'E-30'],
+    sceneNotes: {
+      'E-01': "He's slumped forward in his chair, exactly as the housekeeper found him. A dark stain has spread through his shirtfront.",
+      'EN-06': "Set aside with care, further from his hand than usual.",
+      'EN-10': "Up close, the wound is narrow and sudden — someone who struck once, in anger, and didn't plan a second."
+    },
+    explanation: [
+      "It was Vivienne. Edmund's own engagement announcement — to someone younger, someone the papers would adore — was never going to include her, not even as an afterthought. Losing money was survivable. Being erased in front of everyone who still called her Mrs. Thorne was not.",
+      "A letter opener from the parlor's own writing desk, wiped down but for a last dark fleck near the tip, told the physical story; a crumpled save-the-date thrown behind the settee told the rest of it. The wound was narrow, sudden, and entirely unplanned — much like the moment itself."
+    ]
+  },
+
+  {
+    killer: 'Harriet Voss',
+    method: 'stabbing',
+    keyEvidence: ['E-98', 'W-06', 'E-40'],
+    sceneNotes: {
+      'E-01': "He's slumped forward in his chair, exactly as the housekeeper found him. A dark stain has spread across his shirt.",
+      'EN-06': "Set aside with unusual care, further than habit would explain.",
+      'EN-10': "Up close, the wound is narrow and controlled — someone who knew exactly what they were doing, and didn't linger."
+    },
+    explanation: [
+      "It was Harriet. Edmund had only just found her own pawnshop ledger — years of quietly selling off her late husband's watch, a painting she called a family heirloom at every holiday dinner, silver that was never really hers to sell.",
+      "The letter opener, wiped but not polished clean, still carried a duller stain near its point. She'd spent a decade lecturing this family about honesty. It turned out she couldn't survive her own."
+    ]
+  },
+  {
+    killer: 'Harriet Voss',
+    method: 'poison',
+    keyEvidence: ['E-99', 'W-06', 'E-40'],
+    sceneNotes: {
+      'E-01': "He's still slumped forward in his chair, exactly as the housekeeper found him. No sign of struggle — his hands rest naturally around a cold teacup. His lips have a faint bluish tinge, and there's a bitter smell that has nothing to do with the whisky decanter.",
+      'EN-06': "He wasn't attacked — he set them down calmly. Whoever did this, he trusted enough not to react.",
+      'EN-10': "Up close, the bluish tinge is unmistakable, and the bitter smell is strongest here. Whatever was in that tea, it worked fast and quietly."
+    },
+    explanation: [
+      "It was Harriet. An old affair from decades ago, one that would have scandalized the family every bit as badly as anything she'd ever accused anyone else of, was about to slip out at dinner — gently, plainly, and permanently.",
+      "A tin of headache powder, relabeled in her own hand, matched the bitter tea that never should have killed anyone. She'd built a whole reputation on being the one who saw through everyone else. She just made sure no one saw through her."
+    ]
+  },
+  {
+    killer: 'Harriet Voss',
+    method: 'blunt-force',
+    keyEvidence: ['E-100', 'W-06', 'E-40'],
+    sceneNotes: {
+      'E-01': "He's slumped forward in his chair, exactly as the housekeeper found him — a small, dark bruise sits above his hairline, easy to miss under the lamp light.",
+      'EN-06': "Knocked askew and left folded crookedly, as if set down in a hurry.",
+      'EN-10': "Up close, the bruise is round and shallow — something heavy and close at hand, not brought in with intent. A single blow, in the heat of an argument that went further than words."
+    },
+    explanation: [
+      "It was Harriet. The property sale prospectus was real enough, and the argument over it, by every account, was the loudest anyone in the house could remember that night.",
+      "A heavy book, knocked from the shelf and left where it fell rather than replaced, carried a freshly dented corner. Whatever she meant to say to him, it went further than words before either of them meant it to."
+    ]
+  },
+
+  {
+    killer: 'Julian Voss',
+    method: 'poison',
+    keyEvidence: ['E-101', 'W-07', 'E-42'],
+    sceneNotes: {
+      'E-01': "He's still slumped forward in his chair, exactly as the housekeeper found him. No sign of struggle — his hands rest naturally around a cold teacup. His lips have a faint bluish tinge, and there's a bitter smell that has nothing to do with the whisky.",
+      'EN-06': "He wasn't attacked — he set them down calmly. Whoever did this, he trusted enough not to react.",
+      'EN-10': "Up close, the bluish tinge is unmistakable, and the bitter smell is strongest here. Whatever was in that tea, it worked fast."
+    },
+    explanation: [
+      "It was Julian. The pawnshop ticket for his grandfather's own watch — pawned that very afternoon, not weeks ago like the cufflinks — meant whatever he owed couldn't wait for a slow, careful plan.",
+      "A spare greenhouse key, tucked in the same pocket as the pawn ticket, still carried the same bitter residue as the vial itself. He couldn't wait to be formally disinherited to feel the walls closing in — whoever he owed wanted their money that night, and he made sure Edmund's would be available to take."
+    ]
+  },
+  {
+    killer: 'Julian Voss',
+    method: 'blunt-force',
+    keyEvidence: ['E-102', 'W-07', 'E-42'],
+    sceneNotes: {
+      'E-01': "He's slumped forward in his chair, exactly as the housekeeper found him — a small, dark bruise sits above his hairline.",
+      'EN-06': "Knocked loose and left folded crookedly, as if set down in a hurry.",
+      'EN-10': "Up close, the bruise is round and shallow. Whoever swung it wasn't calm about it, and wasn't carrying it in from elsewhere."
+    },
+    explanation: [
+      "It was Julian. Caught mid-search of the study desk that same night — not planning ahead, just looking for anything worth enough to sell before morning — he panicked the moment Edmund walked in on him.",
+      "A silver candlestick, wiped down and shoved under his bed, still carried a telling bend at its base. Whatever he meant to steal, he ended up taking something far worse instead."
+    ]
+  },
+  {
+    killer: 'Julian Voss',
+    method: 'stabbing',
+    keyEvidence: ['E-103', 'W-07', 'E-42'],
+    sceneNotes: {
+      'E-01': "He's slumped forward in his chair, exactly as the housekeeper found him. A dark stain has spread through his shirtfront.",
+      'EN-06': "Set aside with unusual care, further from his hand than usual.",
+      'EN-10': "Up close, the wound is sudden and unpracticed — someone who'd never done this before, and didn't stop to think twice."
+    },
+    explanation: [
+      "It was Julian. Edmund confronted him directly that night — no letter, no solicitor, just the two of them and the theft laid bare between them, man to man.",
+      "A hunting knife, missing from its mount above his own mantel, left a dust outline no one could argue with. It was over before either of them had time to think better of it."
+    ]
+  },
+
+  {
+    killer: 'Nathaniel Cole',
+    method: 'blunt-force',
+    keyEvidence: ['E-104', 'W-10', 'E-46'],
+    sceneNotes: {
+      'E-01': "He's slumped forward in his chair, exactly as the housekeeper found him — a small, dark bruise sits above his hairline.",
+      'EN-06': "Knocked askew and left folded crookedly on the blotter.",
+      'EN-10': "Up close, the bruise is round and shallow — heavy and deliberate, delivered by someone he never thought to flinch from."
+    },
+    explanation: [
+      "It was Nathaniel. Long before any audit was ever proposed, he'd forged an earlier version of Edmund's will himself — and Edmund, reviewing his own old papers, had only just noticed the mismatch in the handwriting.",
+      "A heavy bookend, wiped down and set back on the shelf slightly askew, matched the round bruise at Edmund's temple exactly. Twelve years of trust, undone by a single forgery finally caught."
+    ]
+  },
+  {
+    killer: 'Nathaniel Cole',
+    method: 'poison',
+    keyEvidence: ['E-105', 'W-10', 'E-46'],
+    sceneNotes: {
+      'E-01': "He's still slumped forward in his chair, exactly as the housekeeper found him. No sign of struggle — his hands rest naturally around a cold teacup. His lips have a faint bluish tinge.",
+      'EN-06': "He wasn't attacked — he set them down calmly. Whoever did this, he trusted enough not to react.",
+      'EN-10': "Up close, the bluish tinge is unmistakable. Whatever was in that glass, it worked fast and quietly."
+    },
+    explanation: [
+      "It was Nathaniel. Edmund had drafted a letter to the bar association himself — disbarment, publicly, rather than any quiet settlement, whatever it cost the family's own name in the process.",
+      "A brandy glass, rinsed but never quite clean, still carried the same bitter film as everything else that killed him. He'd spent twelve years managing everyone else's secrets. He couldn't manage his own exposure."
+    ]
+  },
+  {
+    killer: 'Nathaniel Cole',
+    method: 'strangulation',
+    keyEvidence: ['E-106', 'W-10', 'E-46'],
+    sceneNotes: {
+      'E-01': "He's slumped forward in his chair, exactly as the housekeeper found him. A thin mark rings his throat, mostly hidden by his collar.",
+      'EN-06': "Knocked to the floor, one lens cracked clean through.",
+      'EN-10': "Up close, the mark is a single narrow cord, drawn tight from behind. Whoever did this meant to finish it, not just frighten him."
+    },
+    explanation: [
+      "It was Nathaniel. Edmund's half-burned notes threatened to tell Victoria's husband everything — ruining her and Nathaniel together, in the same breath, the same night.",
+      "A length of curtain cord, cut down from the library's own tall window, matched the single narrow mark at Edmund's throat. Whatever he'd risked the affair for, he wasn't going to lose it to a letter."
+    ]
+  },
+
+  {
+    killer: 'Diana Reyes',
+    method: 'stabbing',
+    keyEvidence: ['E-107', 'W-08', 'E-44'],
+    sceneNotes: {
+      'E-01': "He's slumped forward in his chair, exactly as the housekeeper found him. A dark stain has spread through his shirtfront.",
+      'EN-06': "Set aside with unusual care, further from his hand than usual.",
+      'EN-10': "Up close, the wound is narrow and precise — a single, decisive thrust from someone who'd clearly thought about exactly where to aim."
+    },
+    explanation: [
+      "It was Diana. An insurance policy on Edmund's own life, naming her sole beneficiary and taken out years before anyone thought to ask why, was suddenly worth more than the partnership itself — the company's fortunes had been sinking quietly for two years.",
+      "A letter opener from her own desk, the only thing in the library actually pointed and sharp, matched the single decisive wound exactly. Thirty years of partnership, and in the end, the payout mattered more than either of them."
+    ]
+  },
+  {
+    killer: 'Diana Reyes',
+    method: 'strangulation',
+    keyEvidence: ['E-108', 'W-08', 'E-44'],
+    sceneNotes: {
+      'E-01': "He's slumped forward in his chair, exactly as the housekeeper found him. A thin mark rings his throat, half-hidden by his collar.",
+      'EN-06': "Knocked askew, one arm bent awkwardly against the blotter.",
+      'EN-10': "Up close, the mark is a single narrow band. Whoever did this had thirty years of practice reading exactly how far he could be pushed — and pushed further."
+    },
+    explanation: [
+      "It was Diana — though not for Kessler-Vance at all, in the end. She'd been quietly feeding both of her partners' secrets to a third company entirely, playing every side against the other for a payout bigger than any single deal. Edmund had only just pieced together whose interests she was really serving.",
+      "A braided cord from her own reading lamp, snapped clean and never replaced, matched the mark at Edmund's throat exactly. Behind that same lamp, a torn telegram from a firm neither Edmund nor Kessler-Vance had ever done business with confirmed who she was really working for. Thirty years of trust, and she'd never once been playing for either side she claimed."
+    ]
+  },
+
+  {
+    killer: 'Eleanor Pemberton',
+    method: 'asphyxiation',
+    discoveryDelayed: true,
+    firstGlanceNote: "He's slumped at his desk, head bowed, utterly still. It looks like he simply dozed off over his letters. You'll need to look closer.",
+    keyEvidence: ['E-109', 'E-53'],
+    sceneNotes: {
+      'E-01': "He's slumped forward in his chair, exactly as the housekeeper found him. His color is faintly off, a headache-thin flush that doesn't quite belong on a man who simply nodded off.",
+      'EN-06': "Folded neatly enough, though slightly nearer the lamp than he usually leaves them.",
+      'EN-10': "Up close, there's a faint, sweetish smell that has nothing to do with the whisky decanter — the same smell that lingers near an unlit gas fixture left open too long."
+    },
+    explanation: [
+      "It was Eleanor. Not gratitude, not a bonus — a termination letter, drafted in Edmund's own hand, quietly letting her go after twenty-six years without so much as a pension, in favor of someone younger. She found her own copy before he ever worked up the nerve to hand it over.",
+      "The gas fixture in his own study, left open long after the lamps should have been the only thing lit, explains the faint sweetish smell that never should have been there. Twenty-six years of loyalty, and he still thought she'd go quietly."
+    ]
+  },
+  {
+    killer: 'Eleanor Pemberton',
+    method: 'blunt-force',
+    keyEvidence: ['E-110', 'E-53'],
+    sceneNotes: {
+      'E-01': "He's slumped forward in his chair, exactly as the housekeeper found him — a small, dark bruise sits above his hairline.",
+      'EN-06': "Knocked loose, left folded crookedly on the blotter.",
+      'EN-10': "Up close, the bruise is round and shallow — something from the kitchen, not the study, swung once in something closer to panic than plan."
+    },
+    explanation: [
+      "It was Eleanor. A kitchen ledger, skimmed carefully over years, and a photograph of a family that had never once set foot in Ravensmoor told the truth Edmund had only just started asking about — a life she'd built entirely outside these walls, on money that was never hers.",
+      "Whatever she used, kept close in the kitchen rather than carried in from elsewhere, matched the shallow, round bruise exactly. She panicked the moment he asked the right question, and never got the chance to explain herself."
+    ]
+  },
+  {
+    killer: 'Eleanor Pemberton',
+    method: 'fall',
+    discoveryDelayed: true,
+    firstGlanceNote: "He's slumped forward at his desk, exactly where he always sits. From here, nothing looks out of place at all.",
+    keyEvidence: ['E-111', 'E-53'],
+    sceneNotes: {
+      'E-01': "He's slumped forward in his chair — except the study clearly isn't where he died. Faint drag marks track across the rug toward the desk, and a thin trail of dust from the back stairwell hasn't been swept away.",
+      'EN-06': "Set down carefully enough, but at an angle that doesn't match where his hands would naturally have rested.",
+      'EN-10': "Up close, the injury pattern doesn't match a fall from standing height — more consistent with a tumble down a full flight of stairs, moved afterward to look like he never left his desk at all."
+    },
+    explanation: [
+      "It was Eleanor — though the family had the dynamic backward the whole time. A locked strongbox, forced open the night he died, held years of Edmund's own letters, kept as leverage rather than loyalty. He confronted her with the box itself, and she couldn't let him walk away with it.",
+      "The drag marks across the study rug and the dust from the back stairwell tell the real story — he never died at that desk at all. Twenty-six years of watching this family perform for each other, and in the end, she was the one who'd been quietly holding all the real cards."
+    ]
   }
 ];

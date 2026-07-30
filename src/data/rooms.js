@@ -125,7 +125,7 @@ export const ROOMS = {
         fy: 0.55,
         name: 'The fire poker, wiped clean',
         note: 'Wiped down and left back on its stand — but not well enough. A few dark flecks remain in the grip, and the curved iron hook at its tip is bent slightly out of true, like it struck something far harder than a log.',
-        requires: { killer: 'Marcus Thorne' },
+        requires: { killer: 'Marcus Thorne', killerMethod: 'blunt-force' },
         implicates: 'Marcus Thorne'
       },
       {
@@ -134,7 +134,7 @@ export const ROOMS = {
         fy: 0.63,
         name: 'A tapestry cushion, out of place',
         note: "From the good parlor, tucked behind the desk as if someone hoped it wouldn't be noticed — a few pale gold threads pulled loose from its edge, snagged and drawn tight, as if it had been pressed hard against something for a while.",
-        requires: { killer: 'Harriet Voss' },
+        requires: { killer: 'Harriet Voss', killerMethod: 'smothering' },
         implicates: 'Harriet Voss'
       },
       {
@@ -143,7 +143,7 @@ export const ROOMS = {
         fy: 0.72,
         name: "A signet ring, its stone chipped",
         note: 'Wedged beneath the desk — the chip matches a scrape at Edmund\'s temple exactly.',
-        requires: { killer: 'Julian Voss' },
+        requires: { killer: 'Julian Voss', killerMethod: 'staged-accident' },
         implicates: 'Julian Voss'
       },
       {
@@ -152,7 +152,7 @@ export const ROOMS = {
         fy: 0.66,
         name: "Edmund's heart tonic",
         note: 'Refilled just this week. Tested twice the strength it should have been.',
-        requires: { killer: 'Nathaniel Cole' },
+        requires: { killer: 'Nathaniel Cole', killerMethod: 'tampered-medication' },
         implicates: 'Nathaniel Cole'
       },
       {
@@ -185,6 +185,24 @@ export const ROOMS = {
         name: 'That same page, read properly',
         note: '"IF SOMETHING HAPPENS TO ME THIS WEEK, LOOK CLOSER AT WHO STANDS TO LOSE THE MOST." Three letters back from what\'s written, same as his note said.',
         requires: { evidence: 'E-75' }
+      },
+      {
+        id: 'E-98',
+        fx: 0.9,
+        fy: 0.55,
+        name: 'A letter opener, the blade tarnished at the tip',
+        note: "Wiped but not polished — a duller stain than tarnish clings near the point. A pawnshop ledger in her own hand lists years of quiet sales: her late husband's watch, a painting called a \"family heirloom\" at every holiday dinner, silver that was never really hers to sell. Edmund had only just found the ledger himself.",
+        requires: { killer: 'Harriet Voss', killerMethod: 'stabbing' },
+        implicates: 'Harriet Voss'
+      },
+      {
+        id: 'E-100',
+        fx: 0.25,
+        fy: 0.85,
+        name: 'A heavy book, its spine cracked at the corner',
+        note: "Knocked from the shelf and left where it fell rather than replaced — the corner is freshly dented, deep enough to matter. The argument over the property sale, by every account, was the loudest anyone in the house could remember that night.",
+        requires: { killer: 'Harriet Voss', killerMethod: 'blunt-force' },
+        implicates: 'Harriet Voss'
       }
     ],
     npcs: [
@@ -303,7 +321,7 @@ export const ROOMS = {
         fy: 0.28,
         name: 'A ledger page, torn and refolded',
         note: "Years of small transfers out of the children's trust, each one just under the amount that would have needed Marcus or Priya's signature to approve. Vivienne's own handwriting notes the running total in the margin, like she never once stopped keeping score.",
-        requires: { killer: 'Vivienne Thorne' },
+        requires: { killer: 'Vivienne Thorne', killerMethod: 'poison' },
         implicates: 'Vivienne Thorne'
       },
       {
@@ -359,7 +377,7 @@ export const ROOMS = {
         fy: 0.65,
         name: 'Scorched fragments in the grate',
         note: "Barely anything left to read, but one line survives, in Edmund's own hand: \"...both the money and Nathaniel's — time he answered for—\" Someone fed this to the fire tonight, and didn't wait for it to catch properly first.",
-        requires: { killer: 'Nathaniel Cole' },
+        requires: { killer: 'Nathaniel Cole', killerMethod: 'tampered-medication' },
         implicates: 'Nathaniel Cole'
       },
       {
@@ -388,6 +406,51 @@ export const ROOMS = {
         note: 'Wedged into the spine of an old atlas, like a bookmark someone forgot about.',
         pickup: true,
         icon: 'key-luggage.png'
+      },
+      {
+        id: 'E-104',
+        fx: 0.95,
+        fy: 0.35,
+        name: 'A heavy legal bookend, one corner freshly chipped',
+        note: "Wiped down and set back on the shelf slightly askew. Beneath it, an earlier will — the original one, before the version everyone knows — with a signature Nathaniel forged himself, years before any audit was ever proposed. Edmund had only just noticed the mismatch in his own handwriting.",
+        requires: { killer: 'Nathaniel Cole', killerMethod: 'blunt-force' },
+        implicates: 'Nathaniel Cole'
+      },
+      {
+        id: 'E-105',
+        fx: 0.75,
+        fy: 0.9,
+        name: 'A brandy glass, rinsed but not quite clean',
+        note: "Rinsed in a hurry, but a faint bitter film still clings to the rim — the same grey residue as the empty vial in the greenhouse, and this glass never once left his own study. A letter drafted to the bar association sits beneath the blotter — Edmund meant to have Nathaniel disbarred publicly rather than settle anything quietly, whatever it cost the family's own reputation.",
+        requires: { killer: 'Nathaniel Cole', killerMethod: 'poison' },
+        implicates: 'Nathaniel Cole'
+      },
+      {
+        id: 'E-106',
+        fx: 0.35,
+        fy: 0.15,
+        name: 'A length of curtain cord, one end frayed',
+        note: "Cut down from its usual place at the tall window. Edmund's own notes, half-burned in the grate, threatened to tell Victoria's husband — whichever one counted at the time — everything, ruining her and Nathaniel both in the same breath.",
+        requires: { killer: 'Nathaniel Cole', killerMethod: 'strangulation' },
+        implicates: 'Nathaniel Cole'
+      },
+      {
+        id: 'E-107',
+        fx: 0.48,
+        fy: 0.9,
+        name: "A letter opener from her own desk, wiped clean but for one last smear",
+        note: "The only thing in this library actually pointed and sharp. Beneath the blotter it sat on: an insurance policy taken out on Edmund's life years ago, naming her sole beneficiary and never once mentioned to him directly. The company's fortunes had been sinking quietly for two years — long enough that the payout was worth more than the partnership itself.",
+        requires: { killer: 'Diana Reyes', killerMethod: 'stabbing' },
+        implicates: 'Diana Reyes'
+      },
+      {
+        id: 'E-108',
+        fx: 0.05,
+        fy: 0.85,
+        name: "A braided cord from the reading lamp's pull-switch, snapped clean",
+        note: "Gone from the lamp on her own side of the library, never replaced. Tucked behind the same lamp: a telegram, torn in half, from a firm neither Edmund nor Kessler-Vance had ever done business with — a third company entirely, one Diana had been quietly feeding both of her partners' secrets to, playing every side against the other for a payout bigger than any single deal alone. Edmund had only just pieced together whose interests she was actually serving.",
+        requires: { killer: 'Diana Reyes', killerMethod: 'strangulation' },
+        implicates: 'Diana Reyes'
       }
     ],
     npcs: [
@@ -493,6 +556,33 @@ export const ROOMS = {
         note: "A small photograph inside, corners worn soft from handling — Vivienne, decades younger, laughing at something just out of frame. Whatever this marriage became, someone kept this all the same.",
         puzzle: true,
         puzzleCode: '2067'
+      },
+      {
+        id: 'E-95',
+        fx: 0.9,
+        fy: 0.15,
+        name: 'A hospital record, decades old, tucked behind a loose floorboard',
+        note: "A birth record from a clinic two counties over, dated years before Marcus was born officially — the father's name left blank. Caught on the same mantel corner that left its mark on Edmund's temple: a single strand of unmistakably red hair. Edmund had only just found the record, and meant to tell his own children the truth about their parentage that very night, whatever it cost the family name.",
+        requires: { killer: 'Vivienne Thorne', killerMethod: 'staged-accident' },
+        implicates: 'Vivienne Thorne'
+      },
+      {
+        id: 'E-96',
+        fx: 0.15,
+        fy: 0.85,
+        name: "An eviction notice, drafted in Edmund's hand",
+        note: "Dated for the end of the month — Vivienne, out of Ravensmoor entirely, no more rooms kept ready for her, no more claim on the only home she has left. He meant to have it delivered the morning after his birthday.",
+        requires: { killer: 'Vivienne Thorne', killerMethod: 'smothering' },
+        implicates: 'Vivienne Thorne'
+      },
+      {
+        id: 'E-97',
+        fx: 0.6,
+        fy: 0.65,
+        name: "A letter opener from the parlor's own writing desk",
+        note: "Wiped down, but for a last dark fleck near the tip. Beneath the settee cushion nearby: a crumpled save-the-date card, Edmund's own engagement announcement — to someone else, someone younger, someone the papers would love. Vivienne was never invited to expect it. Being replaced financially was one thing. Being replaced entirely, in front of everyone who still remembered her as his wife, was another.",
+        requires: { killer: 'Vivienne Thorne', killerMethod: 'stabbing' },
+        implicates: 'Vivienne Thorne'
       }
     ],
     npcs: []
@@ -537,7 +627,7 @@ export const ROOMS = {
         fy: 0.38,
         name: 'A crushed foxglove petal',
         note: "On her dressing table, of all places — gardening was never her hobby. That's Priya's domain, not hers.",
-        requires: { killer: 'Victoria Thorne' },
+        requires: { killer: 'Victoria Thorne', killerMethod: 'poison' },
         implicates: 'Victoria Thorne'
       },
       {
@@ -564,7 +654,7 @@ export const ROOMS = {
         fy: 0.22,
         name: "A torn page from Edmund's journal",
         note: "Half a sentence, the rest torn away: \"...Nathaniel, of all people. After this long, I should have expected — no more waiting.\" Dated three days ago. Whatever he'd only just learned, it didn't wait for morning.",
-        requires: { killer: 'Victoria Thorne' },
+        requires: { killer: 'Victoria Thorne', killerMethod: 'poison' },
         implicates: 'Victoria Thorne'
       },
       {
@@ -598,6 +688,33 @@ export const ROOMS = {
         name: 'The same page, read properly',
         note: '"EVERY ONE OF THEM HAS A REASON TONIGHT. I HAVE STOPPED PRETENDING NOT TO SEE IT." Once you know the trick, it reads plain as day.',
         requires: { evidence: 'E-75' }
+      },
+      {
+        id: 'E-89',
+        fx: 0.95,
+        fy: 0.25,
+        name: 'A silk sash, one end frayed',
+        note: "Missing from her own dressing gown, the tie replaced with a plain ribbon so the gap wouldn't show. Beneath her jewel case, folded small: a marriage certificate from years before she ever met Edmund — a husband she told no one about, one Edmund had only just tracked down proof of. He meant to have the marriage annulled and her name dragged through every paper in the county.",
+        requires: { killer: 'Victoria Thorne', killerMethod: 'strangulation' },
+        implicates: 'Victoria Thorne'
+      },
+      {
+        id: 'E-90',
+        fx: 0.4,
+        fy: 0.85,
+        name: "Her silver hand mirror, the handle cracked",
+        note: "Wiped clean and set back on the vanity, a hairline crack running the length of the handle. Tucked in its case: a loan document against the estate, Edmund's signature forged competently enough to nearly pass — nearly. He'd only just noticed the forgery himself, and meant to have her accounts frozen by morning.",
+        requires: { killer: 'Victoria Thorne', killerMethod: 'blunt-force' },
+        implicates: 'Victoria Thorne'
+      },
+      {
+        id: 'E-91',
+        fx: 0.9,
+        fy: 0.85,
+        name: 'A hatpin, its long steel shaft bent out of true',
+        note: "Not the sort of thing that bends on its own — and long enough, sharpened enough, to have done exactly what it looks like it did. Beside it, a note in Edmund's hand naming Nathaniel outright — not just the affair, but a formal complaint to the bar association, drafted and ready to send. Whatever she was willing to risk for herself, she wasn't willing to let Edmund take Nathaniel down with her.",
+        requires: { killer: 'Victoria Thorne', killerMethod: 'stabbing' },
+        implicates: 'Victoria Thorne'
       }
     ],
     npcs: [
@@ -672,6 +789,15 @@ export const ROOMS = {
         note: "A slim ledger inside, entries stripped of names — just amounts, dates, and one word repeated again and again: \"discretion.\" Being this family's physician has clearly required more than medicine, over the years.",
         puzzle: true,
         puzzleCode: '9385'
+      },
+      {
+        id: 'E-109',
+        fx: 0.15,
+        fy: 0.2,
+        name: 'A termination letter, drafted and never delivered',
+        note: "Edmund's own hand: thanking her for twenty-six years of service, and letting her go without a pension, in favor of a younger housekeeper better suited to \"the family's future needs.\" She'd found her own copy before he ever had the chance to hand it to her — and she's the only one in this house who's ever damped that study's gas lamp down for the night, same as she has every night for twenty-six years.",
+        requires: { killer: 'Eleanor Pemberton', killerMethod: 'asphyxiation' },
+        implicates: 'Eleanor Pemberton'
       }
     ],
     npcs: [
@@ -729,8 +855,8 @@ export const ROOMS = {
         fx: 0.32,
         fy: 0.62,
         name: "A sealed note, in Edmund's hand",
-        note: "Thanks her for a kindness he says he can repay no other way, and asks that whatever people assume about that payment, she let them keep assuming it. Whatever passed between them, he wanted it kept exactly as quiet as she's kept it.",
-        requires: { killer: 'Eleanor Pemberton' },
+        note: "Dated the very morning of his birthday. Thanks her for a kindness he says he can repay no other way, and asks that whatever people assume about that payment, she let them keep assuming it — tonight, and after. Whatever passed between them, it was settled before the first guest ever arrived.",
+        requires: { killer: 'Eleanor Pemberton', killerMethod: 'poison' },
         implicates: 'Eleanor Pemberton'
       },
       {
@@ -738,8 +864,8 @@ export const ROOMS = {
         fx: 0.58,
         fy: 0.42,
         name: 'Her own tidy record of the evening',
-        note: "Every task accounted for, down to the minute — except brewing his evening tea. Yet the tray came from her kitchen all the same.",
-        requires: { killer: 'Eleanor Pemberton' },
+        note: "Every task accounted for, down to the minute, in her own meticulous hand — except brewing his evening tea, the one entry missing from a record that lists everything else. The tray came from her kitchen all the same.",
+        requires: { killer: 'Eleanor Pemberton', killerMethod: 'poison' },
         implicates: 'Eleanor Pemberton',
         alibiBreak: true
       },
@@ -751,6 +877,33 @@ export const ROOMS = {
         note: "Tucked behind the spice tins — Eleanor keeps a spare of nearly everything.",
         pickup: true,
         icon: 'key-padlock.png'
+      },
+      {
+        id: 'E-99',
+        fx: 0.45,
+        fy: 0.15,
+        name: 'A tin of headache powder, relabeled in her own hand',
+        note: "The label reads headache powder, but what's left inside is a fine grey dust that's never once cured a headache — the same bitter grey as the residue on his own teacup. Beneath the tin, a letter from decades ago: proof of an old affair of her own, one that would have scandalized the family just as badly as anything she's ever accused anyone else of. Edmund threatened, gently but plainly, to finally let it slip at dinner.",
+        requires: { killer: 'Harriet Voss', killerMethod: 'poison' },
+        implicates: 'Harriet Voss'
+      },
+      {
+        id: 'E-110',
+        fx: 0.7,
+        fy: 0.75,
+        name: 'A kitchen ledger, figures that don\'t quite add up',
+        note: "Small amounts, skimmed carefully over years, going somewhere that isn't the household budget. A photograph tucked behind the ledger's back page shows a young family that has never once set foot in Ravensmoor Hall. Edmund had only just started asking questions about the numbers himself.",
+        requires: { killer: 'Eleanor Pemberton', killerMethod: 'blunt-force' },
+        implicates: 'Eleanor Pemberton'
+      },
+      {
+        id: 'E-111',
+        fx: 0.9,
+        fy: 0.6,
+        name: 'A locked strongbox, forced open rather than unlocked',
+        note: "Inside: years of Edmund's own letters, kept as quiet leverage rather than loyalty — the exact kind of thing a housekeeper collects when she means to protect herself, not the family. He confronted her with the box itself at the top of the back stairwell — the same stairwell that still carries a faint scuff from the house shoes she's worn every day for twenty-six years.",
+        requires: { killer: 'Eleanor Pemberton', killerMethod: 'fall' },
+        implicates: 'Eleanor Pemberton'
       }
     ],
     npcs: [
@@ -806,6 +959,15 @@ export const ROOMS = {
         lockedNote: "Locked, and none of the usual house keys fit it. Whoever has this key isn't a regular in this room.",
         note: "Inside: Edmund's handwritten toast, never given. It names his intended heir outright — the page is water-stained and partly illegible, but one line still reads clearly: \"...knowing what I know now, I have no choice but to—\" The rest is gone.",
         itemLock: 'I-02'
+      },
+      {
+        id: 'E-92',
+        fx: 0.75,
+        fy: 0.3,
+        name: "Edmund's nightcap decanter, one glass gone missing",
+        note: "A fresh chip in the crystal stopper, and a faint bitter film clinging to the rim that doesn't belong there. Tucked behind the sideboard: a stack of gambling markers in Marcus's name, and a letter Edmund had drafted to read aloud at the announcement — naming the debts publicly before naming any heir at all.",
+        requires: { killer: 'Marcus Thorne', killerMethod: 'poison' },
+        implicates: 'Marcus Thorne'
       }
     ],
     npcs: []
@@ -872,6 +1034,24 @@ export const ROOMS = {
         note: "Inside: a petty cash ledger, months of small \"loans\" from the company account that were never paid back — all in Marcus's own hand. Whatever else is true tonight, he's been quietly bleeding the business dry for a while.",
         itemLock: 'I-03',
         implicates: 'Marcus Thorne'
+      },
+      {
+        id: 'E-93',
+        fx: 0.45,
+        fy: 0.85,
+        name: 'A doctor\'s letter, unsent, addressed to a specialist in the city',
+        note: "Edmund's own hand, requesting a formal competency evaluation — not for himself, for Marcus. He meant to have his own son declared unfit to inherit anything at all, trust or no trust. Half-burned matches litter the ground nearby, like someone stood out here a long time working up the nerve.",
+        requires: { killer: 'Marcus Thorne', killerMethod: 'staged-accident' },
+        implicates: 'Marcus Thorne'
+      },
+      {
+        id: 'E-94',
+        fx: 0.95,
+        fy: 0.4,
+        name: 'A shattered whisky glass, ground into the gravel',
+        note: "Flung, not dropped — the pieces are scattered too wide for an accident. Marcus had been drinking heavily all night, by every account, and the argument in the study was the loudest anyone could remember. Whatever was said in there, it didn't end with words.",
+        requires: { killer: 'Marcus Thorne', killerMethod: 'strangulation' },
+        implicates: 'Marcus Thorne'
       }
     ],
     npcs: [
@@ -905,7 +1085,7 @@ export const ROOMS = {
         fx: 0.7,
         fy: 0.45,
         name: 'An empty labeled tincture vial',
-        note: "Foxglove — digitalis. The cabinet needs Priya's key, or the desk spare. This narrows things sharply.",
+        note: "Foxglove — digitalis, grown right here. The cabinet takes Priya's key, or the desk spare — though half the household seems to know where that spare actually lives, if you ask around.",
         requires: { npc: 'Priya Thorne-Kapoor', killerMethod: 'poison' },
         implicates: 'Priya Thorne-Kapoor'
       },
@@ -922,7 +1102,7 @@ export const ROOMS = {
         fx: 0.3,
         fy: 0.6,
         name: 'A second glass, hidden in the potting shed',
-        note: 'Matching bitter residue. This wasn\'t natural causes — and it ties the poison straight back to this room.',
+        note: 'Matching bitter residue. This wasn\'t natural causes — whatever killed him came from this greenhouse, at least. Who actually carried it out the door is a separate question.',
         requires: { evidence: 'E-06', killerMethod: 'poison' },
         implicates: 'Priya Thorne-Kapoor'
       },
@@ -940,7 +1120,7 @@ export const ROOMS = {
         fy: 0.8,
         name: 'A pair of gardening gloves',
         note: 'Still damp, dropped near the door — with the same bitter residue as the poison itself.',
-        requires: { killer: 'Priya Thorne-Kapoor' },
+        requires: { killer: 'Priya Thorne-Kapoor', killerMethod: 'poison' },
         implicates: 'Priya Thorne-Kapoor'
       },
       {
@@ -959,7 +1139,7 @@ export const ROOMS = {
         fy: 0.6,
         name: 'A tortoiseshell hair clip',
         note: 'A few strands of unmistakably red hair still caught in the clasp — wedged behind the potting shed door.',
-        requires: { killer: 'Vivienne Thorne' },
+        requires: { killer: 'Vivienne Thorne', killerMethod: 'poison' },
         implicates: 'Vivienne Thorne'
       },
       {
@@ -967,7 +1147,7 @@ export const ROOMS = {
         fx: 0.65,
         fy: 0.78,
         name: 'Her fountain pen',
-        note: 'Found by the potting shed, the one she always carries — she swears she never left the library.',
+        note: "Found by the potting shed, the one she always carries — she swears she never left the library. Thirty years a fixture at Ravensmoor, she's wandered these grounds longer than half the staff; the flowerpot hiding a spare cabinet key was never much of a secret from her either.",
         requires: { killer: 'Diana Reyes', killerMethod: 'poison' },
         implicates: 'Diana Reyes',
         alibiBreak: true
@@ -977,8 +1157,8 @@ export const ROOMS = {
         fx: 0.15,
         fy: 0.32,
         name: 'A second key to the poison cabinet',
-        note: "Worn quietly on her own ring for years — the only thing that explains how she came by it so easily.",
-        requires: { killer: 'Eleanor Pemberton' },
+        note: "Worn quietly on her own ring for years — the only real explanation for how the poison ever left this cabinet without Priya's own key going missing even once.",
+        requires: { killer: 'Eleanor Pemberton', killerMethod: 'poison' },
         implicates: 'Eleanor Pemberton'
       },
       {
@@ -989,6 +1169,33 @@ export const ROOMS = {
         lockedNote: "The cabinet's second compartment — the one even Priya doesn't have a key to. It needs something else.",
         note: "Inside: a hidden ledger tracking every dose dispensed from this cabinet for the past year, in Edmund's own precise hand. He was keeping track of who came and went from here far more closely than anyone realized.",
         itemLock: 'I-01'
+      },
+      {
+        id: 'E-86',
+        fx: 0.92,
+        fy: 0.85,
+        name: 'A shattered ceramic urn, swept behind the bench',
+        note: "The dust still clings to the corner where it broke — and half-buried beneath it, torn to pieces: a patent filing for her foxglove-resistant hybrid, years of her own work, with Edmund's name typed in as sole inventor. He meant to sell it to a fertilizer conglomerate without ever telling her he'd taken it.",
+        requires: { killer: 'Priya Thorne-Kapoor', killerMethod: 'blunt-force' },
+        implicates: 'Priya Thorne-Kapoor'
+      },
+      {
+        id: 'E-87',
+        fx: 0.08,
+        fy: 0.65,
+        name: 'Pruning shears, the blade freshly nicked',
+        note: "Wiped down and hung back on their hook — but the edge is chipped clean where it never used to be. Tucked behind the same hook, torn into pieces: a merger contract promising her hand in marriage to secure a distributor's backing, her name already signed in Edmund's looping hand, never hers.",
+        requires: { killer: 'Priya Thorne-Kapoor', killerMethod: 'stabbing' },
+        implicates: 'Priya Thorne-Kapoor'
+      },
+      {
+        id: 'E-88',
+        fx: 0.75,
+        fy: 0.2,
+        name: 'A coil of garden wire, one length missing',
+        note: "Cut clean, not torn — the kind of edge a proper pair of shears leaves, not weather or age. Beneath the workbench, a shipping manifest: rare seed stock, hers to tend, sold quietly to a rival lab for two years running. Edmund had only just found it, and meant to call her a traitor to her own family in front of everyone.",
+        requires: { killer: 'Priya Thorne-Kapoor', killerMethod: 'strangulation' },
+        implicates: 'Priya Thorne-Kapoor'
       }
     ],
     npcs: [
@@ -1046,6 +1253,33 @@ export const ROOMS = {
         lockedNote: "Locked, and Julian's not exactly the type to misplace a spare key by accident.",
         note: "Inside: a whole stack of pawnshop tickets, going back over a year — watches, silver, a violin that was never his to sell. The cufflinks were never a one-time thing.",
         itemLock: 'I-04',
+        implicates: 'Julian Voss'
+      },
+      {
+        id: 'E-101',
+        fx: 0.5,
+        fy: 0.2,
+        name: "A pawned watch's claim ticket, dated that very afternoon",
+        note: "Not the cufflinks this time — his grandfather's own pocket watch, pawned hours before dinner for cash he needed that same night, not next month. Tucked in the same pocket as the ticket: a spare greenhouse key, the same bitter grey residue still dried into its teeth. Whatever he owed, and to whom, it couldn't wait for a slow plan.",
+        requires: { killer: 'Julian Voss', killerMethod: 'poison' },
+        implicates: 'Julian Voss'
+      },
+      {
+        id: 'E-102',
+        fx: 0.65,
+        fy: 0.75,
+        name: 'A silver candlestick, wiped and shoved under the bed',
+        note: "Bent slightly at the base, polish rubbed clean in a hurry. He'd been caught mid-search of the study desk that same night — not planning ahead, just looking for anything worth enough to sell before morning.",
+        requires: { killer: 'Julian Voss', killerMethod: 'blunt-force' },
+        implicates: 'Julian Voss'
+      },
+      {
+        id: 'E-103',
+        fx: 0.2,
+        fy: 0.3,
+        name: 'A hunting knife, usually kept above the mantel, gone from its mount',
+        note: "The dust outline on the wall is unmistakable. Edmund had confronted him directly that night, by every account — no letter, no solicitor, just the two of them and the theft laid bare between them.",
+        requires: { killer: 'Julian Voss', killerMethod: 'stabbing' },
         implicates: 'Julian Voss'
       }
     ],

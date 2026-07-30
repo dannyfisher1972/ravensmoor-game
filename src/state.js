@@ -18,12 +18,15 @@ const STORAGE_PREFIX = 'ravensmoor-save-story-';
 const ACTIVE_STORY_KEY = 'ravensmoor-active-story';
 const NEXT_ID_KEY = 'ravensmoor-next-story-id';
 
-// 8 real killers + Eleanor's paid arrangement + the genuine-accident
-// scenario + Diana's second, unrelated story (the Geneva secret) = 11, x 2
-// Victoria states. Kept as a bare count rather than importing
+// Every real suspect now has up to 4 possible methods (a different secret
+// and a different way it could have gone, so no single wound/weapon is
+// ever a permanent tell for one person) + the genuine-accident scenario:
+// Priya, Victoria, Marcus, Vivienne, Harriet, Julian, Nathaniel, Eleanor
+// x4 (32) + Diana x4 (4, across her two long-standing secrets) + No One
+// (1) = 37, x2 Victoria states. Kept as a bare count rather than importing
 // src/data/solutions.js, so this module stays decoupled from game content —
 // update this if that ever changes.
-const NUM_KILLER_VARIANTS = 11;
+const NUM_KILLER_VARIANTS = 37;
 
 function randomVictoriaStatus() {
   return Math.random() < 0.5 ? 'wife' : 'girlfriend';
