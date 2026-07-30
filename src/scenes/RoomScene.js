@@ -109,6 +109,11 @@ export default class RoomScene extends Phaser.Scene {
     this.setupRoomNav(cfg);
     this.renderTalkedToPanel();
 
+    // Lets players zoom in on a clue instead of squinting at a small marker —
+    // bounds keep panning from scrolling past the edge of the background.
+    cam.setBounds(0, 0, this.scale.width, this.scale.height);
+    this.setupZoomControls();
+
     cam.fadeIn(400, 5, 5, 8);
 
     this.scale.on('resize', () => this.fitBackgroundToScene());
@@ -549,6 +554,60 @@ export default class RoomScene extends Phaser.Scene {
     const w = this.scale.width, h = this.scale.height;
     this.bg.setPosition(w / 2, h / 2);
     this.bg.setDisplaySize(w, h);
+  }
+
+  // A dedicated in-game zoom, rather than relying on the browser's own
+  // pinch-zoom: that's technically available but easy to miss entirely in
+  // something that reads as a game rather than a web page, and zooming the
+  // whole page (HUD included) means panning around afterward to see
+  // anything not already centered. Three ways in: the on-screen +/- buttons
+  // (always visible, impossible to miss), two-finger pinch on touch, and the
+  // scroll wheel on desktop. While zoomed, the camera also just follows
+  // wherever the pointer is — held-and-moved on touch, hovered on desktop —
+  // so looking around a zoomed-in clue doesn't need separate pan controls.
+  setupZoomControls() {
+    const cam = this.cameras.main;
+    const ZOOM_MIN = 1, ZOOM_MAX = 2.5, ZOOM_STEP = 0.4;
+
+    const setZoom = (z) => {
+      cam.zoom = Phaser.Math.Clamp(z, ZOOM_MIN, ZOOM_MAX);
+      if (cam.zoom <= ZOOM_MIN + 0.001) cam.centerOn(this.scale.width / 2, this.scale.height / 2);
+      this.updateZoomButtonState();
+    };
+
+    // .onclick (not addEventListener) deliberately — these DOM buttons
+    // persist across scene.restart() on every room change, so accumulating
+    // listeners here would make zoom fire progressively more times per click
+    // the longer a session runs. Assignment always replaces the last one.
+    const zoomInBtn = document.getElementById('zoomInBtn');
+    const zoomOutBtn = document.getElementById('zoomOutBtn');
+    if (zoomInBtn) zoomInBtn.onclick = () => setZoom(cam.zoom + ZOOM_STEP);
+    if (zoomOutBtn) zoomOutBtn.onclick = () => setZoom(cam.zoom - ZOOM_STEP);
+
+    this.input.on('wheel', (pointer, gameObjects, dx, dy) => setZoom(cam.zoom - dy * 0.0015));
+
+    this._pinchStartDist = null;
+    this.input.on('pointermove', () => {
+      const p1 = this.input.pointer1, p2 = this.input.pointer2;
+      if (p1.isDown && p2.isDown) {
+        const dist = Phaser.Math.Distance.Between(p1.x, p1.y, p2.x, p2.y);
+        if (this._pinchStartDist != null) setZoom(cam.zoom * (dist / this._pinchStartDist));
+        this._pinchStartDist = dist;
+      } else {
+        this._pinchStartDist = null;
+        if (cam.zoom > ZOOM_MIN + 0.01 && p1.isDown) {
+          const world = cam.getWorldPoint(p1.x, p1.y);
+          cam.centerOn(world.x, world.y);
+        }
+      }
+    });
+
+    this.updateZoomButtonState();
+  }
+
+  updateZoomButtonState() {
+    const zoomOutBtn = document.getElementById('zoomOutBtn');
+    if (zoomOutBtn) zoomOutBtn.disabled = this.cameras.main.zoom <= 1.001;
   }
 
   // Converts a point relative to the whole screen (fx,fy in 0..1) into scene

@@ -47,6 +47,10 @@ const config = {
     height: 640
   },
   render: { preserveDrawingBuffer: true },
+  // A second active pointer is needed for pinch-to-zoom (RoomScene tracks the
+  // distance between two simultaneous touches) — Phaser only tracks one by
+  // default.
+  input: { activePointers: 2 },
   scene: [BootScene, RoomScene]
 };
 

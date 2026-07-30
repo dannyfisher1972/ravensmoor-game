@@ -272,6 +272,24 @@
     padding:6px 12px; border-radius:3px; pointer-events:none;
   }
 
+  /* --- Zoom controls: a dedicated in-game zoom rather than relying on the
+     browser's own pinch-zoom, which is easy to miss entirely in something
+     that reads as a game rather than a web page. Always visible (not just
+     on touch) since a mouse-wheel/trackpad user benefits just as much from
+     a bigger look at a clue. --- */
+  #zoomControls{
+    position:absolute; left:14px; top:50%; transform:translateY(-50%);
+    display:flex; flex-direction:column; gap:6px; pointer-events:auto; z-index:5;
+  }
+  #zoomControls button{
+    width:34px; height:34px; font-size:18px; line-height:1;
+    background:rgba(20,18,15,0.8); border:1px solid var(--line); color:var(--ink-soft);
+    border-radius:3px; cursor:pointer; font-family:'Lora', Georgia, serif;
+  }
+  #zoomControls button:hover{ border-color:var(--foxglove); color:var(--foxglove); }
+  #zoomControls button:disabled{ opacity:.35; cursor:not-allowed; }
+  #zoomControls button:disabled:hover{ border-color:var(--line); color:var(--ink-soft); }
+
   /* --- Quick-retalk sidebar: only people already talked to, minus anyone
      physically standing in the current room (they're already clickable
      there). Hidden while a dialog is open so it never overlaps it. --- */
@@ -540,7 +558,11 @@
         <button id="room-next"></button>
       </div>
       <div id="hint">Click a glowing object or a person to interact</div>
-      <div id="hint-touch">Tap a glowing object or person — pinch to zoom in for a closer look</div>
+      <div id="hint-touch">Tap a glowing object or person — use + to zoom in for a closer look</div>
+      <div id="zoomControls">
+        <button id="zoomInBtn" aria-label="Zoom in" title="Zoom in">+</button>
+        <button id="zoomOutBtn" aria-label="Zoom out" title="Zoom out" disabled>−</button>
+      </div>
       <div id="armedBanner" style="display:none;">
         Holding: <span id="armedItemName"></span>
         <button id="putAwayBtn">Put Away</button>
