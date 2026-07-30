@@ -20,6 +20,17 @@ const CURRENT_SCENE_NOTES = SOLUTIONS[killerIndex].sceneNotes || {};
 const CURRENT_DISCOVERY_DELAYED = !!SOLUTIONS[killerIndex].discoveryDelayed;
 const CURRENT_FIRST_GLANCE_NOTE = SOLUTIONS[killerIndex].firstGlanceNote;
 
+// Hotspot markers are drawn from a 32px texture inside Phaser's fixed
+// 960x640 canvas, which then gets CSS-scaled to fit the device — on a phone
+// in landscape that canvas can render at well under half size, so the old
+// 0.6 scale worked out to roughly 9px on screen. Bumped up across the board,
+// with an extra boost on coarse-pointer (touch) devices, where there's no
+// mouse-hover affordance to help find a hotspot before committing to a tap.
+const IS_TOUCH_DEVICE = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+const MARKER_SCALE = IS_TOUCH_DEVICE ? 1.1 : 0.85;
+const MARKER_SCALE_PEAK = IS_TOUCH_DEVICE ? 1.4 : 1.1;
+const MARKER_HIT_RADIUS = IS_TOUCH_DEVICE ? 46 : 34;
+
 // A static painted background with clickable hotspots and NPCs — pure
 // point-and-click, no player avatar to walk around. Clicking an object or
 // person interacts with it immediately. See src/data/rooms.js for the room
@@ -146,17 +157,17 @@ export default class RoomScene extends Phaser.Scene {
       // colorblind players, not just by hue.
       const marker = this.add.image(p.x, p.y, found ? foundKey : glowKey);
       if (!found) marker.setTint(0xe8b84b);
-      marker.setScale(0.6);
+      marker.setScale(MARKER_SCALE);
       marker.setDepth(9999);
       if (!found) {
-        this.tweens.add({ targets: marker, scale: { from: 0.6, to: 0.85 }, alpha: { from: 0.95, to: 0.55 }, duration: 900, yoyo: true, repeat: -1 });
+        this.tweens.add({ targets: marker, scale: { from: MARKER_SCALE, to: MARKER_SCALE_PEAK }, alpha: { from: 0.95, to: 0.55 }, duration: 900, yoyo: true, repeat: -1 });
       } else {
         marker.setAlpha(0.5);
       }
       const entry = { data: h, marker, x: p.x, y: p.y };
 
       marker.setInteractive({
-        hitArea: new Phaser.Geom.Circle(16, 16, 26),
+        hitArea: new Phaser.Geom.Circle(16, 16, MARKER_HIT_RADIUS),
         hitAreaCallback: Phaser.Geom.Circle.Contains,
         useHandCursor: true
       });
@@ -188,11 +199,11 @@ export default class RoomScene extends Phaser.Scene {
     const marker = this.add.image(p.x, p.y, glowKey);
     this.firstGlanceMarker = marker;
     marker.setTint(0xe8b84b);
-    marker.setScale(0.6);
+    marker.setScale(MARKER_SCALE);
     marker.setDepth(9999);
-    this.tweens.add({ targets: marker, scale: { from: 0.6, to: 0.85 }, alpha: { from: 0.95, to: 0.55 }, duration: 900, yoyo: true, repeat: -1 });
+    this.tweens.add({ targets: marker, scale: { from: MARKER_SCALE, to: MARKER_SCALE_PEAK }, alpha: { from: 0.95, to: 0.55 }, duration: 900, yoyo: true, repeat: -1 });
     marker.setInteractive({
-      hitArea: new Phaser.Geom.Circle(16, 16, 26),
+      hitArea: new Phaser.Geom.Circle(16, 16, MARKER_HIT_RADIUS),
       hitAreaCallback: Phaser.Geom.Circle.Contains,
       useHandCursor: true
     });

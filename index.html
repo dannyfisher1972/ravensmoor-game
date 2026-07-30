@@ -12,7 +12,17 @@
     --paper:#1b1f19; --ink:#e9e6da; --ink-soft:#b8b3a4; --line:#3a3b32;
     --foxglove:#d989bc; --sepia:#d9b75a; --moor:#8fb49a; --danger:#d9877a;
   }
-  html,body{ margin:0; padding:0; background:#000; height:100%; overflow:hidden; font-family: 'Lora', Georgia, serif; touch-action:manipulation; }
+  html,body{ margin:0; padding:0; background:#000; height:100%; overflow:hidden; font-family: 'Lora', Georgia, serif; }
+  /* touch-action:manipulation is scoped to buttons/dialog (below) rather than
+     set globally here — a global rule disables the browser's native
+     pinch/double-tap zoom entirely, which is exactly the "zoom in on a clue"
+     capability mobile players need on this game's detailed background art. */
+  /* Quick double-taps on these (skip typewriter, close dialog, pick a
+     suspect) need to register as two taps, not get reinterpreted as a
+     browser double-tap-zoom gesture — so they keep the manipulation
+     restriction the rest of the page just gave up. */
+  button, #dialog, .accuse-suspect, .saved-story-row, .suspect-row{ touch-action:manipulation; }
+
   #app{ position:relative; width:100vw; height:100vh; display:flex; align-items:center; justify-content:center; background:#0a0908; }
   #game-container{
     position:relative; box-shadow:0 0 80px rgba(0,0,0,0.7);
@@ -219,7 +229,14 @@
   .btn.secondary:hover{ border-color:var(--ink-soft); box-shadow:none; background:rgba(255,255,255,0.05); }
   @media (max-width:640px){ .victim-modal-card{ flex-direction:column; } .victim-modal-card img{ width:100%; height:auto; } }
 
-  #hint{ position:absolute; top:56px; left:50%; transform:translateX(-50%); color:var(--ink-soft); font-family:'Lora', Georgia, serif; font-size:14px; background:rgba(0,0,0,0.4); padding:6px 14px; border-radius:3px; }
+  #hint, #hint-touch{ position:absolute; top:56px; left:50%; transform:translateX(-50%); color:var(--ink-soft); font-family:'Lora', Georgia, serif; font-size:14px; background:rgba(0,0,0,0.4); padding:6px 14px; border-radius:3px; }
+  /* Same spot, different copy — coarse-pointer devices get a pinch-to-zoom
+     mention instead, since that's not discoverable otherwise. */
+  #hint-touch{ display:none; }
+  @media (hover:none) and (pointer:coarse){
+    #hint{ display:none; }
+    #hint-touch{ display:block; }
+  }
 
   #room-nav{ position:absolute; top:14px; left:14px; right:14px; display:flex; align-items:center; justify-content:space-between; pointer-events:none; }
   #room-nav button{
@@ -514,6 +531,7 @@
         <button id="room-next"></button>
       </div>
       <div id="hint">Click a glowing object or a person to interact</div>
+      <div id="hint-touch">Tap a glowing object or person — pinch to zoom in for a closer look</div>
       <div id="armedBanner" style="display:none;">
         Holding: <span id="armedItemName"></span>
         <button id="putAwayBtn">Put Away</button>
