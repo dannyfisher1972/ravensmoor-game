@@ -209,7 +209,19 @@ const castDetailName = document.getElementById('castDetailName');
 const castDetailRole = document.getElementById('castDetailRole');
 const castDetailBio = document.getElementById('castDetailBio');
 
-CHARACTERS.forEach((c) => {
+// Edmund isn't in CHARACTERS (built from ROOMS' npcs — he's the victim, never
+// an NPC you talk to, so he'd wrongly show up on the deduction board and
+// retalk panel if he were). He still belongs in the household roster though,
+// so he's added here only, for the grid's benefit.
+const EDMUND_HOUSEHOLD_ENTRY = {
+  name: 'Edmund Thorne',
+  tint: 0xc9a86a,
+  portraitKey: 'portrait-edmund',
+  role: 'The Victim — Founder & Chairman, Thorne Pharmaceutical Holdings',
+  bio: "Edmund built Thorne Pharmaceutical Holdings from a single cardiac-drug patent into a four-hundred-million-pound company over forty years. He treated family loyalty as a debt to be collected on, and kept careful track of exactly what everyone around him owed."
+};
+
+[EDMUND_HOUSEHOLD_ENTRY, ...CHARACTERS].forEach((c) => {
   const shownName = c.displayName || c.name;
   const card = document.createElement('div');
   card.className = 'cast-card';
