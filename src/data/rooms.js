@@ -41,10 +41,10 @@
 //   locked shows lockedNote (a hint, doesn't mark it found); clicking it with the right
 //   item armed disarms the item, marks it found, and shows the real `note` instead.
 //
-// The ten rooms form a simple loop: study -> library -> westparlor -> bedroom -> drwrenroom
-// -> kitchen -> diningroom -> grounds -> greenhouse -> juliansroom -> (back to study). Any
-// room can reach any other by stepping through the loop; it doesn't need to be a full mesh
-// to make the manor feel connected.
+// The twelve rooms form a simple loop: study -> library -> westparlor -> bedroom ->
+// drwrenroom -> kitchen -> diningroom -> musicroom -> grounds -> greenhouse -> juliansroom
+// -> attic -> (back to study). Any room can reach any other by stepping through the loop;
+// it doesn't need to be a full mesh to make the manor feel connected.
 //
 // `studyBody` is a separate close-up sub-scene, not part of the loop — clicking Edmund's
 // body (E-01) in the study jumps here instead of showing an inline note, then both nav
@@ -54,14 +54,14 @@
 
 export const ROOM_ORDER = [
   'study', 'library', 'westparlor', 'bedroom', 'drwrenroom',
-  'kitchen', 'diningroom', 'grounds', 'greenhouse', 'juliansroom'
+  'kitchen', 'diningroom', 'musicroom', 'grounds', 'greenhouse', 'juliansroom', 'attic'
 ];
 
 export const ROOMS = {
   study: {
     label: 'The Study',
     bgKey: 'bg-study',
-    prevRoom: 'juliansroom',
+    prevRoom: 'attic',
     nextRoom: 'library',
     hotspots: [
       {
@@ -925,7 +925,7 @@ export const ROOMS = {
     label: 'The Dining Room',
     bgKey: 'bg-diningroom',
     prevRoom: 'kitchen',
-    nextRoom: 'grounds',
+    nextRoom: 'musicroom',
     hotspots: [
       {
         id: 'E-61',
@@ -973,10 +973,46 @@ export const ROOMS = {
     npcs: []
   },
 
+  musicroom: {
+    label: 'The Music Room',
+    bgKey: 'bg-musicroom',
+    prevRoom: 'diningroom',
+    nextRoom: 'grounds',
+    hotspots: [
+      {
+        id: 'E-112',
+        fx: 0.2,
+        fy: 0.46,
+        name: 'Sheet music, left open on the piano stand',
+        note: "A waltz, its pages worn soft at the corners from years of playing. Vivienne's own hand pencils a fingering note in the margin — she still slips back some evenings, when the house is quiet enough to let her pretend it's still hers to sit in.",
+        requires: { npc: 'Vivienne Thorne' },
+        implicates: 'Vivienne Thorne'
+      },
+      {
+        id: 'E-113',
+        fx: 0.88,
+        fy: 0.51,
+        name: 'A gramophone horn, cold to the touch',
+        note: "Whatever was playing stopped hours ago. The needle's still resting on the record — nobody thought to lift it before the house went quiet for the night.",
+        requires: { optional: true }
+      },
+      {
+        id: 'E-114',
+        fx: 0.3,
+        fy: 0.73,
+        name: "A hairpin, caught in the piano stool's tufting",
+        note: "Set with a small pearl — not a style anyone in the family wears. Eleanor recognizes it at once: one of the upstairs maids borrows this room some evenings to practice, when she thinks no one's listening. Nothing stranger than that.",
+        requires: { optional: true },
+        redHerring: true
+      }
+    ],
+    npcs: []
+  },
+
   grounds: {
     label: 'Garage & Grounds',
     bgKey: 'bg-grounds',
-    prevRoom: 'diningroom',
+    prevRoom: 'musicroom',
     nextRoom: 'greenhouse',
     hotspots: [
       {
@@ -1214,7 +1250,7 @@ export const ROOMS = {
     label: "Julian's Room",
     bgKey: 'bg-juliansroom',
     prevRoom: 'greenhouse',
-    nextRoom: 'study',
+    nextRoom: 'attic',
     hotspots: [
       {
         id: 'E-18',
@@ -1293,5 +1329,43 @@ export const ROOMS = {
         line: '"I was with Marcus, then I turned in. I don\'t even like this house."'
       }
     ]
+  },
+
+  attic: {
+    label: 'The Attic',
+    bgKey: 'bg-attic',
+    prevRoom: 'juliansroom',
+    nextRoom: 'study',
+    hotspots: [
+      {
+        id: 'E-115',
+        fx: 0.16,
+        fy: 0.63,
+        name: "A trunk of a dead man's clothes, never given away",
+        note: "A soldier's old uniform, carefully folded, smelling faintly of cedar. Harriet's husband, by the look of the photograph tucked in the breast pocket — she's kept every stitch of him longer than most people stay married at all.",
+        requires: { npc: 'Harriet Voss' },
+        implicates: 'Harriet Voss'
+      },
+      {
+        id: 'E-116',
+        fx: 0.6,
+        fy: 0.51,
+        name: 'A rocking horse, strangely free of dust',
+        note: "Everything else up here wears a decade of it, but the horse's mane is clean, like fingers had run through it recently. Eleanor isn't shy about admitting she still comes up to look at it — hers is the only key to this room besides the family's own.",
+        requires: { optional: true },
+        redHerring: true,
+        implicates: 'Eleanor Pemberton'
+      },
+      {
+        id: 'E-117',
+        fx: 0.78,
+        fy: 0.59,
+        name: 'A stack of ledgers, decades out of date',
+        note: "Nathaniel's own hand fills the margins of the oldest ones — matters the firm settled quietly long before Edmund ever inherited the company. He's been managing this family's secrets for far longer than anyone here has actually known him.",
+        requires: { npc: 'Nathaniel Cole' },
+        implicates: 'Nathaniel Cole'
+      }
+    ],
+    npcs: []
   }
 };

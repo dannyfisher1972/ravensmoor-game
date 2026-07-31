@@ -15,7 +15,9 @@ const ROOM_BACKGROUNDS = {
   'bg-study-body': 'body.png',
   'bg-westparlor': 'westparlor.png',
   'bg-drwrenroom': 'drwrenroom.png',
-  'bg-diningroom': 'diningroom.png'
+  'bg-diningroom': 'diningroom.png',
+  'bg-musicroom': 'musicroom.png',
+  'bg-attic': 'attic.png'
 };
 
 const PORTRAITS = {
