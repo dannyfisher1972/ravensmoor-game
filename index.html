@@ -204,11 +204,27 @@
   .howto li b{ color:var(--foxglove); flex-shrink:0; font-family:'Lora', Georgia, serif; font-size:11px; letter-spacing:.04em; text-transform:uppercase; }
 
   #titleScreen .start-row{ text-align:center; }
+  /* Kept as its own span (rather than folded into the button's single text
+     node) so it can opt out of the button's uppercase/wide-letter-spacing
+     styling below — otherwise "Resume Investigation" and the player's own
+     save name run together into one uppercase phrase that reads as a single,
+     often self-contradictory command (e.g. a never-renamed save is literally
+     called "New Investigation", so unstyled it'd read "RESUME NEW
+     INVESTIGATION"). Quoted, smaller, and normal-case marks it as a label
+     for the save, not part of the action itself. */
+  .start-btn-story-name{
+    display:block; text-transform:none; letter-spacing:.01em; font-size:12px;
+    font-style:italic; color:var(--ink-soft); margin-top:3px;
+  }
   #resetLink{
     display:none; margin-top:10px; text-align:center; font-family:'Lora', Georgia, serif;
     font-size:11px; color:var(--ink-soft); text-decoration:underline; cursor:pointer; letter-spacing:.02em;
   }
   #resetLink:hover{ color:var(--foxglove); }
+  .random-story-hint{
+    text-align:center; font-family:'Lora', Georgia, serif; font-size:11px;
+    color:var(--ink-soft); letter-spacing:.02em; max-width:320px;
+  }
   .story-controls{
     margin-top:10px; padding-top:9px; border-top:1px solid var(--line);
     display:flex; flex-direction:column; align-items:center; gap:8px;
@@ -719,7 +735,10 @@
           </ul>
 
           <div class="start-row">
-            <button id="startBtn">Begin the Investigation</button>
+            <button id="startBtn">
+              <span id="startBtnVerb">Begin the Investigation</span>
+              <span id="startBtnStoryName" class="start-btn-story-name"></span>
+            </button>
           </div>
           <div id="resetLink">Start this investigation over (clears its saved progress)</div>
 
@@ -728,7 +747,8 @@
               <input id="storyNameInput" type="text" class="story-name-input" maxlength="60" placeholder="Name this investigation">
               <button id="renameStoryBtn" class="btn secondary">Rename</button>
             </div>
-            <button id="randomStoryBtn" class="btn secondary">🎲 Random Investigation</button>
+            <button id="randomStoryBtn" class="btn secondary">🎲 Start a New Investigation</button>
+            <div class="random-story-hint">Begins a case with a different culprit — anything you've already found stays saved.</div>
           </div>
 
           <div id="savedStoriesSection" class="saved-stories-section" style="display:none;">

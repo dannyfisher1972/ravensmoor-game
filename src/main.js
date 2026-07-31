@@ -57,8 +57,19 @@ const config = {
 let game = null;
 
 const startBtn = document.getElementById('startBtn');
+const startBtnVerbEl = document.getElementById('startBtnVerb');
+const startBtnStoryNameEl = document.getElementById('startBtnStoryName');
 function renderStartBtnLabel() {
-  startBtn.textContent = hasSavedProgress() ? `Continue: ${storyName}` : 'Begin the Investigation';
+  if (hasSavedProgress()) {
+    startBtnVerbEl.textContent = 'Resume Investigation';
+    // Quoted and rendered in its own normal-case span (see .start-btn-story-name)
+    // so a never-renamed save — literally named "New Investigation" — doesn't
+    // collide with the verb into a single uppercase, self-contradictory phrase.
+    startBtnStoryNameEl.textContent = `"${storyName}"`;
+  } else {
+    startBtnVerbEl.textContent = 'Begin the Investigation';
+    startBtnStoryNameEl.textContent = '';
+  }
 }
 renderStartBtnLabel();
 
