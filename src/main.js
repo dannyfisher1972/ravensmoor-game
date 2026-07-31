@@ -82,6 +82,12 @@ resetLink.addEventListener('click', () => {
   location.reload();
 });
 
+// Only meaningful once there's an existing save to branch away from — for
+// a never-played slot, this would just be a second, redundant way to do
+// exactly what "Begin the Investigation" already does.
+const newInvestigationControls = document.getElementById('newInvestigationControls');
+if (hasSavedProgress()) newInvestigationControls.style.display = 'flex';
+
 // The player's own name for whichever investigation is currently active —
 // never the killer's, purely a label they pick for themselves. Renaming
 // just relabels the save in place; it doesn't touch progress or reload.
@@ -186,37 +192,54 @@ function portraitImgAttrs(c) {
   return `src="${portraitSrc(c)}" onerror="this.onerror=null;this.src='${portraitFallbackSrc(c)}'"`;
 }
 
-// The household roster down the side of the briefing screen — one row per
-// suspect, built from src/data/characters.js so it stays in sync with the
-// NPCs actually placed in each room. Clicking a row opens their bio in the
-// shared suspect modal.
-const suspectModal = document.getElementById('suspectModal');
-const suspectModalImg = document.getElementById('suspectModalImg');
-const suspectModalName = document.getElementById('suspectModalName');
-const suspectModalRole = document.getElementById('suspectModalRole');
-const suspectModalBio = document.getElementById('suspectModalBio');
+// The full-screen "Meet the Household" cast modal, opened from its own
+// button on the briefing screen rather than a side panel — the sidebar
+// version left the roster below the fold (and off-screen entirely) on
+// mobile, so a returning-to-scroll discovery wasn't reliable. Built from
+// src/data/characters.js so it stays in sync with the NPCs actually placed
+// in each room. Grid card click swaps to a single-character detail view
+// within the same modal; "Back" swaps back. Re-opening the modal always
+// resets to the grid, since it's the only entry point.
+const castModal = document.getElementById('castModal');
+const castGridView = document.getElementById('castGridView');
+const castDetailView = document.getElementById('castDetailView');
+const castGrid = document.getElementById('castGrid');
+const castDetailImg = document.getElementById('castDetailImg');
+const castDetailName = document.getElementById('castDetailName');
+const castDetailRole = document.getElementById('castDetailRole');
+const castDetailBio = document.getElementById('castDetailBio');
 
-const suspectsList = document.getElementById('suspectsList');
 CHARACTERS.forEach((c) => {
-  const row = document.createElement('div');
-  row.className = 'suspect-row';
-  row.innerHTML = `
+  const card = document.createElement('div');
+  card.className = 'cast-card';
+  card.innerHTML = `
     <img ${portraitImgAttrs(c)} alt="${c.name}">
-    <span>
-      <span class="suspect-name">${c.name}</span>
-      <span class="suspect-role">${c.role || ''}</span>
-    </span>
+    <span class="cast-card-name">${c.name}</span>
+    <span class="cast-card-role">${c.role || ''}</span>
   `;
-  row.addEventListener('click', () => {
-    suspectModalImg.onerror = () => { suspectModalImg.onerror = null; suspectModalImg.src = portraitFallbackSrc(c); };
-    suspectModalImg.src = portraitSrc(c);
-    suspectModalImg.alt = c.name;
-    suspectModalName.textContent = c.name;
-    suspectModalRole.textContent = c.role || '';
-    suspectModalBio.textContent = c.bio || '';
-    suspectModal.classList.add('open');
+  card.addEventListener('click', () => {
+    castDetailImg.onerror = () => { castDetailImg.onerror = null; castDetailImg.src = portraitFallbackSrc(c); };
+    castDetailImg.src = portraitSrc(c);
+    castDetailImg.alt = c.name;
+    castDetailName.textContent = c.name;
+    castDetailRole.textContent = c.role || '';
+    castDetailBio.textContent = c.bio || '';
+    castGridView.style.display = 'none';
+    castDetailView.style.display = 'block';
   });
-  suspectsList.appendChild(row);
+  castGrid.appendChild(card);
+});
+
+document.getElementById('castDetailBack').addEventListener('click', () => {
+  castDetailView.style.display = 'none';
+  castGridView.style.display = 'block';
+});
+
+document.getElementById('meetHouseholdBtn').addEventListener('click', () => {
+  playClick();
+  castDetailView.style.display = 'none';
+  castGridView.style.display = 'block';
+  castModal.classList.add('open');
 });
 
 // Both lightboxes (Edmund's dossier and each suspect's bio) share the

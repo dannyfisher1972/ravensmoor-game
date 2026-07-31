@@ -151,35 +151,15 @@
       url('assets/ai-art/study.png') center / cover no-repeat;
     display:flex; flex-direction:column; align-items:center; justify-content:flex-start; padding:56px 20px 24px 20px;
   }
-  .brief-layout{ display:flex; align-items:flex-start; gap:22px; max-width:1180px; width:100%; }
+  .brief-layout{ display:flex; align-items:flex-start; justify-content:center; gap:22px; max-width:900px; width:100%; }
   .brief-card{
     max-width:840px; flex:1 1 600px; min-width:0; background:rgba(14,13,11,0.94); border:1px solid var(--line);
     border-radius:8px; padding:24px 36px 26px 36px; box-shadow:0 20px 60px rgba(0,0,0,0.5);
   }
-  .suspects-panel{
-    flex:0 0 280px; width:280px; background:rgba(14,13,11,0.94); border:1px solid var(--line);
-    border-radius:8px; padding:14px 14px; box-shadow:0 20px 60px rgba(0,0,0,0.5);
-  }
-  .suspects-heading{
-    font-family:'Lora', Georgia, serif; font-size:13px; letter-spacing:.12em;
-    color:var(--foxglove); text-align:center; text-transform:uppercase; margin-bottom:8px;
-  }
-  .suspects-list{ display:flex; flex-direction:column; gap:2px; }
-  .suspect-row{
-    display:flex; align-items:center; gap:10px; padding:5px; border-radius:6px; cursor:pointer;
-    background:transparent; border:1px solid transparent; transition:background .15s, border-color .15s;
-  }
-  .suspect-row:hover{ background:rgba(217,137,188,0.1); border-color:var(--line); }
-  .suspect-row img{
-    width:38px; height:38px; border-radius:50%; object-fit:cover; flex-shrink:0;
-    border:2px solid var(--sepia);
-  }
-  .suspect-row .suspect-name{ display:block; color:var(--ink); font-family:'Playfair Display', Georgia, serif; font-size:15px; font-weight:700; }
-  .suspect-row .suspect-role{ display:block; color:var(--ink-soft); font-family:'Lora', Georgia, serif; font-size:10px; letter-spacing:.03em; margin-top:2px; }
+  .meet-household-row{ text-align:center; margin:4px 0 14px 0; }
   @media (max-width:900px){
     .brief-layout{ flex-direction:column; align-items:stretch; }
     .brief-card{ max-width:100%; }
-    .suspects-panel{ width:auto; max-width:100%; }
   }
   @media (max-width:480px){
     .brief-card{ padding:26px 20px 30px 20px; }
@@ -224,6 +204,13 @@
   .random-story-hint{
     text-align:center; font-family:'Lora', Georgia, serif; font-size:11px;
     color:var(--ink-soft); letter-spacing:.02em; max-width:320px;
+  }
+  /* Hidden until there's actually a save to branch away from — for a
+     first-time player, "Start a New Investigation" would just be a second,
+     redundant way to do exactly what "Begin the Investigation" already
+     does, since a never-played slot has no existing progress to preserve. */
+  #newInvestigationControls{
+    display:none; flex-direction:column; align-items:center; gap:8px;
   }
   .story-controls{
     margin-top:10px; padding-top:9px; border-top:1px solid var(--line);
@@ -307,7 +294,41 @@
     font-size:30px; line-height:1; cursor:pointer; padding:4px 8px;
   }
   .person-modal-close:hover{ color:var(--foxglove); }
-  #suspectModal .victim-modal-card img{ width:220px; }
+
+  /* --- Meet the Household (full-screen cast modal) --- */
+  .cast-modal-card{
+    position:relative; max-width:900px; width:100%; max-height:82vh; overflow-y:auto;
+    background:rgba(18,16,14,0.97); border:1px solid var(--line); border-radius:10px;
+    padding:34px; box-shadow:0 24px 70px rgba(0,0,0,0.6);
+  }
+  .cast-modal-heading{
+    font-family:'Playfair Display', Georgia, serif; color:var(--sepia); font-size:24px;
+    margin:0 0 18px 0; text-align:center;
+  }
+  .cast-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(115px, 1fr)); gap:14px; }
+  .cast-card{
+    display:flex; flex-direction:column; align-items:center; gap:8px; padding:14px 8px;
+    border:1px solid var(--line); border-radius:8px; cursor:pointer; background:rgba(255,255,255,0.02);
+    transition:border-color .15s, background .15s, transform .15s;
+  }
+  .cast-card:hover{ border-color:var(--foxglove); background:rgba(217,137,188,0.08); transform:translateY(-2px); }
+  .cast-card img{ width:88px; height:88px; border-radius:50%; object-fit:cover; border:2px solid var(--sepia); }
+  .cast-card-name{ font-family:'Playfair Display', Georgia, serif; font-weight:700; font-size:13px; color:var(--ink); text-align:center; }
+  .cast-card-role{ font-family:'Lora', Georgia, serif; font-size:10px; color:var(--ink-soft); text-align:center; letter-spacing:.02em; }
+  .cast-detail-back{
+    background:none; border:none; color:var(--foxglove); font-family:'Lora', Georgia, serif;
+    font-size:13px; letter-spacing:.02em; cursor:pointer; padding:0 0 18px 0; display:block;
+  }
+  .cast-detail-back:hover{ text-decoration:underline; }
+  .cast-detail-card{ display:flex; gap:26px; align-items:flex-start; }
+  .cast-detail-card img{
+    width:200px; height:200px; object-fit:cover; border-radius:8px; border:2px solid var(--sepia);
+    box-shadow:0 0 20px rgba(217,183,90,0.3); flex-shrink:0;
+  }
+  @media (max-width:640px){
+    .cast-detail-card{ flex-direction:column; align-items:center; text-align:center; }
+    .cast-detail-card img{ width:160px; height:160px; }
+  }
 
   .btn{
     font-family:'Lora', Georgia, serif; font-size:15px; letter-spacing:.06em; text-transform:uppercase;
@@ -725,6 +746,10 @@
             <p>Eleven people were in this house tonight. At least eight of them had a reason to want him gone.</p>
           </div>
 
+          <div class="meet-household-row">
+            <button id="meetHouseholdBtn" class="btn secondary">🎭 Meet the Household</button>
+          </div>
+
           <hr class="brief-rule">
 
           <ul class="howto">
@@ -747,8 +772,10 @@
               <input id="storyNameInput" type="text" class="story-name-input" maxlength="60" placeholder="Name this investigation">
               <button id="renameStoryBtn" class="btn secondary">Rename</button>
             </div>
-            <button id="randomStoryBtn" class="btn secondary">🎲 Start a New Investigation</button>
-            <div class="random-story-hint">Begins a case with a different culprit — anything you've already found stays saved.</div>
+            <div id="newInvestigationControls">
+              <button id="randomStoryBtn" class="btn secondary">🎲 Start a New Investigation</button>
+              <div class="random-story-hint">Begins a case with a different culprit — anything you've already found stays saved.</div>
+            </div>
           </div>
 
           <div id="savedStoriesSection" class="saved-stories-section" style="display:none;">
@@ -758,11 +785,6 @@
 
           <div id="versionStamp" class="version-stamp">Beta 1.0</div>
         </div>
-
-        <aside class="suspects-panel">
-          <div class="suspects-heading">The Household</div>
-          <div id="suspectsList" class="suspects-list"></div>
-        </aside>
       </div>
     </div>
 
@@ -815,14 +837,23 @@
       </div>
     </div>
 
-    <div id="suspectModal" class="person-modal">
-      <div class="victim-modal-card">
+    <div id="castModal" class="person-modal">
+      <div class="cast-modal-card">
         <button class="person-modal-close" data-close aria-label="Close">&times;</button>
-        <img id="suspectModalImg" src="" alt="">
-        <div class="victim-modal-text">
-          <b id="suspectModalName"></b>
-          <span id="suspectModalRole"></span>
-          <p id="suspectModalBio"></p>
+        <div id="castGridView">
+          <h2 class="cast-modal-heading">The Household</h2>
+          <div id="castGrid" class="cast-grid"></div>
+        </div>
+        <div id="castDetailView" style="display:none;">
+          <button id="castDetailBack" class="cast-detail-back">← Back to the Household</button>
+          <div class="cast-detail-card">
+            <img id="castDetailImg" src="" alt="">
+            <div class="victim-modal-text">
+              <b id="castDetailName"></b>
+              <span id="castDetailRole"></span>
+              <p id="castDetailBio"></p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
