@@ -80,6 +80,17 @@
        vh's fixed-at-load value. */
     max-height:75vh; max-height:75dvh;
     overflow:hidden; box-sizing:border-box;
+    /* display:flex/column (set alongside style.display='flex' in JS) so
+       #dialog-scrollarea below can use flex:1 + min-height:0 to scroll
+       reliably. A plain max-height:100% on the scrollarea depends on this
+       box having a "definite" height for percentage resolution — but an
+       absolutely-positioned box with only `bottom` set (no `top`) doesn't
+       qualify, so browsers can let the scrollarea grow to its content's
+       full height instead of clamping it, leaving the overflow silently
+       clipped by this box's overflow:hidden with no way to scroll to it.
+       Flexbox's height distribution doesn't depend on that percentage
+       resolution, so it doesn't hit the same failure mode. */
+    display:flex; flex-direction:column;
   }
   #dialog::before{
     content:""; position:absolute; inset:5px; border:1px solid rgba(217,137,188,0.35); border-bottom:none;
@@ -92,7 +103,7 @@
     font-size:18px; line-height:1; cursor:pointer; display:flex; align-items:center; justify-content:center;
   }
   #dialogCloseBtn:hover{ color:var(--ink); border-color:var(--foxglove); }
-  #dialog-scrollarea{ max-height:100%; overflow-y:auto; overscroll-behavior:contain; -webkit-overflow-scrolling:touch; padding-right:26px; }
+  #dialog-scrollarea{ flex:1 1 auto; min-height:0; overflow-y:auto; overscroll-behavior:contain; -webkit-overflow-scrolling:touch; padding-right:26px; }
   #dialog b{ color:var(--foxglove); display:block; font-family:'Playfair Display', Georgia, serif; font-size:19px; font-weight:700; letter-spacing:.01em; margin-bottom:8px; }
   #dialog .close-hint{ margin-top:12px; font-size:12px; font-family:'Lora', Georgia, serif; color:var(--ink-soft); letter-spacing:.03em; }
   #dialog-body{ min-height:1.6em; }

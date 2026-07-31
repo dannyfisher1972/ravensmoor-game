@@ -85,7 +85,7 @@ export default class RoomScene extends Phaser.Scene {
     // open, instead of it doing nothing useful but still eating the keypress.
     this.input.keyboard.on('keydown-SPACE', (event) => {
       if (event) event.preventDefault();
-      if (this.dialogEl && this.dialogEl.style.display === 'block') {
+      if (this.dialogEl && this.dialogEl.style.display === 'flex') {
         this.advanceDialog();
       }
     });
@@ -349,7 +349,7 @@ export default class RoomScene extends Phaser.Scene {
       btn.onclick = () => this.talkToNPC({ npcName: c.name, npcLine: c.line, npcPortraitKey: c.portraitKey, answers: c.answers });
       panelEl.appendChild(btn);
     });
-    panelEl.style.display = (list.length && this.dialogEl.style.display !== 'block') ? 'flex' : 'none';
+    panelEl.style.display = (list.length && this.dialogEl.style.display !== 'flex') ? 'flex' : 'none';
   }
 
   // Every NPC with authored answers (src/data/characters.js) gets the 3 base
@@ -372,7 +372,12 @@ export default class RoomScene extends Phaser.Scene {
         asked: ASKED_QUESTIONS.has(`${npc.npcName}|${f.id}`),
         onClick: () => this.askQuestion(npc, f)
       }));
-    return [...base, ...unlocked];
+    // Follow-ups first: a newly-unlocked question is the reason a player
+    // came back to re-talk to someone, and in the compact side-by-side
+    // mobile layout (see index.html's max-height:480px rule) a long list
+    // scrolls — burying the new one below the 3 always-present base
+    // questions would mean scrolling past everything just to find it.
+    return [...unlocked, ...base];
   }
 
   // A followup unlocks either after asking a specific question of a specific
@@ -730,14 +735,14 @@ export default class RoomScene extends Phaser.Scene {
   }
 
   isDialogOpen() {
-    return !!this.dialogEl && this.dialogEl.style.display === 'block';
+    return !!this.dialogEl && this.dialogEl.style.display === 'flex';
   }
 
   showDialog(title, body, portraitUrl, questions) {
     this._afterDialogClose = null;
     this.dialogTitleEl.textContent = title;
     this.dialogBodyEl.innerHTML = '<span class="cursor"></span>';
-    this.dialogEl.style.display = 'block';
+    this.dialogEl.style.display = 'flex';
     // A new conversation should always open scrolled to the top, not
     // wherever a previous (possibly longer) answer left the scroll
     // position — otherwise a short answer could open already scrolled past
