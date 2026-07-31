@@ -460,7 +460,7 @@ export const ROOMS = {
         portraitKey: 'portrait-nathaniel',
         fx: 0.25,
         fy: 0.15,
-        line: '"I hardly left my room. Paperwork doesn\'t draft itself, especially not this weekend\'s."'
+        line: '"I\'ve drafted this family\'s wills more times than I care to count. I never once expected to need an alibi for one of them."'
       },
       {
         tint: 0x8fb49a,
@@ -476,7 +476,7 @@ export const ROOMS = {
         portraitKey: 'portrait-vivienne',
         fx: 0.5,
         fy: 0.12,
-        line: '"I was in the west parlor, reading, same as always. Ask anyone — though I doubt anyone was paying attention to me."'
+        line: '"Edmund and I had our differences, but I never once wished this on him — whatever the rest of this house might prefer to believe."'
       }
     ]
   },
@@ -724,7 +724,7 @@ export const ROOMS = {
         portraitKey: 'portrait-victoria',
         fx: 0.82,
         fy: 0.22,
-        line: '"I said goodnight to Edmund after dinner and went straight up. I had a wretched headache."'
+        line: '"Edmund and I said our goodnights same as any other evening. I still can\'t quite believe I\'m being asked to account for what came after."'
       }
     ]
   },
@@ -1097,7 +1097,7 @@ export const ROOMS = {
         portraitKey: 'portrait-marcus',
         fx: 0.6,
         fy: 0.15,
-        line: '"We argued about the business, like we always do. I left, I had a smoke, I went to bed."'
+        line: '"Go on and ask what everyone\'s already thinking. I know exactly how it looks — the son who argued with his father, tonight of all nights."'
       },
       {
         tint: 0xa8925c,
@@ -1241,7 +1241,7 @@ export const ROOMS = {
         portraitKey: 'portrait-priya',
         fx: 0.4,
         fy: 0.15,
-        line: '"I don\'t do well at parties. I went to check on the orchids and then to bed."'
+        line: '"I already know what this family thinks of me. Ask your questions — I doubt they\'ll surprise me."'
       }
     ]
   },
@@ -1326,7 +1326,7 @@ export const ROOMS = {
         portraitKey: 'portrait-julian',
         fx: 0.6,
         fy: 0.15,
-        line: '"I was with Marcus, then I turned in. I don\'t even like this house."'
+        line: '"Quite a party, in the end. I don\'t imagine Uncle Edmund planned on this being the toast of the evening."'
       }
     ]
   },
