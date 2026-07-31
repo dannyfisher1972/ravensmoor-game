@@ -94,8 +94,8 @@ export const ROOMS = {
       },
       {
         id: 'E-27',
-        fx: 0.9,
-        fy: 0.35,
+        fx: 0.82,
+        fy: 0.15,
         name: 'A hymnal, spine cracked open',
         note: 'Hymn No. 214, "Rock of Ages, Cleft for Me." This copy is worn soft at verse 3.',
         requires: { evidence: 'E-20' }
@@ -157,8 +157,8 @@ export const ROOMS = {
       },
       {
         id: 'I-01',
-        fx: 0.78,
-        fy: 0.2,
+        fx: 0.65,
+        fy: 0.75,
         name: "The desk's spare key",
         note: "A small brass key, kept in the drawer for emergencies. It looks like it might fit the greenhouse cabinet.",
         pickup: true,
@@ -166,8 +166,8 @@ export const ROOMS = {
       },
       {
         id: 'E-75',
-        fx: 0.58,
-        fy: 0.28,
+        fx: 0.45,
+        fy: 0.12,
         name: 'A note tucked inside a book cover',
         note: "In Edmund's own hand, half a reminder to himself: \"Three back, always three back. Never could trust my own handwriting to keep a secret otherwise.\""
       },
@@ -318,7 +318,7 @@ export const ROOMS = {
       {
         id: 'E-74',
         fx: 0.6,
-        fy: 0.28,
+        fy: 0.46,
         name: 'A ledger page, torn and refolded',
         note: "Years of small transfers out of the children's trust, each one just under the amount that would have needed Marcus or Priya's signature to approve. Vivienne's own handwriting notes the running total in the margin, like she never once stopped keeping score.",
         requires: { killer: 'Vivienne Thorne', killerMethod: 'poison' },
@@ -353,8 +353,8 @@ export const ROOMS = {
       },
       {
         id: 'W-08',
-        fx: 0.53,
-        fy: 0.6,
+        fx: 0.47,
+        fy: 0.7,
         name: 'A brandy glass, poured but untouched',
         note: 'Left on the round table since before eleven. Odd, for a woman who claims to have worked steadily until nearly midnight.',
         requires: { killer: 'Diana Reyes' },
@@ -373,8 +373,8 @@ export const ROOMS = {
       },
       {
         id: 'E-70',
-        fx: 0.2,
-        fy: 0.65,
+        fx: 0.24,
+        fy: 0.58,
         name: 'Scorched fragments in the grate',
         note: "Barely anything left to read, but one line survives, in Edmund's own hand: \"...both the money and Nathaniel's — time he answered for—\" Someone fed this to the fire tonight, and didn't wait for it to catch properly first.",
         requires: { killer: 'Nathaniel Cole', killerMethod: 'tampered-medication' },
@@ -382,8 +382,8 @@ export const ROOMS = {
       },
       {
         id: 'E-71',
-        fx: 0.42,
-        fy: 0.48,
+        fx: 0.97,
+        fy: 0.92,
         name: 'A typewriter, ribbon still fresh',
         note: "Tucked in the corner, its ribbon inked far more recently than any of her paperwork would explain. The crooked lowercase e matches, letter for letter, an anonymous note slipped under his door that afternoon: \"I know what you did in Geneva. Meet me at midnight or everyone learns.\" She sent her own partner a threat, in his own house.",
         requires: { killer: 'Diana Reyes', killerMethod: 'blunt-force' },
@@ -537,14 +537,14 @@ export const ROOMS = {
       {
         id: 'E-83',
         fx: 0.2,
-        fy: 0.25,
+        fy: 0.68,
         name: 'A faded ticket stub',
         note: 'Tucked behind a cushion, half the ink gone: "2 – 0 – _ – 7." A keepsake of some kind, going by the box it was found next to.'
       },
       {
         id: 'E-84',
-        fx: 0.5,
-        fy: 0.45,
+        fx: 0.47,
+        fy: 0.18,
         name: 'A hand-stitched sampler',
         note: 'On the wall, a little uneven with age: six roses stitched round the border, one for each year the room says it took to finish.'
       },
@@ -559,8 +559,8 @@ export const ROOMS = {
       },
       {
         id: 'E-95',
-        fx: 0.9,
-        fy: 0.15,
+        fx: 0.95,
+        fy: 0.92,
         name: 'A hospital record, decades old, tucked behind a loose floorboard',
         note: "A birth record from a clinic two counties over, dated years before Marcus was born officially — the father's name left blank. Caught on the same mantel corner that left its mark on Edmund's temple: a single strand of unmistakably red hair. Edmund had only just found the record, and meant to tell his own children the truth about their parentage that very night, whatever it cost the family name.",
         requires: { killer: 'Vivienne Thorne', killerMethod: 'staged-accident' },
@@ -623,8 +623,8 @@ export const ROOMS = {
       },
       {
         id: 'E-25',
-        fx: 0.79,
-        fy: 0.38,
+        fx: 0.48,
+        fy: 0.42,
         name: 'A crushed foxglove petal',
         note: "On her dressing table, of all places — gardening was never her hobby. That's Priya's domain, not hers.",
         requires: { killer: 'Victoria Thorne', killerMethod: 'poison' },
@@ -650,8 +650,8 @@ export const ROOMS = {
       },
       {
         id: 'E-69',
-        fx: 0.62,
-        fy: 0.22,
+        fx: 0.68,
+        fy: 0.48,
         name: "A torn page from Edmund's journal",
         note: "Half a sentence, the rest torn away: \"...Nathaniel, of all people. After this long, I should have expected — no more waiting.\" Dated three days ago. Whatever he'd only just learned, it didn't wait for morning.",
         requires: { killer: 'Victoria Thorne', killerMethod: 'poison' },
@@ -667,8 +667,8 @@ export const ROOMS = {
       },
       {
         id: 'I-05',
-        fx: 0.5,
-        fy: 0.28,
+        fx: 0.93,
+        fy: 0.58,
         name: 'A small iron curio key',
         note: "In Edmund's own writing box, labeled in faded ink: \"V's cabinet.\"",
         pickup: true,
@@ -700,8 +700,8 @@ export const ROOMS = {
       },
       {
         id: 'E-90',
-        fx: 0.4,
-        fy: 0.85,
+        fx: 0.5,
+        fy: 0.55,
         name: "Her silver hand mirror, the handle cracked",
         note: "Wiped clean and set back on the vanity, a hairline crack running the length of the handle. Tucked in its case: a loan document against the estate, Edmund's signature forged competently enough to nearly pass — nearly. He'd only just noticed the forgery himself, and meant to have her accounts frozen by morning.",
         requires: { killer: 'Victoria Thorne', killerMethod: 'blunt-force' },
@@ -775,8 +775,8 @@ export const ROOMS = {
       },
       {
         id: 'E-81',
-        fx: 0.3,
-        fy: 0.45,
+        fx: 0.28,
+        fy: 0.68,
         name: 'A tally scratched in the appointment book',
         note: 'Eight house calls this month alone, each one just a hash mark and a date — no names, the same discretion as everything else in this room.',
         requires: { npc: 'Dr. Wren' }
@@ -792,8 +792,8 @@ export const ROOMS = {
       },
       {
         id: 'E-109',
-        fx: 0.15,
-        fy: 0.2,
+        fx: 0.55,
+        fy: 0.85,
         name: 'A termination letter, drafted and never delivered',
         note: "Edmund's own hand: thanking her for twenty-six years of service, and letting her go without a pension, in favor of a younger housekeeper better suited to \"the family's future needs.\" She'd found her own copy before he ever had the chance to hand it to her — and she's the only one in this house who's ever damped that study's gas lamp down for the night, same as she has every night for twenty-six years.",
         requires: { killer: 'Eleanor Pemberton', killerMethod: 'asphyxiation' },
@@ -861,8 +861,8 @@ export const ROOMS = {
       },
       {
         id: 'W-11',
-        fx: 0.58,
-        fy: 0.42,
+        fx: 0.62,
+        fy: 0.35,
         name: 'Her own tidy record of the evening',
         note: "Every task accounted for, down to the minute, in her own meticulous hand — except brewing his evening tea, the one entry missing from a record that lists everything else. The tray came from her kitchen all the same.",
         requires: { killer: 'Eleanor Pemberton', killerMethod: 'poison' },
@@ -880,8 +880,8 @@ export const ROOMS = {
       },
       {
         id: 'E-99',
-        fx: 0.45,
-        fy: 0.15,
+        fx: 0.4,
+        fy: 0.22,
         name: 'A tin of headache powder, relabeled in her own hand',
         note: "The label reads headache powder, but what's left inside is a fine grey dust that's never once cured a headache — the same bitter grey as the residue on Edmund's own teacup. Beneath the tin, a letter from decades ago: proof of an old affair of Harriet's own, one that would have scandalized the family just as badly as anything she's ever accused anyone else of. Edmund threatened, gently but plainly, to finally let it slip at dinner.",
         requires: { killer: 'Harriet Voss', killerMethod: 'poison' },
@@ -889,8 +889,8 @@ export const ROOMS = {
       },
       {
         id: 'E-110',
-        fx: 0.7,
-        fy: 0.75,
+        fx: 0.92,
+        fy: 0.85,
         name: 'A kitchen ledger, figures that don\'t quite add up',
         note: "Small amounts, skimmed carefully over years, going somewhere that isn't the household budget. A photograph tucked behind the ledger's back page shows a young family that has never once set foot in Ravensmoor Hall. Edmund had only just started asking questions about the numbers himself.",
         requires: { killer: 'Eleanor Pemberton', killerMethod: 'blunt-force' },
@@ -962,8 +962,8 @@ export const ROOMS = {
       },
       {
         id: 'E-92',
-        fx: 0.75,
-        fy: 0.3,
+        fx: 0.02,
+        fy: 0.45,
         name: "Edmund's nightcap decanter, one glass gone missing",
         note: "A fresh chip in the crystal stopper, and a faint bitter film clinging to the rim that doesn't belong there. Tucked behind the sideboard: a stack of gambling markers in Marcus's name, and a letter Edmund had drafted to read aloud at the announcement — naming the debts publicly before naming any heir at all.",
         requires: { killer: 'Marcus Thorne', killerMethod: 'poison' },
@@ -1083,7 +1083,7 @@ export const ROOMS = {
       {
         id: 'E-94',
         fx: 0.95,
-        fy: 0.4,
+        fy: 0.85,
         name: 'A shattered whisky glass, ground into the gravel',
         note: "Flung, not dropped — the pieces are scattered too wide for an accident. Marcus had been drinking heavily all night, by every account, and the argument in the study was the loudest anyone could remember. Whatever was said in there, it didn't end with words.",
         requires: { killer: 'Marcus Thorne', killerMethod: 'strangulation' },
@@ -1226,8 +1226,8 @@ export const ROOMS = {
       },
       {
         id: 'E-88',
-        fx: 0.75,
-        fy: 0.2,
+        fx: 0.35,
+        fy: 0.9,
         name: 'A coil of garden wire, one length missing',
         note: "Cut clean, not torn — the kind of edge a proper pair of shears leaves, not weather or age. Beneath the workbench, a shipping manifest: rare seed stock, hers to tend, sold quietly to a rival lab for two years running. Edmund had only just found it, and meant to call her a traitor to her own family in front of everyone.",
         requires: { killer: 'Priya Thorne-Kapoor', killerMethod: 'strangulation' },
@@ -1302,8 +1302,8 @@ export const ROOMS = {
       },
       {
         id: 'E-102',
-        fx: 0.65,
-        fy: 0.75,
+        fx: 0.22,
+        fy: 0.9,
         name: 'A silver candlestick, wiped and shoved under the bed',
         note: "Bent slightly at the base, polish rubbed clean in a hurry. He'd been caught mid-search of the study desk that same night — not planning ahead, just looking for anything worth enough to sell before morning.",
         requires: { killer: 'Julian Voss', killerMethod: 'blunt-force' },

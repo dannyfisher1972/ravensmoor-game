@@ -283,9 +283,7 @@
   }
   .victim-modal-card .victim-modal-photo{ flex-shrink:0; display:flex; flex-direction:column; align-items:center; gap:8px; }
   .victim-modal-photo a{ display:block; text-decoration:none; }
-  .victim-modal-card img{ width:320px; height:auto; display:block; border-radius:8px; border:2px solid var(--sepia); box-shadow:0 0 20px rgba(217,183,90,0.3); cursor:pointer; transition:box-shadow .15s; }
-  .victim-modal-card img:hover{ box-shadow:0 0 28px rgba(217,183,90,0.5); }
-  .victim-modal-photo .open-full-hint{ font-family:'Lora', Georgia, serif; font-size:11px; color:var(--ink-soft); letter-spacing:.03em; }
+  .victim-modal-card img{ width:320px; height:auto; display:block; border-radius:8px; border:2px solid var(--sepia); box-shadow:0 0 20px rgba(217,183,90,0.3); }
   .victim-modal-text b{ display:block; font-family:'Playfair Display', Georgia, serif; font-size:26px; font-weight:700; color:var(--sepia); margin-bottom:4px; }
   .victim-modal-text span{ display:block; font-family:'Lora', Georgia, serif; font-size:13px; color:var(--ink-soft); letter-spacing:.02em; margin-bottom:14px; }
   .victim-modal-text p{ font-family:'Lora', Georgia, serif; font-size:17px; line-height:1.65; color:var(--ink); margin:0 0 13px 0; }
@@ -803,9 +801,7 @@
         <div class="case-file-section">
           <h3>The Victim</h3>
           <div class="victim-row">
-            <a href="assets/ai-art/edmund.png" target="_blank" rel="noopener">
-              <img class="victim-portrait" src="assets/ai-art/edmund.png" alt="Edmund Thorne — click to open full image">
-            </a>
+            <img class="victim-portrait" src="assets/ai-art/edmund.png" alt="Edmund Thorne">
             <div class="victim-info">
               <b>Edmund Thorne, 70</b>
               <span>Founder &amp; Chairman, Thorne Pharmaceutical Holdings</span>
@@ -822,10 +818,7 @@
       <div class="victim-modal-card">
         <button class="person-modal-close" data-close aria-label="Close">&times;</button>
         <div class="victim-modal-photo">
-          <a href="assets/ai-art/edmund.png" target="_blank" rel="noopener">
-            <img id="victimModalImg" src="assets/ai-art/edmund.png" alt="Edmund Thorne">
-          </a>
-          <span class="open-full-hint">Click photo to open full image in a new tab</span>
+          <img id="victimModalImg" src="assets/ai-art/edmund.png" alt="Edmund Thorne">
         </div>
         <div class="victim-modal-text">
           <b>Edmund Thorne, 70</b>
