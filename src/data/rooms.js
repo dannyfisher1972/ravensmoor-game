@@ -191,7 +191,7 @@ export const ROOMS = {
         fx: 0.9,
         fy: 0.55,
         name: 'A letter opener, the blade tarnished at the tip',
-        note: "Wiped but not polished — a duller stain than tarnish clings near the point. A pawnshop ledger in her own hand lists years of quiet sales: her late husband's watch, a painting called a \"family heirloom\" at every holiday dinner, silver that was never really hers to sell. Edmund had only just found the ledger himself.",
+        note: "Wiped but not polished — a duller stain than tarnish clings near the point. A pawnshop ledger in Harriet's own hand lists years of quiet sales: her late husband's watch, a painting called a \"family heirloom\" at every holiday dinner, silver that was never really hers to sell. Edmund had only just found the ledger himself.",
         requires: { killer: 'Harriet Voss', killerMethod: 'stabbing' },
         implicates: 'Harriet Voss'
       },
@@ -421,7 +421,7 @@ export const ROOMS = {
         fx: 0.75,
         fy: 0.9,
         name: 'A brandy glass, rinsed but not quite clean',
-        note: "Rinsed in a hurry, but a faint bitter film still clings to the rim — the same grey residue as the empty vial in the greenhouse, and this glass never once left his own study. A letter drafted to the bar association sits beneath the blotter — Edmund meant to have Nathaniel disbarred publicly rather than settle anything quietly, whatever it cost the family's own reputation.",
+        note: "Rinsed in a hurry, but a faint bitter film still clings to the rim — the same grey residue as the empty vial in the greenhouse. Nathaniel's own glass, kept close at hand in the library he never really left that night. A letter drafted to the bar association sits beneath the blotter — Edmund meant to have Nathaniel disbarred publicly rather than settle anything quietly, whatever it cost the family's own reputation.",
         requires: { killer: 'Nathaniel Cole', killerMethod: 'poison' },
         implicates: 'Nathaniel Cole'
       },
@@ -438,8 +438,8 @@ export const ROOMS = {
         id: 'E-107',
         fx: 0.48,
         fy: 0.9,
-        name: "A letter opener from her own desk, wiped clean but for one last smear",
-        note: "The only thing in this library actually pointed and sharp. Beneath the blotter it sat on: an insurance policy taken out on Edmund's life years ago, naming her sole beneficiary and never once mentioned to him directly. The company's fortunes had been sinking quietly for two years — long enough that the payout was worth more than the partnership itself.",
+        name: "A letter opener from Diana's own desk, wiped clean but for one last smear",
+        note: "The only thing in this library actually pointed and sharp. Beneath the blotter it sat on: an insurance policy taken out on Edmund's life years ago, naming Diana sole beneficiary and never once mentioned to Edmund directly. The company's fortunes had been sinking quietly for two years — long enough that the payout was worth more than the partnership itself.",
         requires: { killer: 'Diana Reyes', killerMethod: 'stabbing' },
         implicates: 'Diana Reyes'
       },
@@ -448,7 +448,7 @@ export const ROOMS = {
         fx: 0.05,
         fy: 0.85,
         name: "A braided cord from the reading lamp's pull-switch, snapped clean",
-        note: "Gone from the lamp on her own side of the library, never replaced. Tucked behind the same lamp: a telegram, torn in half, from a firm neither Edmund nor Kessler-Vance had ever done business with — a third company entirely, one Diana had been quietly feeding both of her partners' secrets to, playing every side against the other for a payout bigger than any single deal alone. Edmund had only just pieced together whose interests she was actually serving.",
+        note: "Gone from the lamp on Diana's own side of the library, never replaced. Tucked behind the same lamp: a telegram, torn in half, from a firm neither Edmund nor Kessler-Vance had ever done business with — a third company entirely, one Diana had been quietly feeding both of her partners' secrets to, playing every side against the other for a payout bigger than any single deal alone. Edmund had only just pieced together whose interests she was actually serving.",
         requires: { killer: 'Diana Reyes', killerMethod: 'strangulation' },
         implicates: 'Diana Reyes'
       }
@@ -883,7 +883,7 @@ export const ROOMS = {
         fx: 0.45,
         fy: 0.15,
         name: 'A tin of headache powder, relabeled in her own hand',
-        note: "The label reads headache powder, but what's left inside is a fine grey dust that's never once cured a headache — the same bitter grey as the residue on his own teacup. Beneath the tin, a letter from decades ago: proof of an old affair of her own, one that would have scandalized the family just as badly as anything she's ever accused anyone else of. Edmund threatened, gently but plainly, to finally let it slip at dinner.",
+        note: "The label reads headache powder, but what's left inside is a fine grey dust that's never once cured a headache — the same bitter grey as the residue on Edmund's own teacup. Beneath the tin, a letter from decades ago: proof of an old affair of Harriet's own, one that would have scandalized the family just as badly as anything she's ever accused anyone else of. Edmund threatened, gently but plainly, to finally let it slip at dinner.",
         requires: { killer: 'Harriet Voss', killerMethod: 'poison' },
         implicates: 'Harriet Voss'
       },
