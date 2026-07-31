@@ -770,11 +770,14 @@ const accuseBtn = document.getElementById('accuseBtn');
 let selectedSuspect = null;
 let accusePendingConfirm = false;
 
-// Three tries total, right or wrong — not three WRONG tries. Getting it
-// right on try 1 or 2 ends things anyway; this cap only really bites when
-// all three come up empty, at which point the case closes for good and the
-// HUD button locks out rather than letting the player grind through guesses.
-const MAX_ACCUSATIONS = 3;
+// Two tries total, right or wrong — not two WRONG tries. Getting it right
+// on try 1 ends things anyway; this cap only really bites when both come up
+// empty, at which point the case closes for good and the HUD button locks
+// out rather than letting the player grind through guesses. Critically, a
+// wrong guess that still leaves a try remaining doesn't reveal the solution
+// (see accuseConfirmBtn's click handler) — otherwise the second guess would
+// just be a formality after already being told the answer.
+const MAX_ACCUSATIONS = 2;
 
 function renderAccuseAvailability() {
   const remaining = Math.max(0, MAX_ACCUSATIONS - accusationAttempts);
@@ -928,32 +931,44 @@ accuseConfirmBtn.addEventListener('click', () => {
   recordAccusationAttempt();
   const correct = selectedSuspect.name === SOLUTION.killer;
   const exhausted = !correct && accusationAttempts >= MAX_ACCUSATIONS;
+  const remaining = Math.max(0, MAX_ACCUSATIONS - accusationAttempts);
   handleNewAchievements(checkAchievements(achievementTotals({ lastAccusationCorrect: correct })));
   correct ? playWinSting() : playLoseSting();
   endCard.className = 'end-card ' + (correct ? 'win' : 'lose');
   endTitle.textContent = correct ? 'Case Closed' : (exhausted ? 'The Case Goes Cold' : 'The Wrong Verdict');
+  const remainingNote = (!correct && !exhausted) ? ` You have ${remaining} accusation${remaining === 1 ? '' : 's'} left.` : '';
   if (selectedSuspect.name === 'No One') {
     endSub.textContent = correct
       ? "You concluded it was an accident — and you were right."
-      : "You concluded it was an accident. It wasn't.";
+      : `You concluded it was an accident. It wasn't.${remainingNote}`;
   } else {
     endSub.textContent = correct
       ? `You named ${selectedSuspect.name} — and you were right.`
-      : `You named ${selectedSuspect.name}. It wasn't them.`;
+      : `You named ${selectedSuspect.name}. It wasn't them.${remainingNote}`;
   }
-  const explanationParas = typeof SOLUTION.explanation === 'function'
-    ? SOLUTION.explanation(victoriaStatus)
-    : SOLUTION.explanation;
   const strengthNote = describeCaseStrength(FOUND_EVIDENCE.size, ALL_EVIDENCE.length, correct);
-  const introNote = epilogueIntro(FOUND_EVIDENCE.size, ALL_EVIDENCE.length, correct);
-  const exhaustedNote = exhausted
-    ? `<p class="end-strength-note"><em>Three accusations, three wrong names. Ravensmoor Hall keeps its secrets now.</em></p>`
-    : '';
-  endExplanation.innerHTML = `<p class="end-epilogue-intro"><em>${introNote}</em></p>`
-    + explanationParas.map((p) => `<p>${p}</p>`).join('')
-    + `<p class="end-strength-note"><em>${strengthNote.charAt(0).toUpperCase() + strengthNote.slice(1)}.</em></p>`
-    + exhaustedNote;
-  // Once the third wrong guess is spent, there's nothing left to "keep
+  // A wrong guess only actually reveals the solution once every accusation
+  // is spent (or, of course, once it's actually correct) — naming the real
+  // killer after just one wrong guess, with a real try still left, would
+  // spoil the mystery for nothing.
+  const revealSolution = correct || exhausted;
+  if (revealSolution) {
+    const explanationParas = typeof SOLUTION.explanation === 'function'
+      ? SOLUTION.explanation(victoriaStatus)
+      : SOLUTION.explanation;
+    const introNote = epilogueIntro(FOUND_EVIDENCE.size, ALL_EVIDENCE.length, correct);
+    const exhaustedNote = exhausted
+      ? `<p class="end-strength-note"><em>${MAX_ACCUSATIONS} accusations, ${MAX_ACCUSATIONS} wrong names. Ravensmoor Hall keeps its secrets now.</em></p>`
+      : '';
+    endExplanation.innerHTML = `<p class="end-epilogue-intro"><em>${introNote}</em></p>`
+      + explanationParas.map((p) => `<p>${p}</p>`).join('')
+      + `<p class="end-strength-note"><em>${strengthNote.charAt(0).toUpperCase() + strengthNote.slice(1)}.</em></p>`
+      + exhaustedNote;
+  } else {
+    endExplanation.innerHTML = `<p class="end-epilogue-intro"><em>Wrong — but the case isn't closed yet.</em></p>`
+      + `<p class="end-strength-note"><em>${strengthNote.charAt(0).toUpperCase() + strengthNote.slice(1)}.</em></p>`;
+  }
+  // Once every accusation is spent, there's nothing left to "keep
   // investigating" toward — only starting a fresh case makes sense.
   endKeepBtn.style.display = exhausted ? 'none' : '';
   endModal.classList.add('open');
