@@ -210,8 +210,8 @@ export const ROOMS = {
         tint: 0xf2d9a0,
         name: 'Harriet Voss',
         portraitKey: 'portrait-harriet',
-        fx: 0.85,
-        fy: 0.1,
+        fx: 0.95,
+        fy: 0.15,
         line: '"I read until I fell asleep. This family, honestly — always something."'
       }
     ]
@@ -467,7 +467,7 @@ export const ROOMS = {
         name: 'Diana Reyes',
         portraitKey: 'portrait-diana',
         fx: 0.75,
-        fy: 0.15,
+        fy: 0.22,
         line: '"Edmund and I disagreed about the direction of the company. That\'s Tuesday, not motive."'
       },
       {
@@ -722,8 +722,8 @@ export const ROOMS = {
         tint: 0xe6a9d9,
         name: 'Victoria Thorne',
         portraitKey: 'portrait-victoria',
-        fx: 0.85,
-        fy: 0.1,
+        fx: 0.82,
+        fy: 0.22,
         line: '"I said goodnight to Edmund after dinner and went straight up. I had a wretched headache."'
       }
     ]
