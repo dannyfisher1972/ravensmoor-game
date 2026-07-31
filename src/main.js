@@ -243,18 +243,30 @@ document.getElementById('meetHouseholdBtn').addEventListener('click', () => {
 });
 
 // Both lightboxes (Edmund's dossier and each suspect's bio) share the
-// .person-modal class, so one set of handlers closes whichever is open.
+// .person-modal class, so one set of handlers closes whichever is open. For
+// castModal specifically, "close" while a character's detail is showing
+// should back out to the household grid instead of leaving the modal
+// entirely — a player closing Harriet's bio almost certainly meant "stop
+// looking at Harriet," not "stop looking at the household."
+function closePersonModal(modal) {
+  if (modal === castModal && castDetailView.style.display !== 'none') {
+    castDetailView.style.display = 'none';
+    castGridView.style.display = 'block';
+    return;
+  }
+  modal.classList.remove('open');
+}
 document.querySelectorAll('.person-modal-close').forEach((btn) => {
-  btn.addEventListener('click', () => btn.closest('.person-modal').classList.remove('open'));
+  btn.addEventListener('click', () => closePersonModal(btn.closest('.person-modal')));
 });
 document.querySelectorAll('.person-modal').forEach((modal) => {
   modal.addEventListener('click', (e) => {
-    if (e.target === modal) modal.classList.remove('open');
+    if (e.target === modal) closePersonModal(modal);
   });
 });
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') {
-    document.querySelectorAll('.person-modal.open').forEach((m) => m.classList.remove('open'));
+    document.querySelectorAll('.person-modal.open').forEach((m) => closePersonModal(m));
   }
 });
 // Any <button> keeps DOM focus after being clicked, so a later Space/Enter
