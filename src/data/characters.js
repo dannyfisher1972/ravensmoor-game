@@ -8,12 +8,21 @@ import { victoriaStatus } from '../state.js';
 // answer, not her alibi or her opinion of the rest of the household.
 const VICTORIA_BY_STATUS = {
   wife: {
+    displayName: 'Victoria Thorne',
     role: "Edmund's Wife",
     bio: "Edmund's second wife — twenty years his junior, married seven years ago. Elegant and controlled in public, she has spent those years managing the family's opinion of her as carefully as Edmund managed its money. The rest of the family has never quite let her forget she wasn't the first — least of all Vivienne herself, who never really left.",
     relationshipAnswer: "Seven years, and every one of them under a microscope. He liked having a wife young enough to keep up appearances, and old enough, he thought, to know better than to embarrass him.",
     relationshipAltAnswer: "Married seven years, and I still don't think he saw me as anything but an asset that needed careful handling. That's a strange thing to grieve, isn't it."
   },
   girlfriend: {
+    // Never married into the family, so "Thorne" was never legitimately
+    // hers to begin with — shown throughout the game wherever a
+    // player-facing display name is needed (see main.js/RoomScene.js's
+    // displayName fallbacks). The internal identifier every hotspot's
+    // `requires` and TALKED_TO/ASKED_QUESTIONS tracking key off of stays
+    // 'Victoria Thorne' regardless of status; only what's shown to the
+    // player changes.
+    displayName: 'Victoria Ashworth',
     role: "Edmund's Girlfriend",
     bio: "Edmund's girlfriend of three years — twenty years his junior, and never married, whatever the household staff assume. Elegant and controlled in public, she has spent those years managing the family's opinion of her as carefully as Edmund managed its money. The rest of the family has never quite accepted her at all.",
     relationshipAnswer: "Three years. He never once brought up marriage, and I learned not to ask. Half this house still introduces me as 'Edmund's companion,' like I haven't earned a name.",
@@ -28,6 +37,7 @@ const VICTORIA_BY_STATUS = {
 // line) stays free of screen-specific content.
 const META = {
   'Victoria Thorne': {
+    displayName: VICTORIA_BY_STATUS[victoriaStatus].displayName,
     role: VICTORIA_BY_STATUS[victoriaStatus].role,
     bio: VICTORIA_BY_STATUS[victoriaStatus].bio,
     answers: {

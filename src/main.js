@@ -210,18 +210,19 @@ const castDetailRole = document.getElementById('castDetailRole');
 const castDetailBio = document.getElementById('castDetailBio');
 
 CHARACTERS.forEach((c) => {
+  const shownName = c.displayName || c.name;
   const card = document.createElement('div');
   card.className = 'cast-card';
   card.innerHTML = `
-    <img ${portraitImgAttrs(c)} alt="${c.name}">
-    <span class="cast-card-name">${c.name}</span>
+    <img ${portraitImgAttrs(c)} alt="${shownName}">
+    <span class="cast-card-name">${shownName}</span>
     <span class="cast-card-role">${c.role || ''}</span>
   `;
   card.addEventListener('click', () => {
     castDetailImg.onerror = () => { castDetailImg.onerror = null; castDetailImg.src = portraitFallbackSrc(c); };
     castDetailImg.src = portraitSrc(c);
-    castDetailImg.alt = c.name;
-    castDetailName.textContent = c.name;
+    castDetailImg.alt = shownName;
+    castDetailName.textContent = shownName;
     castDetailRole.textContent = c.role || '';
     castDetailBio.textContent = c.bio || '';
     castGridView.style.display = 'none';
@@ -423,7 +424,7 @@ function renderNotebook() {
           <h4 class="notebook-room-heading">${room}</h4>
           ${byRoom.get(room).map((e) => {
             const implicatesTag = e.implicates
-              ? `<span class="implicates-tag">${(Array.isArray(e.implicates) ? e.implicates : [e.implicates]).join(', ')}</span>`
+              ? `<span class="implicates-tag">${(Array.isArray(e.implicates) ? e.implicates : [e.implicates]).map((n) => SUSPECT_DISPLAY_NAMES[n] || n).join(', ')}</span>`
               : '';
             return `
               <div class="notebook-entry">
@@ -458,7 +459,7 @@ function renderNotebook() {
         : '';
       return `
         <div class="notebook-entry">
-          <b>${c.name}</b>
+          <b>${c.displayName || c.name}</b>
           <span>${c.role || ''} · ${asked.length} of ${askable.length} question${askable.length === 1 ? '' : 's'} asked</span>
           <p>"${c.line.replace(/^"|"$/g, '')}"</p>
           ${qAndA}
@@ -494,8 +495,15 @@ const pctY = (y) => `${(y / BOARD_H) * 100}%`;
 // Marcus" is a matter of looking for his color, not untangling same-colored
 // string crossing the whole board.
 const SUSPECT_COLORS = {};
+// Evidence's `implicates` field (rooms.js) always names the fixed internal
+// identifier (matching a hotspot's `requires: { killer/npc: ... }` gates),
+// never the display name — this map is how notebook/board text showing an
+// `implicates` value gets the player-facing name instead (see Victoria's
+// randomized wife/girlfriend display name in characters.js).
+const SUSPECT_DISPLAY_NAMES = {};
 CHARACTERS.forEach((c, i) => {
   SUSPECT_COLORS[c.name] = `hsl(${Math.round((i * 360) / CHARACTERS.length)}, 60%, 68%)`;
+  SUSPECT_DISPLAY_NAMES[c.name] = c.displayName || c.name;
 });
 
 // Centers `count` items evenly across [margin, total-margin], returning the
@@ -559,8 +567,8 @@ function renderBoard() {
 
   const suspectHtml = CHARACTERS.map((c) => `
     <div class="board-suspect" style="left:${pctX(suspectPos[c.name].x)}; top:${pctY(suspectPos[c.name].y)};">
-      <img ${portraitImgAttrs(c)} alt="${c.name}" style="border-color:${SUSPECT_COLORS[c.name]};">
-      <span>${c.name}</span>
+      <img ${portraitImgAttrs(c)} alt="${c.displayName || c.name}" style="border-color:${SUSPECT_COLORS[c.name]};">
+      <span>${c.displayName || c.name}</span>
     </div>
   `).join('');
 

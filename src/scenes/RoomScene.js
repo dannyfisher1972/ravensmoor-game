@@ -310,7 +310,7 @@ export default class RoomScene extends Phaser.Scene {
   talkToNPC(npc) {
     playClick();
     markTalkedTo(npc.npcName);
-    this.showDialog(npc.npcName, npc.npcLine, this.resolvePortrait(npc), this.buildQuestionButtons(npc));
+    this.showDialog(npc.npcDisplayName || npc.npcName, npc.npcLine, this.resolvePortrait(npc), this.buildQuestionButtons(npc));
     this.renderUnlockedHotspots();
     this.renderTalkedToPanel();
   }
@@ -329,24 +329,25 @@ export default class RoomScene extends Phaser.Scene {
 
     panelEl.innerHTML = '';
     list.forEach(c => {
+      const shownName = c.displayName || c.name;
       const btn = document.createElement('button');
       btn.className = 'retalk-btn';
-      btn.title = 'Talk to ' + c.name;
+      btn.title = 'Talk to ' + shownName;
       const portraitUrl = (c.portraitKey && !this.failedKeys.has(c.portraitKey))
         ? this.getRealPortraitDataURL(c.portraitKey)
         : null;
       if (portraitUrl) {
         const img = document.createElement('img');
         img.src = portraitUrl;
-        img.alt = c.name;
+        img.alt = shownName;
         btn.appendChild(img);
       } else {
         const span = document.createElement('span');
         span.className = 'retalk-initial';
-        span.textContent = c.name.charAt(0);
+        span.textContent = shownName.charAt(0);
         btn.appendChild(span);
       }
-      btn.onclick = () => this.talkToNPC({ npcName: c.name, npcLine: c.line, npcPortraitKey: c.portraitKey, answers: c.answers });
+      btn.onclick = () => this.talkToNPC({ npcName: c.name, npcDisplayName: shownName, npcLine: c.line, npcPortraitKey: c.portraitKey, answers: c.answers });
       panelEl.appendChild(btn);
     });
     panelEl.style.display = (list.length && this.dialogEl.style.display !== 'flex') ? 'flex' : 'none';
@@ -410,7 +411,7 @@ export default class RoomScene extends Phaser.Scene {
       const variant = pickDialogueVariant(`${q.id}:${npc.npcName}`, 2);
       if (variant === 1) answer = npc.answers[altKey];
     }
-    this.showDialog(npc.npcName, answer, this.resolvePortrait(npc), this.buildQuestionButtons(npc));
+    this.showDialog(npc.npcDisplayName || npc.npcName, answer, this.resolvePortrait(npc), this.buildQuestionButtons(npc));
   }
 
   openPuzzle(entry) {
@@ -637,12 +638,20 @@ export default class RoomScene extends Phaser.Scene {
     npc.npcName = cfg.name;
     npc.npcLine = cfg.line;
     npc.npcPortraitKey = cfg.portraitKey;
-    npc.answers = CHARACTERS.find(c => c.name === cfg.name)?.answers;
+    const matched = CHARACTERS.find(c => c.name === cfg.name);
+    npc.answers = matched?.answers;
+    // Separate from npcName, which stays the fixed internal identifier every
+    // TALKED_TO/ASKED_QUESTIONS entry and hotspot `requires` gate keys off of.
+    // This is only what's actually shown to the player — for most characters
+    // it's identical, but Victoria's changes with her randomized wife/
+    // girlfriend status (see characters.js's VICTORIA_BY_STATUS), since
+    // "Thorne" was never legitimately hers to display in a girlfriend game.
+    npc.npcDisplayName = matched?.displayName || cfg.name;
     this.npcs.push(npc);
     this.tweens.add({ targets: npc, scale: { from: 1, to: 1.05 }, duration: 1500, yoyo: true, repeat: -1, ease: 'Sine.easeInOut' });
 
     npc.setInteractive({ useHandCursor: true });
-    npc.on('pointerover', () => this.setPrompt('Talk to ' + npc.npcName));
+    npc.on('pointerover', () => this.setPrompt('Talk to ' + npc.npcDisplayName));
     npc.on('pointerout', () => this.setPrompt(null));
     npc.on('pointerdown', () => {
       if (this.isDialogOpen()) { this.advanceDialog(); return; }
