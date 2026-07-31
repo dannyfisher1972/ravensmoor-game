@@ -12,7 +12,7 @@ import {
   FOUND_EVIDENCE, TALKED_TO, onStateChange, resetProgress, hasSavedProgress,
   UNLOCKED_ACHIEVEMENTS, checkAchievements, recordAccusationAttempt, accusationAttempts, killerIndex,
   ASKED_QUESTIONS,
-  victoriaStatus, activeStory, setActiveStory, storyName, renameActiveStory, startRandomStory,
+  victoriaStatus, activeStory, storyName, renameActiveStory, startRandomStory,
   getSavedStories, renameStory, deleteStory,
   INVENTORY, armedItem, armItem, disarmItem
 } from './state.js';
@@ -135,8 +135,10 @@ function renderSavedStories() {
     nameEl.addEventListener('change', () => renameStory(id, nameEl.value));
     row.querySelector('.saved-story-resume').addEventListener('click', () => {
       playClick();
-      setActiveStory(id);
-      location.reload();
+      // ?resume=<id> is the one-shot signal state.js looks for to bypass its
+      // normal "every load rerolls" behavior and actually reopen this exact
+      // saved game — see state.js's resumeRequestedId() for the other half.
+      location.href = location.pathname + '?resume=' + id;
     });
     row.querySelector('.saved-story-delete').addEventListener('click', () => {
       playClick();

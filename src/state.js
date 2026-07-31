@@ -136,10 +136,55 @@ function loadSlot(storyId) {
   return data;
 }
 
+// A normal page load — typing the URL, refreshing, reopening the tab —
+// always hands back a fresh random investigation: rerolling the active
+// slot in place if it was never actually played, or spinning off a
+// separate new slot (preserving the old one, untouched) if it has real
+// progress. Nothing is ever silently lost; a previous in-progress game
+// just stops being the default and reappears in the title screen's
+// "Continue a Saved Investigation" list instead.
+//
+// The one way to bypass this and land back on a specific saved game is a
+// one-shot ?resume=<id> URL param, set only by that list's own "Resume"
+// button right before it reloads (see main.js) — never something a normal
+// load produces on its own. It's consumed immediately below and stripped
+// from the URL so a later plain refresh of that same tab goes back to
+// rerolling, rather than "resume" silently becoming a permanent mode.
+function resumeRequestedId() {
+  try {
+    const raw = new URLSearchParams(window.location.search).get('resume');
+    const n = raw ? parseInt(raw, 10) : NaN;
+    return Number.isInteger(n) && n > 0 ? n : null;
+  } catch {
+    return null;
+  }
+}
+
 export let activeStory = loadActiveStoryId();
-if (activeStory === null) {
+const resumeId = resumeRequestedId();
+if (resumeId !== null) {
+  activeStory = resumeId;
+  try { localStorage.setItem(ACTIVE_STORY_KEY, String(activeStory)); } catch { /* ignore */ }
+  try { window.history.replaceState(null, '', window.location.pathname); } catch { /* ignore */ }
+} else if (activeStory === null) {
   activeStory = nextStoryId();
   try { localStorage.setItem(ACTIVE_STORY_KEY, String(activeStory)); } catch { /* ignore */ }
+} else {
+  const existingRaw = readSlotRaw(activeStory);
+  const hadProgress = !!existingRaw && (
+    (Array.isArray(existingRaw.evidence) && existingRaw.evidence.length > 0) ||
+    (Array.isArray(existingRaw.talkedTo) && existingRaw.talkedTo.length > 0) ||
+    (typeof existingRaw.accusationAttempts === 'number' && existingRaw.accusationAttempts > 0)
+  );
+  if (hadProgress) {
+    activeStory = nextStoryId();
+    writeSlotRaw(activeStory, freshSlotData());
+    try { localStorage.setItem(ACTIVE_STORY_KEY, String(activeStory)); } catch { /* ignore */ }
+  } else {
+    // Untouched (or brand new) slot — reroll it in place rather than
+    // orphaning it, keeping whatever name it already had, if any.
+    writeSlotRaw(activeStory, freshSlotData(existingRaw?.name));
+  }
 }
 const saved = loadSlot(activeStory);
 
