@@ -411,11 +411,14 @@ function isPendingClue(h) {
 
 const HINT_TIER_LABELS = ['A gentle nudge', 'A clearer direction', 'The direct answer'];
 
-// Picks ONE thing to hint at, in order of how concrete/actionable it is —
-// an unused key with a known lock beats a vague "go explore more" nudge,
-// which is exactly the "found 5 keys, no idea where they go" complaint this
-// feature exists to answer. Falls through to softer categories only once
-// the sharper ones are exhausted.
+// Picks ONE thing to hint at. An unused key with a known lock comes first —
+// the exact "found 5 keys, no idea where they go" complaint this feature
+// exists to answer — but after that, talking to people outranks poking
+// around rooms: meeting someone new or asking a fresh question is how new
+// clues and questions unlock in the first place, so it's the more useful
+// nudge for a stuck player far more often than "there's an object somewhere
+// you haven't clicked yet." Only falls back to a generic unexamined-clue
+// hint once the interview side is fully caught up.
 function buildHintTiers() {
   const pending = ALL_EVIDENCE.filter(isPendingClue);
 
@@ -427,16 +430,6 @@ function buildHintTiers() {
       "You're holding something that hasn't found its lock yet.",
       `Somewhere in ${lockTarget.room}, you'll find exactly where it fits.`,
       `In ${lockTarget.room}, use ${itemName} on ${lockTarget.name.toLowerCase()}.`
-    ];
-  }
-
-  const clueTarget = pending.find((h) => !h.itemLock);
-  if (clueTarget) {
-    const verb = clueTarget.pickup ? 'pick up' : 'take a closer look at';
-    return [
-      "There's still something worth examining, somewhere you can already reach.",
-      `Have another look around ${clueTarget.room}.`,
-      `In ${clueTarget.room}, ${verb} ${clueTarget.name.toLowerCase()}.`
     ];
   }
 
@@ -466,6 +459,16 @@ function buildHintTiers() {
         `Ask ${shown}: "${unasked.text}"`
       ];
     }
+  }
+
+  const clueTarget = pending.find((h) => !h.itemLock);
+  if (clueTarget) {
+    const verb = clueTarget.pickup ? 'pick up' : 'take a closer look at';
+    return [
+      "There's still something worth examining, somewhere you can already reach.",
+      `Have another look around ${clueTarget.room}.`,
+      `In ${clueTarget.room}, ${verb} ${clueTarget.name.toLowerCase()}.`
+    ];
   }
 
   return [
