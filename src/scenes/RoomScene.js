@@ -115,22 +115,6 @@ export default class RoomScene extends Phaser.Scene {
     // Lets players zoom in on a clue instead of squinting at a small marker —
     // bounds keep panning from scrolling past the edge of the background.
     cam.setBounds(0, 0, this.scale.width, this.scale.height);
-
-    // Mobile Visual Scale Phase 1 — a touch device in landscape (the only
-    // orientation it can actually play in; portrait is blocked entirely by
-    // the full-screen rotate-hint) still only fills a fraction of a wide
-    // phone screen under FIT scaling. A modest default zoom makes the room
-    // read as bigger without touching any room/hotspot data — it's just a
-    // starting camera position that the existing zoom system (buttons,
-    // pinch, wheel) and pan-on-drag both continue to operate on normally,
-    // including zooming back out past this point to the original full view.
-    const isLandscape = typeof window !== 'undefined' && window.matchMedia
-      && window.matchMedia('(orientation: landscape)').matches;
-    if (IS_TOUCH_DEVICE && isLandscape) {
-      cam.zoom = 1.1;
-      cam.centerOn(this.scale.width / 2, this.scale.height / 2);
-    }
-
     this.setupZoomControls();
 
     cam.fadeIn(400, 5, 5, 8);

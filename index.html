@@ -408,6 +408,20 @@
     background:rgba(20,18,15,0.8); border:1px solid var(--line); color:var(--ink-soft);
     border-radius:3px; cursor:pointer; font-family:'Lora', Georgia, serif;
   }
+  /* On a landscape viewport wider than the game's own 3:2 shape, FIT scaling
+     leaves large empty margins on either side of #game-container — exactly
+     the regime where #game-container's width is capped by height (94dvh*1.5)
+     rather than by viewport width. #zoomControls (mute included, as its
+     child) sits over the room art today only because that's the one place
+     guaranteed to exist regardless of margin size. `position:fixed` escapes
+     #hud/#game-container's box entirely (neither has a transform, so this
+     isn't trapped in a nested containing block) and anchors to the true
+     screen edge instead, landing in that margin rather than on the artwork.
+     Portrait/narrow viewports don't match this query, so they keep the
+     original over-the-art placement, where there's no margin to move into. */
+  @media (orientation:landscape) and (min-aspect-ratio:3/2){
+    #zoomControls{ position:fixed; left:20px; top:50%; }
+  }
   #zoomControls button:hover{ border-color:var(--foxglove); color:var(--foxglove); }
   #zoomControls button:disabled{ opacity:.35; cursor:not-allowed; }
   #zoomControls button:disabled:hover{ border-color:var(--line); color:var(--ink-soft); }
