@@ -471,6 +471,35 @@
     #progressBadge{ font-size:10px; padding:4px 8px; }
   }
 
+  /* Phase 4 — on the same wide-landscape viewport where #zoomControls above
+     already relocated into the left margin, the clue counter and action
+     buttons still render on top of the room art. Both move into fixed side
+     rails here too, for the same reason: neither #hud nor #game-container
+     has a transform, so position:fixed correctly escapes to the true
+     viewport edge instead of the game box. Pure repositioning — no DOM
+     changes, so this query not matching in portrait leaves the original
+     #bottomBar layout completely untouched there, and nothing about what
+     any button does changes, only where it sits on screen. Placed after
+     the max-height:480px block above so it wins the cascade when both
+     apply at once (e.g. 932x430 matches both). */
+  @media (orientation:landscape) and (min-aspect-ratio:3/2){
+    /* Left rail: clue counter sits below the zoom/mute stack (114px tall —
+       3 34px buttons + 2 6px gaps — vertically centered, so its bottom
+       edge sits at 50% + 57px; +10px clears it from that stack). */
+    #progressBadge{
+      position:fixed; left:20px; top:calc(50% + 67px);
+    }
+    /* Right rail: same 5 buttons, stacked vertically instead of wrapped
+       rows, with roomier padding for a larger touch target. */
+    #actionButtons{
+      position:fixed; right:20px; top:50%; transform:translateY(-50%);
+      flex-direction:column;
+    }
+    #actionButtons button{
+      width:130px; text-align:left; padding:12px 14px; font-size:13px;
+    }
+  }
+
   /* --- Notebook --- */
   .notebook-card{
     position:relative; max-width:960px; width:100%; max-height:82vh;
