@@ -380,6 +380,123 @@ document.getElementById('putAwayBtn').addEventListener('click', () => {
   disarmItem();
 });
 
+// --- Hints -----------------------------------------------------------------
+// Points a stuck player at their single most useful next step without
+// spelling out the clue itself — three tiers escalating from a vague nudge
+// to naming the exact object, so leaning on it doesn't feel like reading a
+// full walkthrough. Recomputed fresh every time the modal opens rather than
+// cached, since what's most useful changes the moment new evidence, a new
+// person, or a new question comes in.
+const hintModal = document.getElementById('hintModal');
+const hintTierLabelEl = document.getElementById('hintTierLabel');
+const hintTextEl = document.getElementById('hintText');
+const hintMoreBtn = document.getElementById('hintMoreBtn');
+const hintBtn = document.getElementById('hintBtn');
+
+const NPC_ROOM_LABEL = {};
+Object.values(ROOMS).forEach((room) => {
+  (room.npcs || []).forEach((npc) => { NPC_ROOM_LABEL[npc.name] = room.label; });
+});
+
+// Same gating rules as RoomScene's isUnlocked, minus the killer/method/
+// victoriaStatus/optional checks — ALL_EVIDENCE has already excluded
+// anything that doesn't apply to this game's scenario (see evidenceCatalog.js).
+function isPendingClue(h) {
+  if (FOUND_EVIDENCE.has(h.id)) return false;
+  if (!h.requires) return true;
+  if (h.requires.npc && !TALKED_TO.has(h.requires.npc)) return false;
+  if (h.requires.evidence && !FOUND_EVIDENCE.has(h.requires.evidence)) return false;
+  return true;
+}
+
+const HINT_TIER_LABELS = ['A gentle nudge', 'A clearer direction', 'The direct answer'];
+
+// Picks ONE thing to hint at, in order of how concrete/actionable it is —
+// an unused key with a known lock beats a vague "go explore more" nudge,
+// which is exactly the "found 5 keys, no idea where they go" complaint this
+// feature exists to answer. Falls through to softer categories only once
+// the sharper ones are exhausted.
+function buildHintTiers() {
+  const pending = ALL_EVIDENCE.filter(isPendingClue);
+
+  const lockTarget = pending.find((h) => h.itemLock && INVENTORY.has(h.itemLock));
+  if (lockTarget) {
+    const item = ALL_EVIDENCE.find((h) => h.id === lockTarget.itemLock);
+    const itemName = (item ? item.name : "something you're carrying").toLowerCase();
+    return [
+      "You're holding something that hasn't found its lock yet.",
+      `Somewhere in ${lockTarget.room}, you'll find exactly where it fits.`,
+      `In ${lockTarget.room}, use ${itemName} on ${lockTarget.name.toLowerCase()}.`
+    ];
+  }
+
+  const clueTarget = pending.find((h) => !h.itemLock);
+  if (clueTarget) {
+    const verb = clueTarget.pickup ? 'pick up' : 'take a closer look at';
+    return [
+      "There's still something worth examining, somewhere you can already reach.",
+      `Have another look around ${clueTarget.room}.`,
+      `In ${clueTarget.room}, ${verb} ${clueTarget.name.toLowerCase()}.`
+    ];
+  }
+
+  const unmet = CHARACTERS.find((c) => !TALKED_TO.has(c.name));
+  if (unmet) {
+    const shown = unmet.displayName || unmet.name;
+    const room = NPC_ROOM_LABEL[unmet.name];
+    return [
+      "There's still someone in this house you haven't spoken to.",
+      room ? `Someone in ${room} is still waiting to meet you.` : "Keep exploring the manor — someone hasn't been found yet.",
+      `Introduce yourself to ${shown}${room ? ` in ${room}` : ''}.`
+    ];
+  }
+
+  for (const c of CHARACTERS) {
+    if (!TALKED_TO.has(c.name)) continue;
+    const askable = [
+      ...BASE_QUESTIONS,
+      ...FOLLOWUPS.filter((f) => f.target === c.name && isFollowupUnlockedForAchievement(f))
+    ];
+    const unasked = askable.find((q) => !ASKED_QUESTIONS.has(`${c.name}|${q.id}`));
+    if (unasked) {
+      const shown = c.displayName || c.name;
+      return [
+        "Someone you've already met might have more to say.",
+        `Go back and talk to ${shown} again.`,
+        `Ask ${shown}: "${unasked.text}"`
+      ];
+    }
+  }
+
+  return [
+    "You've turned over everything reachable right now, and asked everyone what they'll say. The Notebook's Board view lays out how it all connects — if you're confident, it's time to make your accusation."
+  ];
+}
+
+let hintTiers = [];
+let hintTierIndex = 0;
+
+function renderHintTier() {
+  hintTierLabelEl.textContent = HINT_TIER_LABELS[hintTierIndex] || '';
+  hintTextEl.textContent = hintTiers[hintTierIndex] || '';
+  const atLast = hintTierIndex >= hintTiers.length - 1;
+  hintMoreBtn.style.display = atLast ? 'none' : '';
+}
+
+hintBtn.addEventListener('click', () => {
+  playClick();
+  hintTiers = buildHintTiers();
+  hintTierIndex = 0;
+  renderHintTier();
+  hintModal.classList.add('open');
+});
+
+hintMoreBtn.addEventListener('click', () => {
+  playClick();
+  hintTierIndex = Math.min(hintTierIndex + 1, hintTiers.length - 1);
+  renderHintTier();
+});
+
 // --- Mute toggle ---------------------------------------------------------
 // Two buttons — one on the title screen (so sound can be turned off before
 // the rain ambience ever starts), one in the in-game HUD — both reflect the

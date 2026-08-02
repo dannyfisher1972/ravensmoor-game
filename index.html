@@ -614,6 +614,13 @@
     color:var(--danger); margin:0 0 16px 0;
   }
 
+  /* --- Hints --- */
+  .hint-text{
+    font-family:'Lora', Georgia, serif; font-size:17px; line-height:1.65; color:var(--ink);
+    text-align:center; margin:0 0 22px 0;
+  }
+  .hint-actions{ text-align:center; }
+
   /* --- End screen --- */
   .end-card{
     position:relative; max-width:640px; width:100%; max-height:82vh; overflow-y:auto;
@@ -705,6 +712,7 @@
         <button id="caseFileBtn">🗎 Case File</button>
         <button id="notebookBtn">📓 Notebook</button>
         <button id="inventoryBtn">🎒 Items</button>
+        <button id="hintBtn">💡 Hint</button>
         <button id="accuseBtn">⚖ Accuse</button>
         <button id="muteBtn">🔊</button>
       </div>
@@ -913,6 +921,20 @@
         <h2>Carried Items</h2>
         <p class="accuse-sub">Click an item to hold it, then click something in a room to try using it there. Click it again to put it away.</p>
         <div id="inventoryGrid" class="accuse-grid"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="hintModal" class="person-modal">
+      <div class="notebook-card">
+        <button class="person-modal-close" data-close aria-label="Close">&times;</button>
+        <div class="modal-scroll-body">
+        <h2>Need a Hint?</h2>
+        <p class="accuse-sub" id="hintTierLabel">A gentle nudge</p>
+        <p id="hintText" class="hint-text"></p>
+        <div class="hint-actions">
+          <button id="hintMoreBtn" class="btn secondary">Give me a more specific hint</button>
+        </div>
         </div>
       </div>
     </div>
