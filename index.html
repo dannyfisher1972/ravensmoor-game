@@ -357,13 +357,20 @@
   #room-nav button:hover{ border-color:var(--foxglove); color:var(--foxglove); }
   #room-name{ font-family:'Lora', Georgia, serif; font-size:15px; color:var(--sepia); background:rgba(20,18,15,0.8); padding:6px 14px; border-radius:3px; border:1px solid var(--line); }
 
-  /* Spans the full width (rather than sizing to content) so flex-wrap has
-     room to lay out a second row instead of overlapping or overflowing off
-     the left edge on narrow phones — pointer-events:none on the row plus
-     :auto on each button (same pattern as #room-nav above) keeps the empty
-     space in that row from swallowing clicks meant for the room behind it. */
-  #actionButtons{
+  /* Shared bottom bar: the clue counter and the button toolbar used to be
+     two independently absolute-positioned elements anchored to the same
+     bottom-left corner, kept apart only by the toolbar's right-justify
+     happening to leave the left side empty — a coincidence, not a
+     guarantee, that broke down whenever the wrapped rows filled edge to
+     edge. Nesting both in one flex row makes the layout engine reserve
+     space for the badge instead, so they can never collide regardless of
+     button count, label width, or viewport size. */
+  #bottomBar{
     position:absolute; bottom:14px; left:14px; right:14px;
+    display:flex; align-items:flex-end; justify-content:space-between; gap:8px;
+    pointer-events:none;
+  }
+  #actionButtons{
     display:flex; flex-wrap:wrap; gap:8px; justify-content:flex-end;
     pointer-events:none;
   }
@@ -378,7 +385,7 @@
   #actionButtons button:disabled:hover{ border-color:var(--line); color:var(--ink-soft); }
 
   #progressBadge{
-    position:absolute; bottom:14px; left:14px; font-family:'Lora', Georgia, serif;
+    flex-shrink:0; font-family:'Lora', Georgia, serif;
     font-size:12px; color:var(--ink-soft); background:rgba(20,18,15,0.8); border:1px solid var(--line);
     padding:6px 12px; border-radius:3px; pointer-events:none;
   }
@@ -436,13 +443,14 @@
     #talkedToPanel{ top:40px; bottom:44px; right:6px; width:38px; gap:6px; }
     .retalk-btn{ width:34px; height:34px; }
     .retalk-btn .retalk-initial{ font-size:14px; }
-    /* Same fixed-offset squeeze applies to the bottom-right action row and
-       the progress badge — shrinking them leaves more margin against the
-       bottom edge, which mobile Safari's own collapsing toolbar chrome can
-       eat into (see #app/#game-container's dvh notes above). */
-    #actionButtons{ bottom:8px; left:8px; right:8px; gap:5px; }
+    /* Same fixed-offset squeeze applies to the bottom bar (progress badge +
+       action row) — shrinking them leaves more margin against the bottom
+       edge, which mobile Safari's own collapsing toolbar chrome can eat
+       into (see #app/#game-container's dvh notes above). */
+    #bottomBar{ bottom:8px; left:8px; right:8px; gap:5px; }
+    #actionButtons{ gap:5px; }
     #actionButtons button{ font-size:10px; padding:5px 8px; }
-    #progressBadge{ bottom:8px; left:8px; font-size:10px; padding:4px 8px; }
+    #progressBadge{ font-size:10px; padding:4px 8px; }
   }
 
   /* --- Notebook --- */
@@ -785,19 +793,21 @@
         Holding: <span id="armedItemName"></span>
         <button id="putAwayBtn">Put Away</button>
       </div>
-      <div id="actionButtons">
-        <button id="caseFileBtn">🗎 Case File</button>
-        <button id="notebookBtn">📓 Notebook</button>
-        <button id="inventoryBtn">🎒 Items</button>
-        <button id="hintBtn">💡 Hint</button>
-        <button id="accuseBtn">⚖ Accuse</button>
-        <button id="casebookBtn">📔 Casebook</button>
-        <button id="analyticsBtn" aria-label="Analytics" title="Analytics">📊</button>
-        <button id="feedbackBtn" aria-label="Give feedback" title="Give feedback">💬</button>
-        <button id="muteBtn">🔊</button>
-        <button id="reportBtn" aria-label="Report an issue" title="Report an issue">🐛</button>
+      <div id="bottomBar">
+        <div id="progressBadge"></div>
+        <div id="actionButtons">
+          <button id="caseFileBtn">🗎 Case File</button>
+          <button id="notebookBtn">📓 Notebook</button>
+          <button id="inventoryBtn">🎒 Items</button>
+          <button id="hintBtn">💡 Hint</button>
+          <button id="accuseBtn">⚖ Accuse</button>
+          <button id="casebookBtn">📔 Casebook</button>
+          <button id="analyticsBtn" aria-label="Analytics" title="Analytics">📊</button>
+          <button id="feedbackBtn" aria-label="Give feedback" title="Give feedback">💬</button>
+          <button id="muteBtn">🔊</button>
+          <button id="reportBtn" aria-label="Report an issue" title="Report an issue">🐛</button>
+        </div>
       </div>
-      <div id="progressBadge"></div>
       <div id="talkedToPanel"></div>
       <div id="prompt"></div>
       <div id="dialog">
