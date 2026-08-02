@@ -45,6 +45,14 @@ export function hasCompletedStory(storyId) {
   return events.some((e) => e.type === 'investigation_completed' && e.storyId === storyId);
 }
 
+// True once this story has already gotten a feedback_opened or
+// feedback_prompt_dismissed event — used to show the end-screen feedback
+// prompt at most once per completed investigation.
+export function hasFeedbackResponse(storyId) {
+  const { events } = loadAnalytics();
+  return events.some((e) => (e.type === 'feedback_opened' || e.type === 'feedback_prompt_dismissed') && e.storyId === storyId);
+}
+
 export function getAnalyticsSummary() {
   const { events } = loadAnalytics();
   const count = (type) => events.filter((e) => e.type === type).length;

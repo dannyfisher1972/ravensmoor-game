@@ -18,7 +18,11 @@ import {
   recordSolvedCase, getCasebook, NUM_KILLER_VARIANTS, CURRENT_PACK
 } from './state.js';
 import { startRainAmbience, setMuted, isMuted, playClick, playWinSting, playLoseSting } from './audio.js';
-import { logEvent, logEventOncePerStory, hasCompletedStory, getAnalyticsSummary } from './analytics.js';
+import { logEvent, logEventOncePerStory, hasCompletedStory, hasFeedbackResponse, getAnalyticsSummary } from './analytics.js';
+
+// Single place to update the feedback destination without hunting through
+// the codebase — a real Google Form URL should replace this before release.
+const FEEDBACK_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSfx0gEoMk6E0fDGaUShYORl2Mun4dyrvzGQHEuv19jA3LGrEA/viewform';
 
 // Fixed for the whole playthrough (only reshuffles via resetProgress on a new
 // investigation), so it's safe to resolve once here rather than threading it
@@ -708,6 +712,35 @@ analyticsBtn.addEventListener('click', () => {
   analyticsModal.classList.add('open');
 });
 
+// --- Feedback (V1) -------------------------------------------------------
+// Google Form only — no custom survey, no backend. The HUD button always
+// opens the form directly; the end-of-case prompt is the gentler, opt-in
+// version shown at most once per completed investigation (see
+// hasFeedbackResponse in analytics.js).
+const feedbackBtn = document.getElementById('feedbackBtn');
+const feedbackPromptEl = document.getElementById('feedbackPrompt');
+const feedbackGiveBtn = document.getElementById('feedbackGiveBtn');
+const feedbackLaterBtn = document.getElementById('feedbackLaterBtn');
+
+feedbackBtn.addEventListener('click', () => {
+  playClick();
+  window.open(FEEDBACK_FORM_URL, '_blank', 'noopener');
+  logEvent('feedback_opened', { scenarioId: killerIndex, storyId: activeStory, source: 'hud' });
+});
+
+feedbackGiveBtn.addEventListener('click', () => {
+  playClick();
+  window.open(FEEDBACK_FORM_URL, '_blank', 'noopener');
+  logEvent('feedback_opened', { scenarioId: killerIndex, storyId: activeStory, source: 'end_screen' });
+  feedbackPromptEl.style.display = 'none';
+});
+
+feedbackLaterBtn.addEventListener('click', () => {
+  playClick();
+  logEvent('feedback_prompt_dismissed', { scenarioId: killerIndex, storyId: activeStory });
+  feedbackPromptEl.style.display = 'none';
+});
+
 // --- Mute toggle ---------------------------------------------------------
 // Two buttons — one on the title screen (so sound can be turned off before
 // the rain ambience ever starts), one in the in-game HUD — both reflect the
@@ -1367,6 +1400,11 @@ accuseConfirmBtn.addEventListener('click', () => {
   } else {
     endCasebookBtn.style.display = 'none';
   }
+  // Only on a genuinely concluded investigation (win or exhausted loss —
+  // never a non-final wrong guess), and at most once per story: don't
+  // interrupt an unresolved case, and don't re-ask after Give Feedback/Maybe
+  // Later has already been answered for this one.
+  feedbackPromptEl.style.display = (correct || exhausted) && !hasFeedbackResponse(activeStory) ? '' : 'none';
   endModal.classList.add('open');
 });
 

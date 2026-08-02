@@ -699,6 +699,9 @@
   .end-card .end-strength-note{ color:var(--ink-soft); font-size:14px; border-top:1px solid var(--line); padding-top:12px; margin-top:6px; }
   .end-card .end-epilogue-intro{ color:var(--sepia); font-size:15px; margin-bottom:16px; }
   .end-actions{ margin-top:26px; display:flex; gap:14px; justify-content:center; flex-wrap:wrap; }
+  .feedback-prompt{ margin-top:20px; padding-top:20px; border-top:1px solid var(--line); text-align:center; }
+  .feedback-prompt p{ font-family:'Lora', Georgia, serif; font-style:italic; color:var(--ink-soft); font-size:14px; margin:0 0 10px 0; }
+  .feedback-prompt .end-actions{ margin-top:0; }
 
   /* --- Puzzle keypad --- */
   .puzzle-modal{
@@ -780,6 +783,7 @@
         <button id="accuseBtn">⚖ Accuse</button>
         <button id="casebookBtn">📔 Casebook</button>
         <button id="analyticsBtn" aria-label="Analytics" title="Analytics">📊</button>
+        <button id="feedbackBtn" aria-label="Give feedback" title="Give feedback">💬</button>
         <button id="muteBtn">🔊</button>
         <button id="reportBtn" aria-label="Report an issue" title="Report an issue">🐛</button>
       </div>
@@ -1076,6 +1080,13 @@
           <button id="endKeepBtn" class="btn secondary">Keep Investigating</button>
           <button id="endCasebookBtn" class="btn secondary" style="display:none;">View Casebook</button>
           <button id="endNewBtn" class="btn">New Investigation</button>
+        </div>
+        <div id="feedbackPrompt" class="feedback-prompt" style="display:none;">
+          <p>Help improve Ravensmoor Hall?</p>
+          <div class="end-actions">
+            <button id="feedbackGiveBtn" class="btn">Give Feedback</button>
+            <button id="feedbackLaterBtn" class="btn secondary">Maybe Later</button>
+          </div>
         </div>
       </div>
     </div>
