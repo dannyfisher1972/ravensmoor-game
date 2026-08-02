@@ -14,7 +14,7 @@ import {
   ASKED_QUESTIONS,
   victoriaStatus, activeStory, storyName, renameActiveStory, startRandomStory,
   getSavedStories, renameStory, deleteStory,
-  INVENTORY, armedItem, armItem, disarmItem
+  INVENTORY, armedItem, armItem, disarmItem, currentRoom
 } from './state.js';
 import { startRainAmbience, setMuted, isMuted, playClick, playWinSting, playLoseSting } from './audio.js';
 
@@ -498,6 +498,133 @@ hintMoreBtn.addEventListener('click', () => {
   playClick();
   hintTierIndex = Math.min(hintTierIndex + 1, hintTiers.length - 1);
   renderHintTier();
+});
+
+// --- Issue reporting --------------------------------------------------------
+// A tester never has to explain which story they were in or dig up a
+// screenshot themselves — this grabs both automatically. The screenshot is
+// the Phaser canvas only (readable because the game config sets
+// preserveDrawingBuffer: true); DOM overlay content (an open dialog or
+// modal) isn't part of that pixel buffer, so its text is captured separately
+// as plain text in the same report rather than left out entirely.
+const reportModal = document.getElementById('reportModal');
+const reportBtn = document.getElementById('reportBtn');
+const reportScreenshotEl = document.getElementById('reportScreenshot');
+const reportDescriptionEl = document.getElementById('reportDescription');
+const reportSendBtn = document.getElementById('reportSendBtn');
+const reportStatusEl = document.getElementById('reportStatus');
+const reportDetailsTextEl = document.getElementById('reportDetailsText');
+
+function describeOnScreenState() {
+  const openModal = document.querySelector('.person-modal.open');
+  const lines = [];
+  if (openModal) lines.push(`Open panel: ${openModal.id}`);
+  const dialogEl = document.getElementById('dialog');
+  if (dialogEl && getComputedStyle(dialogEl).display !== 'none') {
+    const title = document.getElementById('dialog-title')?.textContent;
+    const body = document.getElementById('dialog-body')?.textContent;
+    if (title || body) lines.push(`Open dialog: "${title || ''}" — ${(body || '').slice(0, 200)}`);
+  }
+  return lines.length ? lines.join('\n') : 'Nothing open — main room view.';
+}
+
+function buildDiagnosticReport() {
+  return [
+    'Ravensmoor Hall — Issue Report',
+    `Time: ${new Date().toISOString()}`,
+    `Version: Beta 1.0`,
+    `Story: "${storyName}" (slot ${activeStory})`,
+    `Scenario #${killerIndex}: ${SOLUTION.killer} — ${SOLUTION.method}`,
+    `Victoria status: ${victoriaStatus}`,
+    `Current room: ${ROOMS[currentRoom]?.label || currentRoom || '(not yet loaded)'}`,
+    `Evidence found: ${FOUND_EVIDENCE.size} / ${ALL_EVIDENCE.length}`,
+    `People talked to: ${TALKED_TO.size} / ${CHARACTERS.length}`,
+    `Accusation attempts used: ${accusationAttempts} / ${MAX_ACCUSATIONS}`,
+    `Viewport: ${window.innerWidth}x${window.innerHeight}`,
+    `User agent: ${navigator.userAgent}`,
+    '',
+    '--- On-screen at time of report ---',
+    describeOnScreenState()
+  ].join('\n');
+}
+
+let reportScreenshotDataUrl = null;
+
+reportBtn.addEventListener('click', () => {
+  playClick();
+  reportDescriptionEl.value = '';
+  reportStatusEl.style.display = 'none';
+  reportSendBtn.disabled = false;
+  reportSendBtn.textContent = 'Share Report';
+  try {
+    reportScreenshotDataUrl = game.canvas.toDataURL('image/png');
+  } catch {
+    reportScreenshotDataUrl = null;
+  }
+  reportScreenshotEl.src = reportScreenshotDataUrl || '';
+  reportDetailsTextEl.textContent = buildDiagnosticReport();
+  reportModal.classList.add('open');
+});
+
+reportSendBtn.addEventListener('click', async () => {
+  playClick();
+  const description = reportDescriptionEl.value.trim();
+  const diagnosticText = buildDiagnosticReport();
+  const fullText = (description ? description + '\n\n' : '') + diagnosticText;
+  reportSendBtn.disabled = true;
+
+  try {
+    let file = null;
+    if (reportScreenshotDataUrl) {
+      const blob = await (await fetch(reportScreenshotDataUrl)).blob();
+      file = new File([blob], `ravensmoor-report-${Date.now()}.png`, { type: 'image/png' });
+    }
+    if (file && navigator.canShare && navigator.canShare({ files: [file] })) {
+      await navigator.share({ files: [file], text: fullText, title: 'Ravensmoor Hall — Issue Report' });
+      reportStatusEl.textContent = 'Report shared. Thank you!';
+      reportStatusEl.style.display = '';
+    } else {
+      // Download and clipboard-copy are independent fallback steps — one
+      // failing (e.g. the browser denies clipboard access) shouldn't hide
+      // that the other one worked, so each gets its own try/catch rather
+      // than sharing one that reports total failure on a partial success.
+      let downloaded = false;
+      if (reportScreenshotDataUrl) {
+        try {
+          const a = document.createElement('a');
+          a.href = reportScreenshotDataUrl;
+          a.download = `ravensmoor-report-${Date.now()}.png`;
+          a.click();
+          downloaded = true;
+        } catch { /* handled by the status message below */ }
+      }
+      let copied = false;
+      try {
+        await navigator.clipboard.writeText(fullText);
+        copied = true;
+      } catch { /* handled by the status message below */ }
+
+      if (downloaded && copied) {
+        reportStatusEl.textContent = 'Screenshot downloaded and details copied to your clipboard — paste them into an email or message.';
+      } else if (downloaded) {
+        reportStatusEl.textContent = "Screenshot downloaded. Couldn't copy the details automatically — expand \"Details included\" below and copy them yourself.";
+      } else if (copied) {
+        reportStatusEl.textContent = "Details copied to your clipboard, but the screenshot couldn't be saved automatically.";
+      } else {
+        reportStatusEl.textContent = "Couldn't prepare the report automatically — expand \"Details included\" below and copy them yourself.";
+      }
+      reportStatusEl.style.display = '';
+    }
+  } catch (err) {
+    // AbortError just means the user closed the native share sheet — not a
+    // real failure, so it shouldn't show as one.
+    if (err?.name !== 'AbortError') {
+      reportStatusEl.textContent = "Couldn't prepare the report automatically — expand \"Details included\" below and copy the text yourself.";
+      reportStatusEl.style.display = '';
+    }
+  } finally {
+    reportSendBtn.disabled = false;
+  }
 });
 
 // --- Mute toggle ---------------------------------------------------------

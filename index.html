@@ -621,6 +621,28 @@
   }
   .hint-actions{ text-align:center; }
 
+  /* --- Issue reporting --- */
+  #reportScreenshot{
+    display:block; width:100%; max-height:220px; object-fit:contain; object-position:center;
+    background:rgba(0,0,0,0.3); border:1px solid var(--line); border-radius:4px; margin:0 0 14px 0;
+  }
+  #reportDescription{
+    display:block; width:100%; box-sizing:border-box; resize:vertical; min-height:80px;
+    background:rgba(255,255,255,0.03); border:1px solid var(--line); border-radius:4px;
+    color:var(--ink); font-family:'Lora', Georgia, serif; font-size:15px; padding:10px 12px; margin:0 0 14px 0;
+  }
+  .report-actions{ text-align:center; margin-bottom:10px; }
+  .report-status{
+    text-align:center; font-family:'Lora', Georgia, serif; font-style:italic; font-size:14px;
+    color:var(--sepia); margin:0 0 14px 0;
+  }
+  .report-details{ font-family:'Lora', Georgia, serif; font-size:13px; color:var(--ink-soft); }
+  .report-details summary{ cursor:pointer; }
+  .report-details pre{
+    white-space:pre-wrap; word-break:break-word; background:rgba(0,0,0,0.25); border:1px solid var(--line);
+    border-radius:4px; padding:10px 12px; margin-top:8px; font-family:'Lora', Georgia, serif; font-size:12px;
+  }
+
   /* --- End screen --- */
   .end-card{
     position:relative; max-width:640px; width:100%; max-height:82vh; overflow-y:auto;
@@ -715,6 +737,7 @@
         <button id="hintBtn">💡 Hint</button>
         <button id="accuseBtn">⚖ Accuse</button>
         <button id="muteBtn">🔊</button>
+        <button id="reportBtn" aria-label="Report an issue" title="Report an issue">🐛</button>
       </div>
       <div id="progressBadge"></div>
       <div id="talkedToPanel"></div>
@@ -935,6 +958,26 @@
         <div class="hint-actions">
           <button id="hintMoreBtn" class="btn secondary">Give me a more specific hint</button>
         </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="reportModal" class="person-modal">
+      <div class="notebook-card">
+        <button class="person-modal-close" data-close aria-label="Close">&times;</button>
+        <div class="modal-scroll-body">
+        <h2>Report an Issue</h2>
+        <p class="accuse-sub">This grabs a screenshot and the behind-the-scenes details automatically — you don't need to explain which story you're in. Just tell us what went wrong.</p>
+        <img id="reportScreenshot" alt="Screenshot preview">
+        <textarea id="reportDescription" placeholder="What happened? What did you expect instead?" rows="4"></textarea>
+        <div class="report-actions">
+          <button id="reportSendBtn" class="btn">Share Report</button>
+        </div>
+        <p id="reportStatus" class="report-status" style="display:none;"></p>
+        <details class="report-details">
+          <summary>Details included with every report</summary>
+          <pre id="reportDetailsText"></pre>
+        </details>
         </div>
       </div>
     </div>
