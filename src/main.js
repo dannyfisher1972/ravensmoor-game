@@ -18,7 +18,7 @@ import {
   recordSolvedCase, getCasebook, NUM_KILLER_VARIANTS, CURRENT_PACK
 } from './state.js';
 import { startRainAmbience, setMuted, isMuted, playClick, playWinSting, playLoseSting } from './audio.js';
-import { logEvent, logEventOncePerStory, getAnalyticsSummary } from './analytics.js';
+import { logEvent, logEventOncePerStory, hasCompletedStory, getAnalyticsSummary } from './analytics.js';
 
 // Fixed for the whole playthrough (only reshuffles via resetProgress on a new
 // investigation), so it's safe to resolve once here rather than threading it
@@ -1310,9 +1310,14 @@ accuseConfirmBtn.addEventListener('click', () => {
   recordAccusationAttempt();
   const correct = selectedSuspect.name === SOLUTION.killer;
   if (correct) recordSolvedCase(killerIndex, SOLUTION.killer, SOLUTION.method);
-  logEvent(correct ? 'correct_accusation' : 'incorrect_accusation', {
-    scenarioId: killerIndex, suspect: selectedSuspect.name, evidenceStrength: evidenceBucketFor(selectedSuspect.name)
-  });
+  // A win doesn't lock out further accusations (Keep Investigating stays
+  // available), so without this guard a stray re-accusation after already
+  // winning would log a second outcome event for the same investigation.
+  if (!hasCompletedStory(activeStory)) {
+    logEvent(correct ? 'correct_accusation' : 'incorrect_accusation', {
+      scenarioId: killerIndex, suspect: selectedSuspect.name, evidenceStrength: evidenceBucketFor(selectedSuspect.name)
+    });
+  }
   const exhausted = !correct && accusationAttempts >= MAX_ACCUSATIONS;
   if (correct || exhausted) logEventOncePerStory('investigation_completed', activeStory, { scenarioId: killerIndex });
   const remaining = Math.max(0, MAX_ACCUSATIONS - accusationAttempts);

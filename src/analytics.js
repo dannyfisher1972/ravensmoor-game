@@ -36,6 +36,15 @@ export function logEventOncePerStory(type, storyId, data = {}) {
   saveAnalytics(book);
 }
 
+// True once this story's investigation_completed event has already fired —
+// used to stop a stray re-accusation (a win doesn't lock out further
+// accusation attempts) from logging a second correct/incorrect_accusation
+// for an investigation that's already resolved.
+export function hasCompletedStory(storyId) {
+  const { events } = loadAnalytics();
+  return events.some((e) => e.type === 'investigation_completed' && e.storyId === storyId);
+}
+
 export function getAnalyticsSummary() {
   const { events } = loadAnalytics();
   const count = (type) => events.filter((e) => e.type === type).length;
