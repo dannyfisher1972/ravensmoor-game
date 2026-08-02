@@ -643,6 +643,19 @@
     border-radius:4px; padding:10px 12px; margin-top:8px; font-family:'Lora', Georgia, serif; font-size:12px;
   }
 
+  /* --- Casebook --- */
+  .casebook-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(140px, 1fr)); gap:12px; }
+  .casebook-card{
+    border:1px solid var(--line); border-radius:6px; padding:12px 10px; text-align:center;
+    background:rgba(255,255,255,0.02); font-family:'Lora', Georgia, serif;
+  }
+  .casebook-card.solved{ border-color:var(--sepia); }
+  .casebook-card .casebook-killer{ font-weight:700; color:var(--ink); font-size:14px; margin-bottom:4px; }
+  .casebook-card.solved .casebook-method{ color:var(--sepia); font-size:13px; text-transform:capitalize; }
+  .casebook-card.unsolved .casebook-killer{ color:var(--ink-soft); }
+  .casebook-card.unsolved .casebook-method{ color:var(--ink-soft); font-size:16px; letter-spacing:.1em; }
+  .casebook-card .casebook-date{ color:var(--ink-soft); font-size:11px; margin-top:4px; }
+
   /* --- End screen --- */
   .end-card{
     position:relative; max-width:640px; width:100%; max-height:82vh; overflow-y:auto;
@@ -736,6 +749,7 @@
         <button id="inventoryBtn">🎒 Items</button>
         <button id="hintBtn">💡 Hint</button>
         <button id="accuseBtn">⚖ Accuse</button>
+        <button id="casebookBtn">📔 Casebook</button>
         <button id="muteBtn">🔊</button>
         <button id="reportBtn" aria-label="Report an issue" title="Report an issue">🐛</button>
       </div>
@@ -978,6 +992,17 @@
           <summary>Details included with every report</summary>
           <pre id="reportDetailsText"></pre>
         </details>
+        </div>
+      </div>
+    </div>
+
+    <div id="casebookModal" class="person-modal">
+      <div class="notebook-card">
+        <button class="person-modal-close" data-close aria-label="Close">&times;</button>
+        <div class="modal-scroll-body">
+        <h2>Casebook</h2>
+        <p class="accuse-sub" id="casebookCount">Solved Cases: 0 / 37</p>
+        <div id="casebookGrid" class="casebook-grid"></div>
         </div>
       </div>
     </div>

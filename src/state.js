@@ -26,7 +26,44 @@ const NEXT_ID_KEY = 'ravensmoor-next-story-id';
 // (1) = 37, x2 Victoria states. Kept as a bare count rather than importing
 // src/data/solutions.js, so this module stays decoupled from game content —
 // update this if that ever changes.
-const NUM_KILLER_VARIANTS = 37;
+export const NUM_KILLER_VARIANTS = 37;
+
+// --- Casebook ---------------------------------------------------------------
+// Cross-investigation record of which scenarios have been solved, kept in
+// its own localStorage key entirely separate from story slots — it must
+// survive resetProgress(), new investigations, and slot rerolls, none of
+// which should ever touch it. Entries are keyed `pack:scenarioId` (not just
+// scenarioId) so a future DLC pack (a different victim/house/cast) can
+// introduce its own scenario 0..N without colliding with this base game's
+// ids — CURRENT_PACK is the only thing that would need to change per pack.
+const CASEBOOK_KEY = 'ravensmoor-casebook';
+const CURRENT_PACK = 'ravensmoor-hall';
+
+function loadCasebook() {
+  try {
+    const raw = localStorage.getItem(CASEBOOK_KEY);
+    const parsed = raw ? JSON.parse(raw) : null;
+    if (parsed && typeof parsed === 'object' && parsed.solved) return parsed;
+  } catch { /* fall through to a fresh casebook */ }
+  return { version: 1, solved: {} };
+}
+
+// Returns { version, solved: { 'pack:scenarioId': { pack, scenarioId, killer, method, solvedAt } } }.
+export function getCasebook() {
+  return loadCasebook();
+}
+
+export function recordSolvedCase(scenarioId, killer, method) {
+  const book = loadCasebook();
+  const key = `${CURRENT_PACK}:${scenarioId}`;
+  if (book.solved[key]) return; // already recorded — keep the first solve date
+  book.solved[key] = { pack: CURRENT_PACK, scenarioId, killer, method, solvedAt: new Date().toISOString() };
+  try { localStorage.setItem(CASEBOOK_KEY, JSON.stringify(book)); } catch { /* ignore */ }
+}
+
+export function casebookKeyFor(scenarioId) {
+  return `${CURRENT_PACK}:${scenarioId}`;
+}
 
 function randomVictoriaStatus() {
   return Math.random() < 0.5 ? 'wife' : 'girlfriend';

@@ -14,7 +14,8 @@ import {
   ASKED_QUESTIONS,
   victoriaStatus, activeStory, storyName, renameActiveStory, startRandomStory,
   getSavedStories, renameStory, deleteStory,
-  INVENTORY, armedItem, armItem, disarmItem, currentRoom
+  INVENTORY, armedItem, armItem, disarmItem, currentRoom,
+  recordSolvedCase, getCasebook, NUM_KILLER_VARIANTS
 } from './state.js';
 import { startRainAmbience, setMuted, isMuted, playClick, playWinSting, playLoseSting } from './audio.js';
 
@@ -627,6 +628,50 @@ reportSendBtn.addEventListener('click', async () => {
   }
 });
 
+// --- Casebook ----------------------------------------------------------
+// Cross-investigation record of solved scenarios (see state.js's
+// getCasebook/recordSolvedCase) — independent of any single story slot, so
+// it persists across new investigations and resets. Killer/method are
+// never shown for a scenario that hasn't actually been solved yet.
+const casebookModal = document.getElementById('casebookModal');
+const casebookBtn = document.getElementById('casebookBtn');
+const casebookGrid = document.getElementById('casebookGrid');
+const casebookCountEl = document.getElementById('casebookCount');
+
+function renderCasebook() {
+  const book = getCasebook();
+  const solvedEntries = Object.values(book.solved);
+  casebookCountEl.textContent = `Solved Cases: ${solvedEntries.length} / ${NUM_KILLER_VARIANTS}`;
+  const cards = [];
+  for (let i = 0; i < NUM_KILLER_VARIANTS; i++) {
+    const entry = solvedEntries.find((e) => e.scenarioId === i);
+    if (entry) {
+      const dateStr = new Date(entry.solvedAt).toLocaleDateString();
+      cards.push(`
+        <div class="casebook-card solved">
+          <div class="casebook-killer">${entry.killer}</div>
+          <div class="casebook-method">✓ ${entry.method}</div>
+          <div class="casebook-date">${dateStr}</div>
+        </div>
+      `);
+    } else {
+      cards.push(`
+        <div class="casebook-card unsolved">
+          <div class="casebook-killer">Case #${i + 1}</div>
+          <div class="casebook-method">????</div>
+        </div>
+      `);
+    }
+  }
+  casebookGrid.innerHTML = cards.join('');
+}
+
+casebookBtn.addEventListener('click', () => {
+  playClick();
+  renderCasebook();
+  casebookModal.classList.add('open');
+});
+
 // --- Mute toggle ---------------------------------------------------------
 // Two buttons — one on the title screen (so sound can be turned off before
 // the rain ambience ever starts), one in the in-game HUD — both reflect the
@@ -1177,6 +1222,7 @@ accuseConfirmBtn.addEventListener('click', () => {
 
   recordAccusationAttempt();
   const correct = selectedSuspect.name === SOLUTION.killer;
+  if (correct) recordSolvedCase(killerIndex, SOLUTION.killer, SOLUTION.method);
   const exhausted = !correct && accusationAttempts >= MAX_ACCUSATIONS;
   const remaining = Math.max(0, MAX_ACCUSATIONS - accusationAttempts);
   handleNewAchievements(checkAchievements(achievementTotals({ lastAccusationCorrect: correct })));
