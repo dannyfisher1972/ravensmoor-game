@@ -80,7 +80,9 @@
        vh's fixed-at-load value. */
     max-height:75vh; max-height:75dvh;
     overflow:hidden; box-sizing:border-box;
-    /* display:flex/column (set alongside style.display='flex' in JS) so
+    /* flex-direction:column (paired with style.display='flex' set inline by
+       JS when opening — inline style always wins over this stylesheet's
+       display:none above, so the closed/default state stays hidden) so
        #dialog-scrollarea below can use flex:1 + min-height:0 to scroll
        reliably. A plain max-height:100% on the scrollarea depends on this
        box having a "definite" height for percentage resolution — but an
@@ -90,7 +92,7 @@
        clipped by this box's overflow:hidden with no way to scroll to it.
        Flexbox's height distribution doesn't depend on that percentage
        resolution, so it doesn't hit the same failure mode. */
-    display:flex; flex-direction:column;
+    flex-direction:column;
   }
   #dialog::before{
     content:""; position:absolute; inset:5px; border:1px solid rgba(217,137,188,0.35); border-bottom:none;

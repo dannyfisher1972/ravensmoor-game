@@ -762,6 +762,17 @@ export default class RoomScene extends Phaser.Scene {
     this.dialogTitleEl.textContent = title;
     this.dialogBodyEl.innerHTML = '<span class="cursor"></span>';
     this.dialogEl.style.display = 'flex';
+    // The CSS max-height (75dvh) is sized off the full viewport, but the box
+    // is bottom-anchored to #game-container, which on a narrow/tall phone
+    // sits vertically centered with a much shorter aspect-ratio-derived
+    // height — leaving less room above the anchor than 75% of the viewport,
+    // which can push the box (and its close button) up off the top of the
+    // screen entirely. Capping to whichever is smaller keeps it on-screen.
+    const containerEl = document.getElementById('game-container');
+    if (containerEl) {
+      const availableAboveAnchor = containerEl.getBoundingClientRect().bottom - 12;
+      this.dialogEl.style.maxHeight = Math.min(window.innerHeight * 0.75, availableAboveAnchor) + 'px';
+    }
     // A new conversation should always open scrolled to the top, not
     // wherever a previous (possibly longer) answer left the scroll
     // position — otherwise a short answer could open already scrolled past
