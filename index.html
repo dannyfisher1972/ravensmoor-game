@@ -295,7 +295,8 @@
 
   /* --- Meet the Household (full-screen cast modal) --- */
   .cast-modal-card{
-    position:relative; max-width:900px; width:100%; max-height:82vh; overflow-y:auto;
+    position:relative; max-width:900px; width:100%; max-height:82vh;
+    display:flex; flex-direction:column;
     background:rgba(18,16,14,0.97); border:1px solid var(--line); border-radius:10px;
     padding:34px; box-shadow:0 24px 70px rgba(0,0,0,0.6);
   }
@@ -436,10 +437,15 @@
 
   /* --- Notebook --- */
   .notebook-card{
-    position:relative; max-width:960px; width:100%; max-height:82vh; overflow-y:auto;
+    position:relative; max-width:960px; width:100%; max-height:82vh;
+    display:flex; flex-direction:column;
     background:rgba(18,16,14,0.97); border:1px solid var(--line); border-radius:10px;
     padding:34px; box-shadow:0 24px 70px rgba(0,0,0,0.6);
   }
+  /* Keeps the close button pinned in view: the card itself no longer
+     scrolls, only this inner wrapper does (min-height:0 is required for a
+     flex child to actually shrink and scroll instead of overflowing). */
+  .modal-scroll-body{ overflow-y:auto; min-height:0; }
   .notebook-card h2{ font-family:'Playfair Display', Georgia, serif; color:var(--sepia); font-size:24px; margin:0 0 4px 0; text-align:center; }
   .notebook-columns{ display:flex; gap:30px; margin-top:20px; }
   .notebook-col{ flex:1; min-width:0; }
@@ -562,7 +568,8 @@
 
   /* --- Accusation --- */
   .accuse-card{
-    position:relative; max-width:760px; width:100%; max-height:82vh; overflow-y:auto;
+    position:relative; max-width:760px; width:100%; max-height:82vh;
+    display:flex; flex-direction:column;
     background:rgba(18,16,14,0.97); border:1px solid var(--line); border-radius:10px;
     padding:34px; box-shadow:0 24px 70px rgba(0,0,0,0.6);
   }
@@ -789,6 +796,7 @@
     <div id="caseFileModal" class="person-modal">
       <div class="notebook-card">
         <button class="person-modal-close" data-close aria-label="Close">&times;</button>
+        <div class="modal-scroll-body">
         <h2>The Case</h2>
 
         <div class="case-file-section">
@@ -810,6 +818,7 @@
               <p>He leaves behind a <span class="spouse-word">wife</span>, two children, an ex-wife, a sister, a nephew, a business partner of thirty years, a lawyer of twelve, and a housekeeper who has run this house for twenty-six.</p>
             </div>
           </div>
+        </div>
         </div>
       </div>
     </div>
@@ -833,6 +842,7 @@
     <div id="castModal" class="person-modal">
       <div class="cast-modal-card">
         <button class="person-modal-close" data-close aria-label="Close">&times;</button>
+        <div class="modal-scroll-body">
         <div id="castGridView">
           <h2 class="cast-modal-heading">The Household</h2>
           <div id="castGrid" class="cast-grid"></div>
@@ -848,12 +858,14 @@
             </div>
           </div>
         </div>
+        </div>
       </div>
     </div>
 
     <div id="notebookModal" class="person-modal">
       <div class="notebook-card">
         <button class="person-modal-close" data-close aria-label="Close">&times;</button>
+        <div class="modal-scroll-body">
         <h2>Case Notebook</h2>
         <div class="notebook-view-toggle">
           <button id="notebookListBtn" class="view-toggle-btn active">List</button>
@@ -890,27 +902,32 @@
           <h3>Achievements</h3>
           <div id="achievementsRow" class="achievements-row"></div>
         </div>
+        </div>
       </div>
     </div>
 
     <div id="inventoryModal" class="person-modal">
       <div class="notebook-card">
         <button class="person-modal-close" data-close aria-label="Close">&times;</button>
+        <div class="modal-scroll-body">
         <h2>Carried Items</h2>
         <p class="accuse-sub">Click an item to hold it, then click something in a room to try using it there. Click it again to put it away.</p>
         <div id="inventoryGrid" class="accuse-grid"></div>
+        </div>
       </div>
     </div>
 
     <div id="accuseModal" class="person-modal">
       <div class="accuse-card">
         <button class="person-modal-close" data-close aria-label="Close">&times;</button>
+        <div class="modal-scroll-body">
         <h2>Name the Killer</h2>
         <p class="accuse-sub" id="accuseSub">Choose carefully — you only get one accusation.</p>
         <div id="accuseGrid" class="accuse-grid"></div>
         <p id="accuseWarning" class="accuse-warning" style="display:none;"></p>
         <div class="accuse-confirm-row">
           <button id="accuseConfirmBtn" class="btn" disabled>Confirm Accusation</button>
+        </div>
         </div>
       </div>
     </div>
