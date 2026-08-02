@@ -18,11 +18,16 @@ import {
   recordSolvedCase, getCasebook, NUM_KILLER_VARIANTS, CURRENT_PACK
 } from './state.js';
 import { startRainAmbience, setMuted, isMuted, playClick, playWinSting, playLoseSting } from './audio.js';
+import { logEvent, logEventOncePerStory, getAnalyticsSummary } from './analytics.js';
 
 // Fixed for the whole playthrough (only reshuffles via resetProgress on a new
 // investigation), so it's safe to resolve once here rather than threading it
 // through every function that needs to know the evidence total or the answer.
 const SOLUTION = SOLUTIONS[killerIndex];
+
+// Analytics V1 — fires once per distinct story slot regardless of how many
+// times that slot's page gets reloaded (see analytics.js's dedup-by-storyId).
+logEventOncePerStory('investigation_started', activeStory, { scenarioId: killerIndex });
 const ALL_EVIDENCE = getAllEvidence(SOLUTION.killer, victoriaStatus, SOLUTION.method);
 
 // Reflects Victoria's randomized relationship status ("He leaves behind a
@@ -493,12 +498,14 @@ hintBtn.addEventListener('click', () => {
   hintTierIndex = 0;
   renderHintTier();
   hintModal.classList.add('open');
+  logEvent('hint_used', { scenarioId: killerIndex, hintTier: hintTierIndex + 1 });
 });
 
 hintMoreBtn.addEventListener('click', () => {
   playClick();
   hintTierIndex = Math.min(hintTierIndex + 1, hintTiers.length - 1);
   renderHintTier();
+  logEvent('hint_used', { scenarioId: killerIndex, hintTier: hintTierIndex + 1 });
 });
 
 // --- Issue reporting --------------------------------------------------------
@@ -670,6 +677,35 @@ casebookBtn.addEventListener('click', () => {
   playClick();
   renderCasebook();
   casebookModal.classList.add('open');
+});
+
+// --- Analytics (V1) ------------------------------------------------------
+// Simple local counters only — no charts, no export, no backend. See
+// analytics.js for the underlying event log this reads from.
+const analyticsModal = document.getElementById('analyticsModal');
+const analyticsBtn = document.getElementById('analyticsBtn');
+const analyticsStatsEl = document.getElementById('analyticsStats');
+
+function renderAnalytics() {
+  const s = getAnalyticsSummary();
+  const rows = [
+    ['Investigations Started', s.started],
+    ['Investigations Completed', s.completed],
+    ['Correct Accusations', s.correct],
+    ['Incorrect Accusations', s.incorrect],
+    ['Hint Usage Count', s.hints],
+    ['Cases Solved', s.casesSolved],
+    ['Success Rate', `${s.successRate}%`]
+  ];
+  analyticsStatsEl.innerHTML = rows.map(([label, value]) => `
+    <div class="analytics-row"><span>${label}</span><b>${value}</b></div>
+  `).join('');
+}
+
+analyticsBtn.addEventListener('click', () => {
+  playClick();
+  renderAnalytics();
+  analyticsModal.classList.add('open');
 });
 
 // --- Mute toggle ---------------------------------------------------------
@@ -1123,19 +1159,25 @@ function suspectEvidence(suspectName) {
 // real killer's exclusive evidence pool is always larger than an innocent
 // suspect's red-herring-only pool. Only ever describes ONE suspect at a
 // time and never states whether that suspect is actually guilty.
+// Shared by the meter display and analytics logging, so both agree on what
+// "weak/building/strong" means without duplicating the threshold checks.
+function evidenceBucketFor(suspectName) {
+  const relevant = suspectEvidence(suspectName);
+  const relevantFound = relevant.filter((e) => FOUND_EVIDENCE.has(e.id)).length;
+  const fraction = relevant.length > 0 ? relevantFound / relevant.length : 0;
+  if (relevant.length > 0 && fraction >= 0.75) return 'strong';
+  if (relevant.length > 0 && fraction >= LOW_EVIDENCE_THRESHOLD) return 'building';
+  return 'weak';
+}
+
 function updateEvidenceMeter(suspectName) {
   const relevant = suspectEvidence(suspectName);
   const relevantFound = relevant.filter((e) => FOUND_EVIDENCE.has(e.id)).length;
   const fraction = relevant.length > 0 ? relevantFound / relevant.length : 0;
-  let bucket = 'weak';
-  let label = "Weak — not much evidence points here yet.";
-  if (relevant.length > 0 && fraction >= 0.75) {
-    bucket = 'strong';
-    label = 'Strong — the evidence points here clearly.';
-  } else if (relevant.length > 0 && fraction >= LOW_EVIDENCE_THRESHOLD) {
-    bucket = 'building';
-    label = 'Building — a real case is forming.';
-  }
+  const bucket = evidenceBucketFor(suspectName);
+  const label = bucket === 'strong' ? 'Strong — the evidence points here clearly.'
+    : bucket === 'building' ? 'Building — a real case is forming.'
+    : 'Weak — not much evidence points here yet.';
   evidenceMeterFillEl.style.width = `${Math.round(fraction * 100)}%`;
   evidenceMeterFillEl.className = 'evidence-meter-fill' + (bucket !== 'weak' ? ` ${bucket}` : '');
   evidenceMeterLabelEl.textContent = label;
@@ -1268,7 +1310,11 @@ accuseConfirmBtn.addEventListener('click', () => {
   recordAccusationAttempt();
   const correct = selectedSuspect.name === SOLUTION.killer;
   if (correct) recordSolvedCase(killerIndex, SOLUTION.killer, SOLUTION.method);
+  logEvent(correct ? 'correct_accusation' : 'incorrect_accusation', {
+    scenarioId: killerIndex, suspect: selectedSuspect.name, evidenceStrength: evidenceBucketFor(selectedSuspect.name)
+  });
   const exhausted = !correct && accusationAttempts >= MAX_ACCUSATIONS;
+  if (correct || exhausted) logEventOncePerStory('investigation_completed', activeStory, { scenarioId: killerIndex });
   const remaining = Math.max(0, MAX_ACCUSATIONS - accusationAttempts);
   handleNewAchievements(checkAchievements(achievementTotals({ lastAccusationCorrect: correct })));
   correct ? playWinSting() : playLoseSting();

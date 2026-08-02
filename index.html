@@ -677,6 +677,14 @@
   .casebook-card.unsolved .casebook-method{ color:var(--ink-soft); font-size:16px; letter-spacing:.1em; }
   .casebook-card .casebook-date{ color:var(--ink-soft); font-size:11px; margin-top:4px; }
 
+  /* --- Analytics --- */
+  .analytics-stats{ display:flex; flex-direction:column; gap:2px; }
+  .analytics-row{
+    display:flex; justify-content:space-between; padding:9px 4px; border-bottom:1px solid var(--line);
+    font-family:'Lora', Georgia, serif; font-size:14px; color:var(--ink);
+  }
+  .analytics-row b{ color:var(--sepia); }
+
   /* --- End screen --- */
   .end-card{
     position:relative; max-width:640px; width:100%; max-height:82vh; overflow-y:auto;
@@ -771,6 +779,7 @@
         <button id="hintBtn">💡 Hint</button>
         <button id="accuseBtn">⚖ Accuse</button>
         <button id="casebookBtn">📔 Casebook</button>
+        <button id="analyticsBtn" aria-label="Analytics" title="Analytics">📊</button>
         <button id="muteBtn">🔊</button>
         <button id="reportBtn" aria-label="Report an issue" title="Report an issue">🐛</button>
       </div>
@@ -1024,6 +1033,17 @@
         <h2>Casebook</h2>
         <p class="accuse-sub" id="casebookCount">Solved Cases: 0 / 37</p>
         <div id="casebookGrid" class="casebook-grid"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="analyticsModal" class="person-modal">
+      <div class="notebook-card">
+        <button class="person-modal-close" data-close aria-label="Close">&times;</button>
+        <div class="modal-scroll-body">
+        <h2>Analytics</h2>
+        <p class="accuse-sub">Local device stats only — nothing leaves your browser.</p>
+        <div id="analyticsStats" class="analytics-stats"></div>
         </div>
       </div>
     </div>

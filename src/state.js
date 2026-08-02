@@ -1,3 +1,5 @@
+import { logEvent } from './analytics.js';
+
 // Shared game-progress state: which evidence has been found, which NPCs have
 // been talked to, which rooms have been visited, which questions have been
 // asked, which killer this playthrough got, and the current room.
@@ -59,6 +61,7 @@ export function recordSolvedCase(scenarioId, killer, method) {
   if (book.solved[key]) return; // already recorded — keep the first solve date
   book.solved[key] = { pack: CURRENT_PACK, scenarioId, killer, method, solvedAt: new Date().toISOString() };
   try { localStorage.setItem(CASEBOOK_KEY, JSON.stringify(book)); } catch { /* ignore */ }
+  logEvent('casebook_entry_unlocked', { scenarioId, killer, method });
 }
 
 export function casebookKeyFor(scenarioId) {
