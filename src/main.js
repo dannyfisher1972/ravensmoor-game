@@ -1059,6 +1059,9 @@ const accuseConfirmBtn = document.getElementById('accuseConfirmBtn');
 const accuseWarningEl = document.getElementById('accuseWarning');
 const accuseSubEl = document.getElementById('accuseSub');
 const accuseBtn = document.getElementById('accuseBtn');
+const evidenceMeterEl = document.getElementById('evidenceMeter');
+const evidenceMeterFillEl = document.getElementById('evidenceMeterFill');
+const evidenceMeterLabelEl = document.getElementById('evidenceMeterLabel');
 let selectedSuspect = null;
 let accusePendingConfirm = false;
 
@@ -1111,6 +1114,34 @@ function suspectEvidence(suspectName) {
   });
 }
 
+// Shows how much of the found evidence backs whichever suspect is currently
+// selected — reusing the exact same fraction the low-evidence soft-gate
+// warning already computes (suspectEvidence + LOW_EVIDENCE_THRESHOLD), just
+// surfaced continuously instead of only after attempting to confirm.
+// Deliberately a qualitative bar + label, never a raw count: showing exact
+// numbers side-by-side across suspects would itself be a spoiler, since the
+// real killer's exclusive evidence pool is always larger than an innocent
+// suspect's red-herring-only pool. Only ever describes ONE suspect at a
+// time and never states whether that suspect is actually guilty.
+function updateEvidenceMeter(suspectName) {
+  const relevant = suspectEvidence(suspectName);
+  const relevantFound = relevant.filter((e) => FOUND_EVIDENCE.has(e.id)).length;
+  const fraction = relevant.length > 0 ? relevantFound / relevant.length : 0;
+  let bucket = 'weak';
+  let label = "Weak — not much evidence points here yet.";
+  if (relevant.length > 0 && fraction >= 0.75) {
+    bucket = 'strong';
+    label = 'Strong — the evidence points here clearly.';
+  } else if (relevant.length > 0 && fraction >= LOW_EVIDENCE_THRESHOLD) {
+    bucket = 'building';
+    label = 'Building — a real case is forming.';
+  }
+  evidenceMeterFillEl.style.width = `${Math.round(fraction * 100)}%`;
+  evidenceMeterFillEl.className = 'evidence-meter-fill' + (bucket !== 'weak' ? ` ${bucket}` : '');
+  evidenceMeterLabelEl.textContent = label;
+  evidenceMeterEl.style.display = '';
+}
+
 function resetAccuseConfirmState() {
   accusePendingConfirm = false;
   accuseConfirmBtn.textContent = 'Confirm Accusation';
@@ -1130,6 +1161,7 @@ CHARACTERS.forEach((c) => {
     cell.classList.add('selected');
     accuseConfirmBtn.disabled = false;
     resetAccuseConfirmState(); // switching suspects should re-ask, not carry over a pending confirm
+    updateEvidenceMeter(c.name);
   });
   accuseGrid.appendChild(cell);
 });
@@ -1152,6 +1184,7 @@ accidentCell.addEventListener('click', () => {
   accidentCell.classList.add('selected');
   accuseConfirmBtn.disabled = false;
   resetAccuseConfirmState();
+  updateEvidenceMeter(ACCIDENT_SUSPECT.name);
 });
 accuseGrid.appendChild(accidentCell);
 
@@ -1159,6 +1192,10 @@ accuseBtn.addEventListener('click', () => {
   if (accusationAttempts >= MAX_ACCUSATIONS) return; // button is disabled too; this is just a backstop
   playClick();
   resetAccuseConfirmState();
+  // Selection carries over between modal opens (pre-existing behavior) —
+  // keep the meter in sync with that instead of forcing a reset.
+  if (selectedSuspect) updateEvidenceMeter(selectedSuspect.name);
+  else evidenceMeterEl.style.display = 'none';
   accuseModal.classList.add('open');
 });
 

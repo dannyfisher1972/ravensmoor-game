@@ -614,6 +614,27 @@
     color:var(--danger); margin:0 0 16px 0;
   }
 
+  /* --- Evidence strength meter --- */
+  /* Deliberately shows only a qualitative label + bar for whichever suspect
+     is currently selected — never raw evidence counts, never more than one
+     suspect at a time — so it nudges confidence without becoming a side-by-
+     side "who has more clues" comparison across the whole household. */
+  .evidence-meter{ margin:0 0 16px 0; }
+  .evidence-meter-bar{
+    width:100%; height:8px; border-radius:4px; background:rgba(255,255,255,0.08);
+    overflow:hidden; border:1px solid var(--line);
+  }
+  .evidence-meter-fill{
+    height:100%; width:0%; border-radius:4px; transition:width .3s ease, background .3s ease;
+    background:var(--danger);
+  }
+  .evidence-meter-fill.building{ background:var(--foxglove); }
+  .evidence-meter-fill.strong{ background:var(--sepia); }
+  .evidence-meter-label{
+    text-align:center; font-family:'Lora', Georgia, serif; font-style:italic; font-size:13px;
+    color:var(--ink-soft); margin:6px 0 0 0;
+  }
+
   /* --- Hints --- */
   .hint-text{
     font-family:'Lora', Georgia, serif; font-size:17px; line-height:1.65; color:var(--ink);
@@ -1014,6 +1035,10 @@
         <h2>Name the Killer</h2>
         <p class="accuse-sub" id="accuseSub">Choose carefully — you only get one accusation.</p>
         <div id="accuseGrid" class="accuse-grid"></div>
+        <div id="evidenceMeter" class="evidence-meter" style="display:none;">
+          <div class="evidence-meter-bar"><div id="evidenceMeterFill" class="evidence-meter-fill"></div></div>
+          <p id="evidenceMeterLabel" class="evidence-meter-label"></p>
+        </div>
         <p id="accuseWarning" class="accuse-warning" style="display:none;"></p>
         <div class="accuse-confirm-row">
           <button id="accuseConfirmBtn" class="btn" disabled>Confirm Accusation</button>
