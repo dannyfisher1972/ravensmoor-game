@@ -364,12 +364,14 @@
      bottom-left corner, kept apart only by the toolbar's right-justify
      happening to leave the left side empty — a coincidence, not a
      guarantee, that broke down whenever the wrapped rows filled edge to
-     edge. Nesting both in one flex row makes the layout engine reserve
-     space for the badge instead, so they can never collide regardless of
-     button count, label width, or viewport size. */
+     edge. Stacking them as rows in one flex column means neither one ever
+     shares horizontal space with the other (so they can never collide,
+     regardless of button count or label width) and the toolbar always
+     gets the bar's full width to wrap its buttons into, rather than
+     splitting that width with the badge and wrapping sooner than it needs to. */
   #bottomBar{
     position:absolute; bottom:14px; left:14px; right:14px;
-    display:flex; align-items:flex-end; justify-content:space-between; gap:8px;
+    display:flex; flex-direction:column; align-items:stretch; gap:6px;
     pointer-events:none;
   }
   #actionButtons{
@@ -387,7 +389,7 @@
   #actionButtons button:disabled:hover{ border-color:var(--line); color:var(--ink-soft); }
 
   #progressBadge{
-    flex-shrink:0; font-family:'Lora', Georgia, serif;
+    align-self:flex-start; font-family:'Lora', Georgia, serif;
     font-size:12px; color:var(--ink-soft); background:rgba(20,18,15,0.8); border:1px solid var(--line);
     padding:6px 12px; border-radius:3px; pointer-events:none;
   }
@@ -705,6 +707,18 @@
   }
   .analytics-row b{ color:var(--sepia); }
 
+  /* Full-width, left-aligned list rows for the secondary-feature menu —
+     unlike the compact icon-pill toolbar buttons, these have room to show
+     a label alongside the icon, which is the point: these are the icons
+     that were unclear at toolbar size (Casebook vs. Notebook vs. Stats). */
+  .more-menu{ display:flex; flex-direction:column; gap:8px; }
+  .more-menu button{
+    width:100%; text-align:left; font-family:'Lora', Georgia, serif; font-size:15px;
+    background:rgba(255,255,255,0.02); border:1px solid var(--line); color:var(--ink-soft);
+    padding:12px 14px; border-radius:4px; cursor:pointer; letter-spacing:.02em;
+  }
+  .more-menu button:hover{ border-color:var(--foxglove); color:var(--foxglove); }
+
   /* --- End screen --- */
   .end-card{
     position:relative; max-width:640px; width:100%; max-height:82vh; overflow-y:auto;
@@ -790,6 +804,7 @@
       <div id="zoomControls">
         <button id="zoomInBtn" aria-label="Zoom in" title="Zoom in">+</button>
         <button id="zoomOutBtn" aria-label="Zoom out" title="Zoom out" disabled>−</button>
+        <button id="muteBtn" aria-label="Mute sound" title="Mute sound">🔊</button>
       </div>
       <div id="armedBanner" style="display:none;">
         Holding: <span id="armedItemName"></span>
@@ -798,16 +813,11 @@
       <div id="bottomBar">
         <div id="progressBadge"></div>
         <div id="actionButtons">
-          <button id="caseFileBtn">🗎 Case File</button>
           <button id="notebookBtn">📓 Notebook</button>
           <button id="inventoryBtn">🎒 Items</button>
           <button id="hintBtn">💡 Hint</button>
           <button id="accuseBtn">⚖ Accuse</button>
-          <button id="casebookBtn">📔 Casebook</button>
-          <button id="analyticsBtn" aria-label="Analytics" title="Analytics">📊</button>
-          <button id="feedbackBtn" aria-label="Give feedback" title="Give feedback">💬</button>
-          <button id="muteBtn">🔊</button>
-          <button id="reportBtn" aria-label="Report an issue" title="Report an issue">🐛</button>
+          <button id="moreBtn" aria-label="More" title="More">⋯ More</button>
         </div>
       </div>
       <div id="talkedToPanel"></div>
@@ -1070,6 +1080,22 @@
         <h2>Analytics</h2>
         <p class="accuse-sub">Local device stats only — nothing leaves your browser.</p>
         <div id="analyticsStats" class="analytics-stats"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="moreModal" class="person-modal">
+      <div class="notebook-card">
+        <button class="person-modal-close" data-close aria-label="Close">&times;</button>
+        <div class="modal-scroll-body">
+        <h2>More</h2>
+        <div class="more-menu">
+          <button id="caseFileBtn">🗎 Case File</button>
+          <button id="casebookBtn">📔 Casebook</button>
+          <button id="analyticsBtn">📊 My Stats</button>
+          <button id="feedbackBtn">💬 Give Feedback</button>
+          <button id="reportBtn">🐛 Report an Issue</button>
+        </div>
         </div>
       </div>
     </div>

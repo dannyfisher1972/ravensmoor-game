@@ -179,6 +179,7 @@ document.getElementById('victimPortrait').addEventListener('click', () => {
 const caseFileModal = document.getElementById('caseFileModal');
 document.getElementById('caseFileBtn').addEventListener('click', () => {
   playClick();
+  moreModal.classList.remove('open');
   caseFileModal.classList.add('open');
 });
 
@@ -293,6 +294,17 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') {
     document.querySelectorAll('.person-modal.open').forEach((m) => closePersonModal(m));
   }
+});
+
+// --- More menu -------------------------------------------------------------
+// Secondary/infrequent features (Case File, Casebook, Analytics, Feedback,
+// Report) live in here instead of the primary toolbar. Each of those
+// buttons' own click handler closes this modal first, so opening one from
+// the More list doesn't leave two person-modals stacked open at once.
+const moreModal = document.getElementById('moreModal');
+document.getElementById('moreBtn').addEventListener('click', () => {
+  playClick();
+  moreModal.classList.add('open');
 });
 // Any <button> keeps DOM focus after being clicked, so a later Space/Enter
 // press can silently re-trigger it (room-nav arrows are the case that bit
@@ -564,6 +576,7 @@ let reportScreenshotDataUrl = null;
 
 reportBtn.addEventListener('click', () => {
   playClick();
+  moreModal.classList.remove('open');
   reportDescriptionEl.value = '';
   reportStatusEl.style.display = 'none';
   reportSendBtn.disabled = false;
@@ -679,6 +692,7 @@ function renderCasebook() {
 
 casebookBtn.addEventListener('click', () => {
   playClick();
+  moreModal.classList.remove('open');
   renderCasebook();
   casebookModal.classList.add('open');
 });
@@ -708,6 +722,7 @@ function renderAnalytics() {
 
 analyticsBtn.addEventListener('click', () => {
   playClick();
+  moreModal.classList.remove('open');
   renderAnalytics();
   analyticsModal.classList.add('open');
 });
@@ -724,6 +739,7 @@ const feedbackLaterBtn = document.getElementById('feedbackLaterBtn');
 
 feedbackBtn.addEventListener('click', () => {
   playClick();
+  moreModal.classList.remove('open');
   window.open(FEEDBACK_FORM_URL, '_blank', 'noopener');
   logEvent('feedback_opened', { scenarioId: killerIndex, storyId: activeStory, source: 'hud' });
 });
