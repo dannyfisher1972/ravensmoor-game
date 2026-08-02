@@ -357,8 +357,18 @@
   #room-nav button:hover{ border-color:var(--foxglove); color:var(--foxglove); }
   #room-name{ font-family:'Lora', Georgia, serif; font-size:15px; color:var(--sepia); background:rgba(20,18,15,0.8); padding:6px 14px; border-radius:3px; border:1px solid var(--line); }
 
-  #actionButtons{ position:absolute; bottom:14px; right:14px; display:flex; gap:8px; pointer-events:auto; }
+  /* Spans the full width (rather than sizing to content) so flex-wrap has
+     room to lay out a second row instead of overlapping or overflowing off
+     the left edge on narrow phones — pointer-events:none on the row plus
+     :auto on each button (same pattern as #room-nav above) keeps the empty
+     space in that row from swallowing clicks meant for the room behind it. */
+  #actionButtons{
+    position:absolute; bottom:14px; left:14px; right:14px;
+    display:flex; flex-wrap:wrap; gap:8px; justify-content:flex-end;
+    pointer-events:none;
+  }
   #actionButtons button{
+    pointer-events:auto;
     font-family:'Lora', Georgia, serif; font-size:12px;
     background:rgba(20,18,15,0.8); border:1px solid var(--line); color:var(--ink-soft);
     padding:7px 11px; border-radius:3px; cursor:pointer; letter-spacing:.03em;
@@ -430,7 +440,7 @@
        the progress badge — shrinking them leaves more margin against the
        bottom edge, which mobile Safari's own collapsing toolbar chrome can
        eat into (see #app/#game-container's dvh notes above). */
-    #actionButtons{ bottom:8px; right:8px; gap:5px; }
+    #actionButtons{ bottom:8px; left:8px; right:8px; gap:5px; }
     #actionButtons button{ font-size:10px; padding:5px 8px; }
     #progressBadge{ bottom:8px; left:8px; font-size:10px; padding:4px 8px; }
   }

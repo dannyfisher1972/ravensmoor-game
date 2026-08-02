@@ -621,8 +621,18 @@ export default class RoomScene extends Phaser.Scene {
 
   // Converts a point relative to the whole screen (fx,fy in 0..1) into scene
   // pixel coordinates. Hotspots and NPCs can sit anywhere in the artwork.
+  // Clamped inward by the touch hit-radius so a marker authored right at an
+  // edge (fx/fy near 0 or 1) never has part of its tappable circle fall
+  // outside the canvas — on mobile, where the canvas is scaled down hardest,
+  // an unclamped edge marker could be genuinely impossible to tap. This is
+  // the single shared conversion every hotspot and NPC goes through, so it
+  // fixes edge safety everywhere at once rather than nudging fx/fy values
+  // one hotspot at a time.
   pointToScene(fx, fy) {
-    return { x: fx * this.scale.width, y: fy * this.scale.height };
+    const margin = MARKER_HIT_RADIUS + 4;
+    const x = Phaser.Math.Clamp(fx * this.scale.width, margin, this.scale.width - margin);
+    const y = Phaser.Math.Clamp(fy * this.scale.height, margin, this.scale.height - margin);
+    return { x, y };
   }
 
   // Standing in for each NPC in the scene: a circular badge cropped from their
