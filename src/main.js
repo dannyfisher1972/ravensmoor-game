@@ -1168,6 +1168,14 @@ const endTitle = document.getElementById('endTitle');
 const endSub = document.getElementById('endSub');
 const endExplanation = document.getElementById('endExplanation');
 const endKeepBtn = document.getElementById('endKeepBtn');
+const endCasebookBtn = document.getElementById('endCasebookBtn');
+
+endCasebookBtn.addEventListener('click', () => {
+  playClick();
+  endModal.classList.remove('open');
+  renderCasebook();
+  casebookModal.classList.add('open');
+});
 
 // Frames how thorough the investigation actually was, rather than treating
 // every correct (or wrong) guess the same regardless of how much evidence
@@ -1264,6 +1272,13 @@ accuseConfirmBtn.addEventListener('click', () => {
   // Once every accusation is spent, there's nothing left to "keep
   // investigating" toward — only starting a fresh case makes sense.
   endKeepBtn.style.display = exhausted ? 'none' : '';
+  if (correct) {
+    const solvedCount = Object.values(getCasebook().solved).filter((e) => e.pack === CURRENT_PACK).length;
+    endCasebookBtn.textContent = `View Casebook (${solvedCount} / ${NUM_KILLER_VARIANTS})`;
+    endCasebookBtn.style.display = '';
+  } else {
+    endCasebookBtn.style.display = 'none';
+  }
   endModal.classList.add('open');
 });
 
