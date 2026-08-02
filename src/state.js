@@ -37,7 +37,7 @@ export const NUM_KILLER_VARIANTS = 37;
 // introduce its own scenario 0..N without colliding with this base game's
 // ids — CURRENT_PACK is the only thing that would need to change per pack.
 const CASEBOOK_KEY = 'ravensmoor-casebook';
-const CURRENT_PACK = 'ravensmoor-hall';
+export const CURRENT_PACK = 'ravensmoor-hall';
 
 function loadCasebook() {
   try {

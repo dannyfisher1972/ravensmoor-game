@@ -15,7 +15,7 @@ import {
   victoriaStatus, activeStory, storyName, renameActiveStory, startRandomStory,
   getSavedStories, renameStory, deleteStory,
   INVENTORY, armedItem, armItem, disarmItem, currentRoom,
-  recordSolvedCase, getCasebook, NUM_KILLER_VARIANTS
+  recordSolvedCase, getCasebook, NUM_KILLER_VARIANTS, CURRENT_PACK
 } from './state.js';
 import { startRainAmbience, setMuted, isMuted, playClick, playWinSting, playLoseSting } from './audio.js';
 
@@ -644,7 +644,7 @@ function renderCasebook() {
   casebookCountEl.textContent = `Solved Cases: ${solvedEntries.length} / ${NUM_KILLER_VARIANTS}`;
   const cards = [];
   for (let i = 0; i < NUM_KILLER_VARIANTS; i++) {
-    const entry = solvedEntries.find((e) => e.scenarioId === i);
+    const entry = solvedEntries.find((e) => e.pack === CURRENT_PACK && e.scenarioId === i);
     if (entry) {
       const dateStr = new Date(entry.solvedAt).toLocaleDateString();
       cards.push(`
