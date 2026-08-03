@@ -601,12 +601,36 @@ reportSendBtn.addEventListener('click', async () => {
   try {
     let file = null;
     if (reportScreenshotDataUrl) {
-      const blob = await (await fetch(reportScreenshotDataUrl)).blob();
-      file = new File([blob], `ravensmoor-report-${Date.now()}.png`, { type: 'image/png' });
+      try {
+        const blob = await (await fetch(reportScreenshotDataUrl)).blob();
+        file = new File([blob], `ravensmoor-report-${Date.now()}.png`, { type: 'image/png' });
+      } catch { /* screenshot capture or blob conversion failed — fall through, share can still work text-only */ }
     }
-    if (file && navigator.canShare && navigator.canShare({ files: [file] })) {
+    const canShareFile = !!(file && navigator.canShare && navigator.canShare({ files: [file] }));
+
+    if (canShareFile) {
       await navigator.share({ files: [file], text: fullText, title: 'Ravensmoor Hall — Issue Report' });
       reportStatusEl.textContent = 'Report shared. Thank you!';
+      reportStatusEl.style.display = '';
+    } else if (navigator.share) {
+      // The screenshot couldn't be attached — either capture/blob conversion
+      // failed above (seen on some iOS Safari versions) or this browser just
+      // doesn't support file sharing. Text-only sharing works on far more
+      // browsers/devices than file sharing, so try that instead of jumping
+      // straight to the manual download/clipboard fallback below, which was
+      // leaving phone users with no real "send to" destination at all.
+      await navigator.share({ text: fullText, title: 'Ravensmoor Hall — Issue Report' });
+      if (file) {
+        try {
+          const a = document.createElement('a');
+          a.href = reportScreenshotDataUrl;
+          a.download = `ravensmoor-report-${Date.now()}.png`;
+          a.click();
+        } catch { /* best effort only — doesn't change the status message below */ }
+      }
+      reportStatusEl.textContent = file
+        ? 'Details shared, and the screenshot was downloaded — attach it separately if you can.'
+        : 'Report shared. Thank you!';
       reportStatusEl.style.display = '';
     } else {
       // Download and clipboard-copy are independent fallback steps — one
