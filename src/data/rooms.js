@@ -94,7 +94,13 @@ export const ROOMS = {
         fx: 0.16,
         fy: 0.63,
         name: 'Scorched paper in the hearth',
-        note: 'Someone burned a page of handwritten notes here. The initials "K-V" are still legible.'
+        note: 'Someone burned a page of handwritten notes here. The initials "K-V" are still legible.',
+        // Phase 8 — standalone flavor clue with zero downstream dependents
+        // (nothing else requires.evidence:'E-10', it isn't in any
+        // keyEvidence array, and it carries no implicates, so making it
+        // conditionally absent has zero effect on evidence-strength math
+        // or solvability — verified before adding this).
+        requires: { optional: true }
       },
       {
         id: 'EN-06',
@@ -198,14 +204,23 @@ export const ROOMS = {
         fx: 0.45,
         fy: 0.12,
         name: 'A note tucked inside a book cover',
-        note: "In Edmund's own hand, half a reminder to himself: \"Three back, always three back. Never could trust my own handwriting to keep a secret otherwise.\""
+        note: "In Edmund's own hand, half a reminder to himself: \"Three back, always three back. Never could trust my own handwriting to keep a secret otherwise.\"",
+        // Phase 8 — the shared decode-hint for BOTH cipher pairs (this
+        // room's E-78/E-79 and the Bedroom's E-76/E-77). Making it optional
+        // cascades cleanly: on the games it doesn't roll in, E-79 and E-77
+        // (each already gated on requires.evidence:'E-75') simply never
+        // unlock either — no separate optional roll needed on them, and
+        // no keyEvidence/solvability stake since this whole chain is
+        // flavor/lore, never required for an accusation.
+        requires: { optional: true }
       },
       {
         id: 'E-78',
         fx: 0.2,
         fy: 0.35,
         name: 'A loose diary page, in the same private hand',
-        note: 'More of the same looping nonsense: "LI VRPHWKLQJ KDSSHQV WR PH WKLV ZHHN ORRN FORVHU DW ZKR VWDQGV WR ORVH WKH PRVW." Whatever it says, it isn\'t written to be read easily.'
+        note: 'More of the same looping nonsense: "LI VRPHWKLQJ KDSSHQV WR PH WKLV ZHHN ORRN FORVHU DW ZKR VWDQGV WR ORVH WKH PRVW." Whatever it says, it isn\'t written to be read easily.',
+        requires: { optional: true }
       },
       {
         id: 'E-79',
@@ -255,6 +270,32 @@ export const ROOMS = {
         name: "A half-finished crossword, folded into yesterday's paper",
         note: "Only three answers filled in, in a hand that isn't Edmund's. Nothing sinister — just someone's unfinished distraction from before all this began.",
         requires: { optional: true }
+      },
+      {
+        // Phase 8 — alternate secondary evidence: a brand-new supporting
+        // clue, never overlapping any scenario's keyEvidence array, so
+        // reachability is never at stake either way. Rotates with E-132
+        // (Library) — exactly one of the two shows per story slot, for
+        // every one of Harriet's 4 stories, so replaying her doesn't always
+        // surface the same corroborating room.
+        id: 'E-131',
+        fx: 0.75,
+        fy: 0.65,
+        name: 'A stray thread of pale wool, caught on the doorframe',
+        note: "Matches nothing she's worn tonight by her own account — though it's the exact color of the shawl she keeps draped over her reading chair upstairs. Odd, to find it down here.",
+        requires: { killer: 'Harriet Voss', evidenceRotation: { group: 'harriet-support', index: 0, count: 2 } },
+        implicates: 'Harriet Voss',
+        alibiBreak: true
+      },
+      {
+        id: 'E-135',
+        fx: 0.15,
+        fy: 0.2,
+        name: 'A faint trace of perfume, caught in the curtains',
+        note: "She swears she went straight upstairs after saying goodnight and never came down again — yet her own perfume still lingers faintly on the study curtains, of all places.",
+        requires: { killer: 'Victoria Thorne', evidenceRotation: { group: 'victoria-support', index: 0, count: 2 } },
+        implicates: 'Victoria Thorne',
+        alibiBreak: true
       }
     ],
     npcs: [
@@ -519,6 +560,16 @@ export const ROOMS = {
         requires: { optional: true }
       },
       {
+        id: 'E-132',
+        fx: 0.15,
+        fy: 0.6,
+        name: "A bookmark, embroidered with her initials",
+        note: "Harriet swears she never left her room upstairs all night — yet this turned up here, marking a page in a novel that isn't hers.",
+        requires: { killer: 'Harriet Voss', evidenceRotation: { group: 'harriet-support', index: 1, count: 2 } },
+        implicates: 'Harriet Voss',
+        alibiBreak: true
+      },
+      {
         id: 'E-128',
         fx: 0.45,
         fy: 0.55,
@@ -572,7 +623,8 @@ export const ROOMS = {
         fx: 0.32,
         fy: 0.7,
         name: 'The cold hearth',
-        note: "Not a single ember, not even ash swept fresh. Whatever kept this room warm tonight, it wasn't a fire."
+        note: "Not a single ember, not even ash swept fresh. Whatever kept this room warm tonight, it wasn't a fire.",
+        requires: { optional: true }
       },
       {
         id: 'EN-15',
@@ -783,7 +835,8 @@ export const ROOMS = {
         fx: 0.3,
         fy: 0.6,
         name: 'A diary page, written in a private hand',
-        note: 'Rows of looping script that refuse to make sense: "HYHUB RQH RI WKHP KDV D UHDVRQ WRQLJKW. L KDYH VWRSSHG SUHWHQGLQJ QRW WR VHH LW." Some kind of code, maybe — or he\'d finally lost his mind.'
+        note: 'Rows of looping script that refuse to make sense: "HYHUB RQH RI WKHP KDV D UHDVRQ WRQLJKW. L KDYH VWRSSHG SUHWHQGLQJ QRW WR VHH LW." Some kind of code, maybe — or he\'d finally lost his mind.',
+        requires: { optional: true }
       },
       {
         id: 'E-77',
@@ -835,6 +888,16 @@ export const ROOMS = {
         name: 'A pressed corsage, kept in a drawer',
         note: "Long dried, tied with a faded ribbon. Could be from any occasion in forty years of marriages and mistresses in this house. Impossible to say whose it was, or why it's still here.",
         requires: { optional: true }
+      },
+      {
+        id: 'E-138',
+        fx: 0.55,
+        fy: 0.2,
+        name: 'A single muddy footprint, just inside the doorway',
+        note: "Small, and clearly a woman's shoe — tracked in from somewhere with damp soil, on a night Priya swears she went straight from the greenhouse to bed without stopping anywhere else.",
+        requires: { killer: 'Priya Thorne-Kapoor', evidenceRotation: { group: 'priya-support', index: 1, count: 2 } },
+        implicates: 'Priya Thorne-Kapoor',
+        alibiBreak: true
       }
     ],
     npcs: [
@@ -866,7 +929,8 @@ export const ROOMS = {
         fx: 0.4,
         fy: 0.72,
         name: "Dr. Wren's case notes",
-        note: "A weak heart, worsening for months. Edmund refused to slow down despite repeated warnings — the birthday announcement was, in Dr. Wren's own words, \"the last thing keeping him upright.\""
+        note: "A weak heart, worsening for months. Edmund refused to slow down despite repeated warnings — the birthday announcement was, in Dr. Wren's own words, \"the last thing keeping him upright.\"",
+        requires: { optional: true }
       },
       {
         id: 'E-60',
@@ -952,6 +1016,16 @@ export const ROOMS = {
         name: 'A dog-eared medical journal, left open',
         note: "Open to an article on cardiac strain, heavily annotated in Dr. Wren's own hand. Professional curiosity, or something closer to home — hard to say which.",
         requires: { optional: true }
+      },
+      {
+        id: 'E-133',
+        fx: 0.55,
+        fy: 0.28,
+        name: 'A brief mention in the appointment book',
+        note: "A short note in Dr. Wren's own hand: Diana asked after his whereabouts, close to eleven — an oddly specific thing to wonder about, for a woman who claims to have been buried in paperwork the whole night.",
+        requires: { killer: 'Diana Reyes', evidenceRotation: { group: 'diana-support', index: 0, count: 2 } },
+        implicates: 'Diana Reyes',
+        alibiBreak: true
       }
     ],
     npcs: [
@@ -986,7 +1060,12 @@ export const ROOMS = {
         fy: 0.5,
         name: 'A quiet word from the staff',
         note: "They confirm a late-night card game in the servants' hall — not the room Harriet claimed to be in.",
-        requires: { npc: 'Harriet Voss' },
+        // Phase 8 audit fix: this was missing the killer gate every other
+        // alibiBreak clue has, so it implicated Harriet in every game
+        // regardless of whether she was actually this game's killer —
+        // exactly the "ungated clue that implicates someone" bug pattern
+        // STORY-TRACKER.md's cross-cutting notes warn about.
+        requires: { npc: 'Harriet Voss', killer: 'Harriet Voss' },
         implicates: 'Harriet Voss',
         alibiBreak: true
       },
@@ -1068,6 +1147,26 @@ export const ROOMS = {
         name: 'A burnt batch of scones, forgotten on the counter',
         note: "Eleanor's, by the smell of it — badly burnt and never thrown out. Grief does strange things to a routine kept perfectly for twenty-six years.",
         requires: { optional: true }
+      },
+      {
+        id: 'E-136',
+        fx: 0.5,
+        fy: 0.85,
+        name: 'The back stairs, recalled a little too well',
+        note: "Eleanor mentions the back stairs creaking, well after Victoria claimed to have gone up for good — nothing she thought much of at the time, just a stair in a house full of them. In hindsight, it's the only sound she remembers from that whole quiet stretch of the evening.",
+        requires: { killer: 'Victoria Thorne', evidenceRotation: { group: 'victoria-support', index: 1, count: 2 } },
+        implicates: 'Victoria Thorne',
+        alibiBreak: true
+      },
+      {
+        id: 'E-137',
+        fx: 0.7,
+        fy: 0.7,
+        name: 'The greenhouse side door, remembered creaking',
+        note: "Eleanor mentions the greenhouse side door creaking, well after midnight — odd, if Priya really turned in as early as she claims. A door that far from the house doesn't usually creak on its own.",
+        requires: { killer: 'Priya Thorne-Kapoor', evidenceRotation: { group: 'priya-support', index: 0, count: 2 } },
+        implicates: 'Priya Thorne-Kapoor',
+        alibiBreak: true
       }
     ],
     npcs: [
@@ -1408,6 +1507,16 @@ export const ROOMS = {
         note: "An old accident, nothing more — Priya mentions tripping over a hose out here weeks ago. Green thumbs and clumsy feet, by her own admission.",
         requires: { optional: true },
         redHerring: true
+      },
+      {
+        id: 'E-134',
+        fx: 0.7,
+        fy: 0.55,
+        name: 'A faint trace of ink, smudged on the potting bench',
+        note: "The same blue-black ink she always uses in the library — though she swears she never once set foot out here.",
+        requires: { killer: 'Diana Reyes', evidenceRotation: { group: 'diana-support', index: 1, count: 2 } },
+        implicates: 'Diana Reyes',
+        alibiBreak: true
       }
     ],
     npcs: [

@@ -152,6 +152,19 @@ export default class RoomScene extends Phaser.Scene {
     if (req.killerMethod && req.killerMethod !== CURRENT_METHOD) return false;
     if (req.victoriaStatus && req.victoriaStatus !== victoriaStatus) return false;
     if (req.optional && !isOptionalClueActive(hotspot.id)) return false;
+    // Phase 8 — mutually-exclusive alternate secondary evidence: several
+    // hotspots share the same `group` (rooms.js's evidenceRotation), each
+    // declaring its own index within that group's `count`. Exactly one
+    // index is picked per story slot via the same pickDialogueVariant
+    // mechanism dialogue/puzzle variants use, so only one member of the
+    // group is ever present at a time — a different room's corroborating
+    // clue can confirm the same killer without any of them being in a
+    // keyEvidence array, so reachability is never at stake either way.
+    if (req.evidenceRotation) {
+      const { group, index, count } = req.evidenceRotation;
+      const picked = pickDialogueVariant(`evidenceRotation:${group}`, count);
+      if (picked !== index) return false;
+    }
     return true;
   }
 

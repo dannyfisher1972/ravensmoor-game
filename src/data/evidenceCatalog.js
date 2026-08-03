@@ -1,5 +1,5 @@
 import { ROOMS } from './rooms.js';
-import { isOptionalClueActive } from '../state.js';
+import { isOptionalClueActive, pickDialogueVariant } from '../state.js';
 
 // Flat list of every hotspot across every room, tagged with its room label.
 // Used by the progress counter (total count), the notebook panel (to show
@@ -21,5 +21,15 @@ export function getAllEvidence(currentKiller, currentVictoriaStatus, currentMeth
     .filter(h => !h.requires?.killer || h.requires.killer === currentKiller)
     .filter(h => !h.requires?.killerMethod || h.requires.killerMethod === currentMethod)
     .filter(h => !h.requires?.victoriaStatus || h.requires.victoriaStatus === currentVictoriaStatus)
-    .filter(h => !h.requires?.optional || isOptionalClueActive(h.id));
+    .filter(h => !h.requires?.optional || isOptionalClueActive(h.id))
+    // Phase 8 — mirrors RoomScene.js's isUnlocked check for evidenceRotation
+    // hotspots, so the total-evidence count (progress counter, "Thorough
+    // Investigator" achievement, evidence-strength fraction) only ever
+    // counts whichever one member of a rotation group is actually present
+    // this story slot, not all of them at once.
+    .filter(h => {
+      if (!h.requires?.evidenceRotation) return true;
+      const { group, index, count } = h.requires.evidenceRotation;
+      return pickDialogueVariant(`evidenceRotation:${group}`, count) === index;
+    });
 }
