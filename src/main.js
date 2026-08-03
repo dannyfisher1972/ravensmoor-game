@@ -64,6 +64,41 @@ const CASE_IMPRESSION_BY_METHOD = {
 const caseImpressionEl = document.getElementById('caseImpression');
 if (caseImpressionEl) caseImpressionEl.textContent = CASE_IMPRESSION_BY_METHOD[SOLUTION.method] || '';
 
+// Replayability Phase 5 — two more method-grouped paragraphs on the Case
+// File, same grouping and same non-guilt-tell guarantee as
+// CASE_IMPRESSION_BY_METHOD above: every real killer can land on any of
+// these methods, so the extra texture never narrows the suspect list, only
+// the tone of the briefing.
+const CASE_WHAT_HAPPENED_DETAIL_BY_METHOD = {
+  poison: "The bitter smell isn't the only oddity — this house keeps a working greenhouse full of things that shouldn't be swallowed, and nobody's ruled out yet where exactly it came from.",
+  'blunt-force': 'Whatever went on in that study left the room looking the part — nothing was tidied up afterward, whether from panic or simple lack of time.',
+  stabbing: 'Whatever went on in that study left the room looking the part — nothing was tidied up afterward, whether from panic or simple lack of time.',
+  strangulation: 'Whatever went on in that study left the room looking the part — nothing was tidied up afterward, whether from panic or simple lack of time.',
+  smothering: 'The unsettling part is how undisturbed everything else looks. If this was done deliberately, it was done by someone with a very steady hand.',
+  asphyxiation: 'The unsettling part is how undisturbed everything else looks. If this was done deliberately, it was done by someone with a very steady hand.',
+  'staged-accident': 'Falls happen in old houses — uneven floors, worn rugs, a missed step in the dark. The trouble is how easy all three would be to arrange on purpose, in a house built two centuries before anyone thought to worry about liability.',
+  fall: 'Falls happen in old houses — uneven floors, worn rugs, a missed step in the dark. The trouble is how easy all three would be to arrange on purpose, in a house built two centuries before anyone thought to worry about liability.',
+  'tampered-medication': "A weak heart doesn't ask permission before it stops. It also doesn't leave much for anyone to prove, one way or the other.",
+  none: "A weak heart doesn't ask permission before it stops. It also doesn't leave much for anyone to prove, one way or the other."
+};
+const caseWhatHappenedDetailEl = document.getElementById('caseWhatHappenedDetail');
+if (caseWhatHappenedDetailEl) caseWhatHappenedDetailEl.textContent = CASE_WHAT_HAPPENED_DETAIL_BY_METHOD[SOLUTION.method] || '';
+
+const CASE_VICTIM_DETAIL_BY_METHOD = {
+  poison: "He'd grown particular in his old age about what touched his glass — insisted on pouring his own drinks most nights, more out of habit than any real suspicion of anyone in this house.",
+  'blunt-force': "He'd never once lowered his voice to settle a disagreement, and he expected the people around him to absorb that the same way they absorbed everything else about him.",
+  stabbing: "He'd never once lowered his voice to settle a disagreement, and he expected the people around him to absorb that the same way they absorbed everything else about him.",
+  strangulation: "He'd never once lowered his voice to settle a disagreement, and he expected the people around him to absorb that the same way they absorbed everything else about him.",
+  smothering: "Whatever he felt about the people closest to him, he kept most of it behind that study door — the kind of man who preferred his reckonings held in private, however loudly they might have started.",
+  asphyxiation: "Whatever he felt about the people closest to him, he kept most of it behind that study door — the kind of man who preferred his reckonings held in private, however loudly they might have started.",
+  'staged-accident': "For a man his age he still moved through this house like he owned every inch of it — which, of course, he did — and he'd have been the last to admit if his footing wasn't what it used to be.",
+  fall: "For a man his age he still moved through this house like he owned every inch of it — which, of course, he did — and he'd have been the last to admit if his footing wasn't what it used to be.",
+  'tampered-medication': "For a man who built an empire on other people's medicine, Edmund treated his own health as somebody else's problem to manage — he skipped appointments, ignored doctor's orders on his diet, and dared his own body to keep up with him regardless.",
+  none: "For a man who built an empire on other people's medicine, Edmund treated his own health as somebody else's problem to manage — he skipped appointments, ignored doctor's orders on his diet, and dared his own body to keep up with him regardless."
+};
+const victimMethodDetailEl = document.getElementById('victimMethodDetail');
+if (victimMethodDetailEl) victimMethodDetailEl.textContent = CASE_VICTIM_DETAIL_BY_METHOD[SOLUTION.method] || '';
+
 // Note: no global `pixelArt: true` here — it would force nearest-neighbor
 // filtering on every texture, which would ruin the photorealistic
 // AI-generated backgrounds and portraits (crunchy/aliased instead of smooth).

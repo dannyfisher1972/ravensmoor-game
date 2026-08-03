@@ -76,7 +76,18 @@ export const ROOMS = {
         fx: 0.04,
         fy: 0.15,
         name: 'A hollowed-out book',
-        note: 'Tucked inside: a scrap of paper reading "4 – 2 – 7 – _" and a note: "the last digit is Hymn 214\'s verse."'
+        note: 'Tucked inside: a scrap of paper reading "4 – 2 – 7 – _" and a note: "the last digit is Hymn 214\'s verse."',
+        // Phase 7 — this puzzle's digits vary per story slot (see E-27's and
+        // E-28's matching noteVariants/puzzleCodeVariants, all sharing
+        // puzzleVariantGroup so the same variant index applies to all three
+        // and the code always matches its own hints). Picked once via the
+        // same pickDialogueVariant mechanism dialogue/method variants use —
+        // independent of killer, so it's not a tell, just a fresh code.
+        noteVariants: [
+          'Tucked inside: a scrap of paper reading "4 – 2 – 7 – _" and a note: "the last digit is Hymn 214\'s verse."',
+          'Tucked inside: a scrap of paper reading "6 – 1 – 8 – _" and a note: "the last digit is Hymn 214\'s verse."'
+        ],
+        puzzleVariantGroup: 'study-lock'
       },
       {
         id: 'E-10',
@@ -98,6 +109,11 @@ export const ROOMS = {
         fy: 0.15,
         name: 'A hymnal, spine cracked open',
         note: 'Hymn No. 214, "Rock of Ages, Cleft for Me." This copy is worn soft at verse 3.',
+        noteVariants: [
+          'Hymn No. 214, "Rock of Ages, Cleft for Me." This copy is worn soft at verse 3.',
+          'Hymn No. 214, "Rock of Ages, Cleft for Me." This copy is worn soft at verse 5.'
+        ],
+        puzzleVariantGroup: 'study-lock',
         requires: { evidence: 'E-20' }
       },
       {
@@ -107,7 +123,9 @@ export const ROOMS = {
         name: "A locked desk drawer",
         note: "Edmund's private diary, one entry read aloud only to himself: \"They all think I don't see it. I see everything. Tonight, I end the guessing.\"",
         puzzle: true,
-        puzzleCode: '4273'
+        puzzleCode: '4273',
+        puzzleCodeVariants: ['4273', '6185'],
+        puzzleVariantGroup: 'study-lock'
       },
       {
         id: 'W-06',
@@ -161,6 +179,11 @@ export const ROOMS = {
         fy: 0.75,
         name: "The desk's spare key",
         note: "A small brass key, kept in the drawer for emergencies. It looks like it might fit the greenhouse cabinet.",
+        // Phase 7 — a couple of the always-present pickups shift slightly
+        // within the same described nook each story slot (never far enough
+        // to contradict the note, which never claims an exact spot), so a
+        // repeat player can't tap the identical pixel from memory.
+        positionVariants: [{ fx: 0.65, fy: 0.75 }, { fx: 0.6, fy: 0.7 }],
         pickup: true,
         icon: 'key-desk.png'
       },
@@ -203,6 +226,21 @@ export const ROOMS = {
         note: "Knocked from the shelf and left where it fell rather than replaced — the corner is freshly dented, deep enough to matter. The argument over the property sale, by every account, was the loudest anyone in the house could remember that night.",
         requires: { killer: 'Harriet Voss', killerMethod: 'blunt-force' },
         implicates: 'Harriet Voss'
+      },
+      {
+        // Phase 7 — the Study previously had zero optional-pool content
+        // (every non-killer-exclusive hotspot always appeared), making it
+        // the single most "solved from memory" room in the house. Pure
+        // atmosphere/red herring, same as EN-05/E-58/W-12/E-116 elsewhere —
+        // not killer- or method-gated, so it carries no guilt information.
+        id: 'E-120',
+        fx: 0.55,
+        fy: 0.3,
+        name: 'A pipe, cold in the ashtray',
+        note: "Marcus's brand, half-smoked — though he's never made a secret of sneaking a smoke indoors when Edmund wasn't looking, storm or no storm. Doesn't mean much on its own.",
+        requires: { optional: true },
+        redHerring: true,
+        implicates: 'Marcus Thorne'
       }
     ],
     npcs: [
@@ -404,6 +442,7 @@ export const ROOMS = {
         fy: 0.65,
         name: 'A tarnished luggage key',
         note: 'Wedged into the spine of an old atlas, like a bookmark someone forgot about.',
+        positionVariants: [{ fx: 0.95, fy: 0.65 }, { fx: 0.88, fy: 0.6 }],
         pickup: true,
         icon: 'key-luggage.png'
       },
@@ -671,6 +710,7 @@ export const ROOMS = {
         fy: 0.58,
         name: 'A small iron curio key',
         note: "In Edmund's own writing box, labeled in faded ink: \"V's cabinet.\"",
+        positionVariants: [{ fx: 0.93, fy: 0.58 }, { fx: 0.86, fy: 0.52 }],
         pickup: true,
         icon: 'key-curio.png'
       },
@@ -762,6 +802,7 @@ export const ROOMS = {
         fy: 0.62,
         name: "A brass key, tagged \"Dining Rm. Sideboard\"",
         note: "Eleanor's doing, most likely — physicians keeping late hours get given odd keys, for medicinal brandy and the like.",
+        positionVariants: [{ fx: 0.82, fy: 0.62 }, { fx: 0.76, fy: 0.68 }],
         pickup: true,
         icon: 'key-sideboard.png'
       },
@@ -771,6 +812,11 @@ export const ROOMS = {
         fy: 0.35,
         name: 'A torn prescription pad corner',
         note: 'A few digits jotted in the corner, half the pad torn away: "9 – 3 – _ – 5." No telling what it opens, from this alone.',
+        noteVariants: [
+          'A few digits jotted in the corner, half the pad torn away: "9 – 3 – _ – 5." No telling what it opens, from this alone.',
+          'A few digits jotted in the corner, half the pad torn away: "7 – 2 – _ – 4." No telling what it opens, from this alone.'
+        ],
+        puzzleVariantGroup: 'wren-lock',
         requires: { npc: 'Dr. Wren' }
       },
       {
@@ -779,6 +825,11 @@ export const ROOMS = {
         fy: 0.68,
         name: 'A tally scratched in the appointment book',
         note: 'Eight house calls this month alone, each one just a hash mark and a date — no names, the same discretion as everything else in this room.',
+        noteVariants: [
+          'Eight house calls this month alone, each one just a hash mark and a date — no names, the same discretion as everything else in this room.',
+          'Five house calls this month alone, each one just a hash mark and a date — no names, the same discretion as everything else in this room.'
+        ],
+        puzzleVariantGroup: 'wren-lock',
         requires: { npc: 'Dr. Wren' }
       },
       {
@@ -788,7 +839,9 @@ export const ROOMS = {
         name: 'A locked medical strongbox',
         note: "A slim ledger inside, entries stripped of names — just amounts, dates, and one word repeated again and again: \"discretion.\" Being this family's physician has clearly required more than medicine, over the years.",
         puzzle: true,
-        puzzleCode: '9385'
+        puzzleCode: '9385',
+        puzzleCodeVariants: ['9385', '7254'],
+        puzzleVariantGroup: 'wren-lock'
       },
       {
         id: 'E-109',
@@ -798,6 +851,14 @@ export const ROOMS = {
         note: "Edmund's own hand: thanking her for twenty-six years of service, and letting her go without a pension, in favor of a younger housekeeper better suited to \"the family's future needs.\" She'd found her own copy before he ever had the chance to hand it to her — and she's the only one in this house who's ever damped that study's gas lamp down for the night, same as she has every night for twenty-six years.",
         requires: { killer: 'Eleanor Pemberton', killerMethod: 'asphyxiation' },
         implicates: 'Eleanor Pemberton'
+      },
+      {
+        id: 'E-121',
+        fx: 0.75,
+        fy: 0.2,
+        name: 'A half-written letter to a colleague',
+        note: "Dr. Wren, drafting a request for a second opinion on a difficult case — unsigned, unfinished, and not addressed to anyone in this house. Doctors worry about all sorts of patients, not just this one.",
+        requires: { optional: true }
       }
     ],
     npcs: [
@@ -875,6 +936,7 @@ export const ROOMS = {
         fy: 0.25,
         name: 'A small brass padlock key',
         note: "Tucked behind the spice tins — Eleanor keeps a spare of nearly everything.",
+        positionVariants: [{ fx: 0.85, fy: 0.25 }, { fx: 0.78, fy: 0.3 }],
         pickup: true,
         icon: 'key-padlock.png'
       },
@@ -904,6 +966,14 @@ export const ROOMS = {
         note: "Inside: years of Edmund's own letters, kept as quiet leverage rather than loyalty — the exact kind of thing a housekeeper collects when she means to protect herself, not the family. He confronted her with the box itself at the top of the back stairwell — the same stairwell that still carries a faint scuff from the house shoes she's worn every day for twenty-six years.",
         requires: { killer: 'Eleanor Pemberton', killerMethod: 'fall' },
         implicates: 'Eleanor Pemberton'
+      },
+      {
+        id: 'E-122',
+        fx: 0.12,
+        fy: 0.4,
+        name: 'A burnt batch of scones, forgotten on the counter',
+        note: "Eleanor's, by the smell of it — badly burnt and never thrown out. Grief does strange things to a routine kept perfectly for twenty-six years.",
+        requires: { optional: true }
       }
     ],
     npcs: [
@@ -1232,6 +1302,15 @@ export const ROOMS = {
         note: "Cut clean, not torn — the kind of edge a proper pair of shears leaves, not weather or age. Beneath the workbench, a shipping manifest: rare seed stock, hers to tend, sold quietly to a rival lab for two years running. Edmund had only just found it, and meant to call her a traitor to her own family in front of everyone.",
         requires: { killer: 'Priya Thorne-Kapoor', killerMethod: 'strangulation' },
         implicates: 'Priya Thorne-Kapoor'
+      },
+      {
+        id: 'E-123',
+        fx: 0.6,
+        fy: 0.28,
+        name: 'A cracked terracotta pot, swept into a corner',
+        note: "An old accident, nothing more — Priya mentions tripping over a hose out here weeks ago. Green thumbs and clumsy feet, by her own admission.",
+        requires: { optional: true },
+        redHerring: true
       }
     ],
     npcs: [
@@ -1316,6 +1395,16 @@ export const ROOMS = {
         name: 'A hunting knife, usually kept above the mantel, gone from its mount',
         note: "The dust outline on the wall is unmistakable. Edmund had confronted him directly that night, by every account — no letter, no solicitor, just the two of them and the theft laid bare between them.",
         requires: { killer: 'Julian Voss', killerMethod: 'stabbing' },
+        implicates: 'Julian Voss'
+      },
+      {
+        id: 'E-124',
+        fx: 0.7,
+        fy: 0.7,
+        name: 'A stack of unopened bills',
+        note: "Addressed to Julian, from creditors with increasingly less patient letterhead. Nothing here he hasn't already admitted to, one way or another.",
+        requires: { optional: true },
+        redHerring: true,
         implicates: 'Julian Voss'
       }
     ],

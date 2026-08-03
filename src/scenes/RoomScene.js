@@ -158,8 +158,46 @@ export default class RoomScene extends Phaser.Scene {
   // A hotspot's note can be overridden for this scenario (see solutions.js's
   // sceneNotes) so the same room/hotspot layout can describe a completely
   // different manner of death without needing separate art per method.
+  //
+  // Phase 7 — a separate override, `noteVariants` (rooms.js), covers a small
+  // set of puzzle-hint hotspots whose digits vary per STORY SLOT rather than
+  // per killer/method — deliberately checked first and kept independent of
+  // CURRENT_SCENE_NOTES, since none of the hotspots that carry noteVariants
+  // are also present in any scenario's sceneNotes (verified before adding
+  // this — see the Phase 7 report for which puzzle was left out because its
+  // hint clues DO overlap with sceneNotes).
   resolveNote(hotspot) {
+    if (hotspot.noteVariants && hotspot.puzzleVariantGroup) {
+      const idx = pickDialogueVariant(`puzzleVariant:${hotspot.puzzleVariantGroup}`, hotspot.noteVariants.length);
+      return hotspot.noteVariants[idx];
+    }
     return CURRENT_SCENE_NOTES[hotspot.id] ?? hotspot.note;
+  }
+
+  // The active code for a combination-lock hotspot — either its single fixed
+  // puzzleCode, or (Phase 7) one of several puzzleCodeVariants, picked via
+  // the same pickDialogueVariant key its matching hint hotspots use (see
+  // resolveNote above), so the digits shown and the code that unlocks it
+  // always agree.
+  resolvePuzzleCode(hotspot) {
+    if (hotspot.puzzleCodeVariants && hotspot.puzzleVariantGroup) {
+      const idx = pickDialogueVariant(`puzzleVariant:${hotspot.puzzleVariantGroup}`, hotspot.puzzleCodeVariants.length);
+      return hotspot.puzzleCodeVariants[idx];
+    }
+    return hotspot.puzzleCode;
+  }
+
+  // Phase 7 — a handful of always-present pickups support 2+ candidate
+  // positions within the same described nook (rooms.js's positionVariants),
+  // picked once per story slot the same way — so the marker isn't in the
+  // identical pixel every replay, without needing new descriptive text
+  // (the note never claims an exact spot, just the same drawer/shelf).
+  resolveHotspotPosition(hotspot) {
+    if (hotspot.positionVariants && hotspot.positionVariants.length) {
+      const idx = pickDialogueVariant(`posVariant:${hotspot.id}`, hotspot.positionVariants.length);
+      return hotspot.positionVariants[idx];
+    }
+    return { fx: hotspot.fx, fy: hotspot.fy };
   }
 
   renderUnlockedHotspots() {
@@ -172,7 +210,8 @@ export default class RoomScene extends Phaser.Scene {
       // "found" badge in the room the way ordinary evidence does.
       if (h.pickup && INVENTORY.has(h.id)) return;
 
-      const p = this.pointToScene(h.fx, h.fy);
+      const pos = this.resolveHotspotPosition(h);
+      const p = this.pointToScene(pos.fx, pos.fy);
       const found = FOUND_EVIDENCE.has(h.id);
       // Found and unfound markers differ in shape (plain glow vs. a checkmark
       // badge), not just tint color — so the distinction still reads for
@@ -457,7 +496,7 @@ export default class RoomScene extends Phaser.Scene {
   submitPuzzle() {
     const entry = this.pendingPuzzleEntry;
     if (!entry) return;
-    if (this.puzzleInputEl.value.trim() === entry.data.puzzleCode) {
+    if (this.puzzleInputEl.value.trim() === this.resolvePuzzleCode(entry.data)) {
       playClick();
       this.closePuzzle();
       this.examineHotspot(entry);
