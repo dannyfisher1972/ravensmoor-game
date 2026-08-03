@@ -194,5 +194,48 @@ export const FOLLOWUPS = [
     target: 'Dr. Wren',
     unlocksAfter: { evidence: 'E-59' },
     text: 'Your case notes describe a weak heart, worsening for months. How close was he to the edge, medically speaking?'
+  },
+
+  // --- Replayability Phase 5 ------------------------------------------------
+  // Six more follow-ups: two off other under-covered universal clues, three
+  // off the shared poison-chain evidence (only reachable in poison-method
+  // games, same as that evidence itself), and one that finally gives Marcus
+  // a follow-up of his own rather than only being asked about secondhand.
+  {
+    id: 'ask-vivienne-sampler',
+    target: 'Vivienne Thorne',
+    unlocksAfter: { evidence: 'E-84' },
+    text: "There's a hand-stitched sampler on the west parlor wall — six roses, one for each year it says it took. Did you stitch that yourself?"
+  },
+  {
+    id: 'ask-vivienne-cold-hearth',
+    target: 'Vivienne Thorne',
+    unlocksAfter: { evidence: 'EN-14' },
+    text: 'The west parlor hearth was stone cold tonight, not even fresh ash. If you were really there all evening reading by the fire, how were you not freezing?',
+    contradiction: true
+  },
+  {
+    id: 'confirm-tom-sighting-detail',
+    target: 'Marcus Thorne',
+    unlocksAfter: { npc: 'Tom Yarrow', questionId: 'alibi' },
+    text: 'Tom mentions seeing someone slip between the greenhouse and the garden door around eleven. Any idea who that might have been?'
+  },
+  {
+    id: 'ask-priya-key-habit',
+    target: 'Priya Thorne-Kapoor',
+    unlocksAfter: { evidence: 'E-73' },
+    text: "There's a spare cabinet key hidden under a flowerpot by the greenhouse door. How long has that been common knowledge?"
+  },
+  {
+    id: 'ask-diana-glass',
+    target: 'Diana Reyes',
+    unlocksAfter: { evidence: 'E-02' },
+    text: 'There\'s a second glass in the potting shed with the same bitter residue as the vial. Does that surprise you?'
+  },
+  {
+    id: 'ask-nathaniel-stain',
+    target: 'Nathaniel Cole',
+    unlocksAfter: { evidence: 'E-61' },
+    text: "There's a dark stain by Edmund's place setting at dinner — could be wine, could be something else. Did anything seem off to you at the table?"
   }
 ];
