@@ -187,14 +187,16 @@ export default class RoomScene extends Phaser.Scene {
   resolveNote(hotspot) {
     const reloc = this.resolveClueRelocation(hotspot);
     if (reloc) return reloc.note;
-    // Phase 8 — EN-10 alternate wording (see CURRENT_ALT_EN10 above). This
-    // is deliberately NOT a different weapon in a different room: that
-    // would require making a keyEvidence-listed hotspot conditionally
-    // unreachable in the games where the alternate is picked, which breaks
-    // the reachability guarantee every scenario has been audited against
-    // since Phase 7B. Same underlying facts, re-narrated only.
+    // Phase 8 (corrected) — EN-10 alternate wording (see CURRENT_ALT_EN10
+    // above). Uses the SAME 'evidenceRotation:weapon-<killerIndex>' cache
+    // key as the matching physical-clue rotation (E-50/E-149 in scenario 2,
+    // E-51/E-150 in scenario 4), so the body examination always agrees with
+    // whichever weapon is actually present that game. For the scenarios
+    // that only got a wording variant (no safe physical rotation partner —
+    // see the comments on E-89/E-98 for why), this key is simply unique to
+    // that scenario and unused elsewhere, so reusing the pattern is harmless.
     if (hotspot.id === 'EN-10' && CURRENT_ALT_EN10) {
-      const variant = pickDialogueVariant(`en10Alt:${killerIndex}`, 2);
+      const variant = pickDialogueVariant(`evidenceRotation:weapon-${killerIndex}`, 2);
       if (variant === 1) return CURRENT_ALT_EN10;
     }
     if (hotspot.noteVariants && hotspot.puzzleVariantGroup) {

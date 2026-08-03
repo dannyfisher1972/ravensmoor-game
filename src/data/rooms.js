@@ -165,7 +165,12 @@ export const ROOMS = {
         fy: 0.55,
         name: 'The fire poker, wiped clean',
         note: 'Wiped down and left back on its stand — but not well enough. A few dark flecks remain in the grip, and the curved iron hook at its tip is bent slightly out of true, like it struck something far harder than a log.',
-        requires: { killer: 'Marcus Thorne', killerMethod: 'blunt-force' },
+        // Phase 8 (corrected) — true weapon relocation: rotates with E-149
+        // (Dining Room). Exactly one of the two appears per story slot in
+        // Marcus's blunt-force games, and solutions.js's EN-10 wording pick
+        // uses this exact same group key, so the body examination always
+        // matches whichever weapon is actually present.
+        requires: { killer: 'Marcus Thorne', killerMethod: 'blunt-force', evidenceRotation: { group: 'weapon-2', index: 0, count: 2 } },
         implicates: 'Marcus Thorne'
       },
       {
@@ -174,7 +179,7 @@ export const ROOMS = {
         fy: 0.63,
         name: 'A tapestry cushion, out of place',
         note: "From the good parlor, tucked behind the desk as if someone hoped it wouldn't be noticed — a few pale gold threads pulled loose from its edge, snagged and drawn tight, as if it had been pressed hard against something for a while.",
-        requires: { killer: 'Harriet Voss', killerMethod: 'smothering' },
+        requires: { killer: 'Harriet Voss', killerMethod: 'smothering', evidenceRotation: { group: 'weapon-4', index: 0, count: 2 } },
         implicates: 'Harriet Voss'
       },
       {
@@ -252,6 +257,9 @@ export const ROOMS = {
         fy: 0.55,
         name: 'A letter opener, the blade tarnished at the tip',
         note: "Wiped but not polished — a duller stain than tarnish clings near the point. A pawnshop ledger in Harriet's own hand lists years of quiet sales: her late husband's watch, a painting called a \"family heirloom\" at every holiday dinner, silver that was never really hers to sell. Edmund had only just found the ledger himself.",
+        // Phase 8 — NOT rotated: bundles a unique motive reveal (the
+        // pawnshop ledger) into the same note as the weapon description,
+        // same reasoning as E-89. EN-10 wording still varies.
         requires: { killer: 'Harriet Voss', killerMethod: 'stabbing' },
         implicates: 'Harriet Voss'
       },
@@ -779,6 +787,18 @@ export const ROOMS = {
         note: "Wiped down, but for a last dark fleck near the tip. Beneath the settee cushion nearby: a crumpled save-the-date card, Edmund's own engagement announcement — to someone else, someone younger, someone the papers would love. Vivienne was never invited to expect it. Being replaced financially was one thing. Being replaced entirely, in front of everyone who still remembered her as his wife, was another.",
         requires: { killer: 'Vivienne Thorne', killerMethod: 'stabbing' },
         implicates: 'Vivienne Thorne'
+      },
+      {
+        // True weapon relocation partner for E-51 (Study tapestry cushion)
+        // — see that hotspot's comment. Fitting that this room is where the
+        // "good parlor" cushion actually lives, per E-51's own note.
+        id: 'E-150',
+        fx: 0.75,
+        fy: 0.5,
+        name: 'A goose-down cushion, tucked behind a chair',
+        note: "From this very room, by the look of the fabric — a few pale gold threads pulled loose from its edge, snagged and drawn tight, as if it had been pressed hard against something for a while.",
+        requires: { killer: 'Harriet Voss', killerMethod: 'smothering', evidenceRotation: { group: 'weapon-4', index: 1, count: 2 } },
+        implicates: 'Harriet Voss'
       }
     ],
     npcs: []
@@ -897,6 +917,12 @@ export const ROOMS = {
         fy: 0.25,
         name: 'A silk sash, one end frayed',
         note: "Missing from her own dressing gown, the tie replaced with a plain ribbon so the gap wouldn't show. Beneath her jewel case, folded small: a marriage certificate from years before she ever met Edmund — a husband she told no one about, one Edmund had only just tracked down proof of. He meant to have the marriage annulled and her name dragged through every paper in the county.",
+        // Phase 8 — NOT rotated: unlike E-50/E-51, this hotspot bundles a
+        // unique motive reveal (the marriage certificate) into the same
+        // note as the weapon description, so making it conditionally
+        // absent would also remove content that's supposed to always be
+        // discoverable. EN-10 wording still varies (see solutions.js's
+        // altEN10) — just not the physical clue itself.
         requires: { killer: 'Victoria Thorne', killerMethod: 'strangulation' },
         implicates: 'Victoria Thorne'
       },
@@ -1321,6 +1347,18 @@ export const ROOMS = {
         requires: { killer: 'Marcus Thorne', evidenceRotation: { group: 'marcus-support', index: 1, count: 2 } },
         implicates: 'Marcus Thorne',
         alibiBreak: true
+      },
+      {
+        // True weapon relocation partner for E-50 (Study fire poker) — see
+        // that hotspot's comment. Exactly one of the two is present in
+        // Marcus's blunt-force game.
+        id: 'E-149',
+        fx: 0.4,
+        fy: 0.55,
+        name: 'A brass candlestick, wiped clean',
+        note: "Wiped down and set back in its usual spot on the sideboard — but not well enough. A curved dent along one edge, and a few dark flecks still caught near the base.",
+        requires: { killer: 'Marcus Thorne', killerMethod: 'blunt-force', evidenceRotation: { group: 'weapon-2', index: 1, count: 2 } },
+        implicates: 'Marcus Thorne'
       }
     ],
     npcs: []

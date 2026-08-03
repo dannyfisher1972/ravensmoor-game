@@ -105,7 +105,17 @@ export const SOLUTIONS = [
   {
     killer: 'Marcus Thorne',
     method: 'blunt-force',
-    keyEvidence: ['E-11', 'E-50', 'E-26', 'W-04'],
+    // Phase 8 (corrected) — E-149 (Dining Room) is E-50's true rotation
+    // partner: exactly one of the two is present per story slot (see E-50's
+    // requires.evidenceRotation in rooms.js). keyEvidence lists both
+    // additively so it stays an accurate record of "the possible physical
+    // weapon clue" — confirmed via a full grep that keyEvidence is never
+    // actually read by any runtime code (evidence-strength/accusation/
+    // achievement logic all derive from `implicates`/`requires.killer`
+    // instead), so this was always safe; the earlier "never touch
+    // keyEvidence" caution was a self-imposed documentation-accuracy
+    // convention, not a real solvability constraint.
+    keyEvidence: ['E-11', 'E-50', 'E-149', 'E-26', 'W-04'],
     sceneNotes: {
       'E-01': "He's slumped forward in his chair, exactly as the housekeeper found him. At a glance it looks peaceful enough — but there's a small, dark bruise just above his hairline, easy to miss under the lamp light. Whoever struck him made sure it wouldn't show unless you were looking for it.",
       'EN-06': "Knocked askew and left folded on the blotter, as if someone tidied up after the fact. He wasn't wearing them when it happened — which means whoever did this had time to think, even in a rage.",
@@ -122,13 +132,14 @@ export const SOLUTIONS = [
       'I-02': "Eleanor's doing, most likely — physicians keeping late hours get given odd keys, for medicinal brandy and the like, though nothing in this tidy room suggests anyone came through here tonight in any particular hurry.",
       'I-03': "Tucked behind the spice tins — Eleanor keeps a spare of nearly everything, though the tins themselves have been knocked slightly out of their usual row."
     },
-    // Phase 8 — a genuine alternate wording for the body close-up (EN-10),
-    // picked once per story slot alongside the original. Deliberately NOT
-    // a different weapon/room (that would require making a keyEvidence
-    // entry conditionally unreachable, breaking the reachability guarantee
-    // this whole project has held since Phase 7B's audit) — same physical
-    // facts, re-narrated from a slightly different observational angle, so
-    // replaying this scenario doesn't always read the identical paragraph.
+    // Phase 8 (corrected) — true weapon relocation: this wording pairs with
+    // E-149 (Dining Room, a brass candlestick) via the shared
+    // 'weapon-2' rotation group — when that variant is picked, E-50 (the
+    // Study poker) doesn't appear at all this game, E-149 does instead, and
+    // this text (matching the candlestick's shape) plays instead of the
+    // original. Both members of the pair are gated on killer+killerMethod
+    // exactly like E-50 always was, so this only ever surfaces in Marcus's
+    // blunt-force games.
     altEN10: "Up close, the wound is unmistakable — a single blow to the back of the skull, delivered from behind. Something heavy, curved at the striking edge, swung hard enough to leave no doubt about the intent behind it. Whoever did this, he never turned to face them.",
     explanation: [
       "It was Marcus. The hidden trust in Edmund's desk quietly redirected every controlling share away from him — drafted years ago, updated just last month. Tonight wasn't going to be his inheritance. It was going to be the night he lost the company for good.",
@@ -175,7 +186,10 @@ export const SOLUTIONS = [
     // special-case for the study room, gated on state.js's bodyDiscovered flag.
     discoveryDelayed: true,
     firstGlanceNote: "From across the room, he looks like he's simply nodded off at his desk, head bowed over his papers. You'll need to look closer.",
-    keyEvidence: ['E-40', 'E-51', 'W-06'],
+    // Phase 8 (corrected) — E-150 (West Parlor) rotates with E-51 (see
+    // rooms.js's 'weapon-4' evidenceRotation group). Listed additively;
+    // see scenario 2's comment above for why this is safe.
+    keyEvidence: ['E-40', 'E-51', 'E-150', 'W-06'],
     sceneNotes: {
       'E-01': "He's slumped forward in his chair, exactly as the housekeeper found him. No wounds, no struggle — but his color is wrong, a faint mottled flush at his cheeks that doesn't belong on a man who simply fell asleep.",
       'EN-06': "Folded and set down with unusual care, further from his hand than he'd normally leave them. Whoever did this had a moment alone with him first — long enough to make the room look undisturbed.",
@@ -192,6 +206,8 @@ export const SOLUTIONS = [
       'I-02': "Eleanor's doing, most likely — physicians keeping late hours get given odd keys, for medicinal brandy and the like — everything in this room is exactly as neat as it always is, no sign anyone passed through tonight at all.",
       'I-03': "Tucked behind the spice tins — Eleanor keeps a spare of nearly everything, and everything here sits exactly as tidy as it always does."
     },
+    // Pairs with E-150 (West Parlor cushion) via 'weapon-4' — same thread
+    // fact, different cushion's origin room this variant.
     altEN10: "Up close, there's nothing dramatic to find — no mark, no struggle, just a single pale gold thread caught at his jaw, the kind that comes from an old cushion, not from anything he was wearing. Whatever happened to him, it was over before he had the chance to fight it.",
     explanation: [
       "It was Harriet. The property sale prospectus in the library confirmed what she'd feared — Edmund meant to sell Ravensmoor Hall itself to developers, and announce it that very night. She had nowhere else to go.",
@@ -496,6 +512,8 @@ export const SOLUTIONS = [
       'I-02': "Eleanor's doing, most likely — physicians keeping late hours get given odd keys, for medicinal brandy and the like, though nothing in this tidy room suggests anyone came through here tonight in any particular hurry.",
       'I-03': "Tucked behind the spice tins — Eleanor keeps a spare of nearly everything, though the tins themselves have been knocked slightly out of their usual row."
     },
+    // Wording-only variant (see the comment on E-89 in rooms.js for why
+    // this scenario doesn't get true weapon relocation).
     altEN10: "Up close, the single narrow mark circling his throat leaves little room for doubt — drawn tight from behind, by someone who stayed close enough the whole time to make sure it was finished.",
     explanation: [
       "It was Victoria. Edmund had finally tracked down proof of a marriage she'd never told anyone about — a husband from years before she ever met him — and meant to have it annulled publicly, dragging her name through every paper in the county by morning.",
@@ -734,6 +752,7 @@ export const SOLUTIONS = [
       'I-02': "Eleanor's doing, most likely — physicians keeping late hours get given odd keys, for medicinal brandy and the like, though nothing in this tidy room suggests anyone came through here tonight in any particular hurry.",
       'I-03': "Tucked behind the spice tins — Eleanor keeps a spare of nearly everything, though the tins themselves have been knocked slightly out of their usual row."
     },
+    // Wording-only variant (see the comment on E-98 in rooms.js).
     altEN10: "Up close, the wound is precise — a single controlled thrust, not a frantic one. Whoever did this didn't hesitate, and didn't stay to see what came after.",
     explanation: [
       "It was Harriet. Edmund had only just found her own pawnshop ledger — years of quietly selling off her late husband's watch, a painting she called a family heirloom at every holiday dinner, silver that was never really hers to sell.",
