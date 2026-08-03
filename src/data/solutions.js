@@ -122,6 +122,14 @@ export const SOLUTIONS = [
       'I-02': "Eleanor's doing, most likely — physicians keeping late hours get given odd keys, for medicinal brandy and the like, though nothing in this tidy room suggests anyone came through here tonight in any particular hurry.",
       'I-03': "Tucked behind the spice tins — Eleanor keeps a spare of nearly everything, though the tins themselves have been knocked slightly out of their usual row."
     },
+    // Phase 8 — a genuine alternate wording for the body close-up (EN-10),
+    // picked once per story slot alongside the original. Deliberately NOT
+    // a different weapon/room (that would require making a keyEvidence
+    // entry conditionally unreachable, breaking the reachability guarantee
+    // this whole project has held since Phase 7B's audit) — same physical
+    // facts, re-narrated from a slightly different observational angle, so
+    // replaying this scenario doesn't always read the identical paragraph.
+    altEN10: "Up close, the wound is unmistakable — a single blow to the back of the skull, delivered from behind. Something heavy, curved at the striking edge, swung hard enough to leave no doubt about the intent behind it. Whoever did this, he never turned to face them.",
     explanation: [
       "It was Marcus. The hidden trust in Edmund's desk quietly redirected every controlling share away from him — drafted years ago, updated just last month. Tonight wasn't going to be his inheritance. It was going to be the night he lost the company for good.",
       'The fire poker from the study hearth turned up wiped down in the garage — not a calculated cleanup, but the kind of frantic, half-finished job someone does with their hands still shaking. A few dark flecks remained in the grip all the same.',
@@ -184,6 +192,7 @@ export const SOLUTIONS = [
       'I-02': "Eleanor's doing, most likely — physicians keeping late hours get given odd keys, for medicinal brandy and the like — everything in this room is exactly as neat as it always is, no sign anyone passed through tonight at all.",
       'I-03': "Tucked behind the spice tins — Eleanor keeps a spare of nearly everything, and everything here sits exactly as tidy as it always does."
     },
+    altEN10: "Up close, there's nothing dramatic to find — no mark, no struggle, just a single pale gold thread caught at his jaw, the kind that comes from an old cushion, not from anything he was wearing. Whatever happened to him, it was over before he had the chance to fight it.",
     explanation: [
       "It was Harriet. The property sale prospectus in the library confirmed what she'd feared — Edmund meant to sell Ravensmoor Hall itself to developers, and announce it that very night. She had nowhere else to go.",
       'A tapestry cushion from the good parlor turned up in the study, tucked behind the desk as if someone hoped it wouldn\'t be noticed. A few pale gold threads matched exactly what was caught at Edmund\'s jaw.',
@@ -243,6 +252,7 @@ export const SOLUTIONS = [
       'I-02': "Eleanor's doing, most likely — physicians keeping late hours get given odd keys, for medicinal brandy and the like. Tonight, of all nights, that's a detail worth remembering.",
       'I-03': "Tucked behind the spice tins — Eleanor keeps a spare of nearly everything. Tonight, that habit of hers is doing a great deal of quiet work."
     },
+    altEN10: "Up close, there's no mistaking it — the bluish cast to his lips, and a bitterness in the air that has nothing to do with the whisky. Whatever he drank, it took him fast enough that he never had time to call out.",
     explanation: [
       "It was Diana. The termination letter drafted at Edmund's desk confirmed it — he'd found out about her secret dealings with Kessler-Vance, and meant to end their thirty-year partnership publicly, that very night. What the letter didn't say was why she'd gone looking for a way out in the first place: Kessler-Vance had offered her something Edmund never would in thirty years of partnership — her own name on the door, credited at last as the company's actual co-founder, not merely his invaluable \"associate.\"",
       'The empty foxglove vial and the second glass both trace back to the greenhouse, same as always. Her own fountain pen, the one she always carries, was found by the potting shed — nowhere near the library she swore she never left.',
@@ -337,6 +347,7 @@ export const SOLUTIONS = [
       'I-02': "Eleanor's doing, most likely — physicians keeping late hours get given odd keys, for medicinal brandy and the like — a small kindness that, tonight, may matter more than anyone realizes yet.",
       'I-03': "Tucked behind the spice tins — Eleanor keeps a spare of nearly everything, a small, practical habit that outlasted the man who never had to ask for it twice."
     },
+    altEN10: "Up close, there's nothing here to find — no mark, no smell, no sign of another hand in this at all. Just a man whose heart finally ran out of patience, on a night that gave it every reason to.",
     explanation: [
       "There was no murder. Dr. Wren's letter, found unopened on his nightstand, had warned him for weeks to slow down — a weak heart, made worse by the stress of the night's announcement.",
       'Every clue that looked damning under close questioning washed out under closer scrutiny: no poison unaccounted for, no bruise, no wound, nothing missing from the study but an old man\'s next tired breath.',
@@ -485,6 +496,7 @@ export const SOLUTIONS = [
       'I-02': "Eleanor's doing, most likely — physicians keeping late hours get given odd keys, for medicinal brandy and the like, though nothing in this tidy room suggests anyone came through here tonight in any particular hurry.",
       'I-03': "Tucked behind the spice tins — Eleanor keeps a spare of nearly everything, though the tins themselves have been knocked slightly out of their usual row."
     },
+    altEN10: "Up close, the single narrow mark circling his throat leaves little room for doubt — drawn tight from behind, by someone who stayed close enough the whole time to make sure it was finished.",
     explanation: [
       "It was Victoria. Edmund had finally tracked down proof of a marriage she'd never told anyone about — a husband from years before she ever met him — and meant to have it annulled publicly, dragging her name through every paper in the county by morning.",
       "A silk sash, missing from her own dressing gown and quietly replaced, matched the single narrow mark at Edmund's throat exactly. Seven years of careful appearances, and in the end, the truth that undid her had nothing to do with Nathaniel at all."
@@ -722,6 +734,7 @@ export const SOLUTIONS = [
       'I-02': "Eleanor's doing, most likely — physicians keeping late hours get given odd keys, for medicinal brandy and the like, though nothing in this tidy room suggests anyone came through here tonight in any particular hurry.",
       'I-03': "Tucked behind the spice tins — Eleanor keeps a spare of nearly everything, though the tins themselves have been knocked slightly out of their usual row."
     },
+    altEN10: "Up close, the wound is precise — a single controlled thrust, not a frantic one. Whoever did this didn't hesitate, and didn't stay to see what came after.",
     explanation: [
       "It was Harriet. Edmund had only just found her own pawnshop ledger — years of quietly selling off her late husband's watch, a painting she called a family heirloom at every holiday dinner, silver that was never really hers to sell.",
       "The letter opener, wiped but not polished clean, still carried a duller stain near its point. She'd spent a decade lecturing this family about honesty. It turned out she couldn't survive her own."
@@ -808,6 +821,7 @@ export const SOLUTIONS = [
       'I-02': "Eleanor's doing, most likely — physicians keeping late hours get given odd keys, for medicinal brandy and the like. Tonight, of all nights, that's a detail worth remembering.",
       'I-03': "Tucked behind the spice tins — Eleanor keeps a spare of nearly everything. Tonight, that habit of hers is doing a great deal of quiet work."
     },
+    altEN10: "Up close, there's no missing it — the faint blue at his lips, and the same bitterness clinging to the air as to the cup itself. Whatever this was, it moved through him quickly.",
     explanation: [
       "It was Julian. The pawnshop ticket for his grandfather's own watch — pawned that very afternoon, not weeks ago like the cufflinks — meant whatever he owed couldn't wait for a slow, careful plan.",
       "A spare greenhouse key, tucked in the same pocket as the pawn ticket, still carried the same bitter residue as the vial itself. He couldn't wait to be formally disinherited to feel the walls closing in — whoever he owed wanted their money that night, and he made sure Edmund's would be available to take."
@@ -1018,6 +1032,7 @@ export const SOLUTIONS = [
       'I-02': "Eleanor's doing, most likely — physicians keeping late hours get given odd keys, for medicinal brandy and the like — everything in this room is exactly as neat as it always is, no sign anyone passed through tonight at all.",
       'I-03': "Tucked behind the spice tins — Eleanor keeps a spare of nearly everything, and everything here sits exactly as tidy as it always does."
     },
+    altEN10: "Up close, a faint sweetness hangs in the air near him, out of place next to the whisky decanter — the same smell that clings to a room where a gas fixture's been left open far longer than it should.",
     explanation: [
       "It was Eleanor. Not gratitude, not a bonus — a termination letter, drafted in Edmund's own hand, quietly letting her go after twenty-six years without so much as a pension, in favor of someone younger. She found her own copy before he ever worked up the nerve to hand it over.",
       "The gas fixture in his own study, left open long after the lamps should have been the only thing lit, explains the faint sweetish smell that never should have been there. Twenty-six years of loyalty, and he still thought she'd go quietly."

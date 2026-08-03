@@ -15,7 +15,7 @@ import {
   victoriaStatus, activeStory, storyName, renameActiveStory, startRandomStory,
   getSavedStories, renameStory, deleteStory,
   INVENTORY, armedItem, armItem, disarmItem, currentRoom,
-  recordSolvedCase, getCasebook, NUM_KILLER_VARIANTS, CURRENT_PACK
+  recordSolvedCase, getCasebook, NUM_KILLER_VARIANTS, CURRENT_PACK, pickDialogueVariant
 } from './state.js';
 import { startRainAmbience, setMuted, isMuted, playClick, playWinSting, playLoseSting } from './audio.js';
 import { logEvent, logEventOncePerStory, hasCompletedStory, hasFeedbackResponse, getAnalyticsSummary } from './analytics.js';
@@ -473,9 +473,19 @@ const hintTextEl = document.getElementById('hintText');
 const hintMoreBtn = document.getElementById('hintMoreBtn');
 const hintBtn = document.getElementById('hintBtn');
 
+// Phase 8 — mirrors RoomScene.js's resolveNpcHomeRoom so the hint system
+// points at wherever an NPC actually rolled to this story slot, not their
+// static home room, for the 3 NPCs with altHomeRoom.
 const NPC_ROOM_LABEL = {};
 Object.values(ROOMS).forEach((room) => {
-  (room.npcs || []).forEach((npc) => { NPC_ROOM_LABEL[npc.name] = room.label; });
+  (room.npcs || []).forEach((npc) => {
+    let label = room.label;
+    if (npc.altHomeRoom) {
+      const variant = pickDialogueVariant(`npcHome:${npc.name}`, 2);
+      if (variant === 1) label = ROOMS[npc.altHomeRoom]?.label ?? label;
+    }
+    NPC_ROOM_LABEL[npc.name] = label;
+  });
 });
 
 // Same gating rules as RoomScene's isUnlocked, minus the killer/method/

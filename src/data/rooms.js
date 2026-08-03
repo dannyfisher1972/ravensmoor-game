@@ -57,6 +57,22 @@ export const ROOM_ORDER = [
   'kitchen', 'diningroom', 'musicroom', 'grounds', 'greenhouse', 'juliansroom', 'attic'
 ];
 
+// Phase 8 — two alternate valid loops through the same 12 rooms, each a
+// full permutation (verified: every room appears exactly once). Picked once
+// per story slot (RoomScene.js's resolveRoomOrder), so the prev/next
+// sequence itself varies across replays, not just what's inside each room.
+// 'study' deliberately stays first in every variant — the body-discovery
+// room, and not worth risking whatever assumes it's the starting room.
+export const ROOM_ORDER_ALT_1 = [
+  'study', 'drwrenroom', 'bedroom', 'westparlor', 'library',
+  'attic', 'juliansroom', 'greenhouse', 'grounds', 'musicroom', 'diningroom', 'kitchen'
+];
+export const ROOM_ORDER_ALT_2 = [
+  'study', 'kitchen', 'diningroom', 'greenhouse', 'grounds',
+  'juliansroom', 'attic', 'musicroom', 'drwrenroom', 'bedroom', 'westparlor', 'library'
+];
+export const ROOM_ORDER_VARIANTS = [ROOM_ORDER, ROOM_ORDER_ALT_1, ROOM_ORDER_ALT_2];
+
 export const ROOMS = {
   study: {
     label: 'The Study',
@@ -296,6 +312,16 @@ export const ROOMS = {
         requires: { killer: 'Victoria Thorne', evidenceRotation: { group: 'victoria-support', index: 0, count: 2 } },
         implicates: 'Victoria Thorne',
         alibiBreak: true
+      },
+      {
+        id: 'E-139',
+        fx: 0.95,
+        fy: 0.45,
+        name: 'A dropped matchbook, half-empty',
+        note: "From the kitchen brand, not the study's own — though Marcus swears he never once came back inside after stepping out.",
+        requires: { killer: 'Marcus Thorne', evidenceRotation: { group: 'marcus-support', index: 0, count: 2 } },
+        implicates: 'Marcus Thorne',
+        alibiBreak: true
       }
     ],
     npcs: [
@@ -306,7 +332,15 @@ export const ROOMS = {
         fx: 0.95,
         fy: 0.15,
         line: '"I read until I fell asleep. This family, honestly — always something."',
-        lineAlt: '"I dozed off somewhere in the middle of a chapter, same as most nights. This family never does make it easy to relax, though."'
+        lineAlt: '"I dozed off somewhere in the middle of a chapter, same as most nights. This family never does make it easy to relax, though."',
+        // Phase 8 — NPC placement rotation: picked once per story slot
+        // (RoomScene.js's resolveNpcHomeRoom), same mechanism as every
+        // other variant in this file. Where she's physically standing when
+        // the player wanders the house is independent of her alibi claim
+        // ("I read until I fell asleep [upstairs]") — this is just where
+        // you happen to find her to talk, not a statement about where she
+        // was at 11 PM, so moving it carries no narrative contradiction.
+        altHomeRoom: 'attic', altFx: 0.6, altFy: 0.15
       }
     ]
   },
@@ -570,6 +604,16 @@ export const ROOMS = {
         alibiBreak: true
       },
       {
+        id: 'E-140',
+        fx: 0.9,
+        fy: 0.48,
+        name: 'A dropped glove, still faintly scented with her perfume',
+        note: "Vivienne swears she spent the whole evening in the west parlor — yet this turned up here, tucked behind a cushion.",
+        requires: { killer: 'Vivienne Thorne', evidenceRotation: { group: 'vivienne-support', index: 0, count: 2 } },
+        implicates: 'Vivienne Thorne',
+        alibiBreak: true
+      },
+      {
         id: 'E-128',
         fx: 0.45,
         fy: 0.55,
@@ -604,7 +648,8 @@ export const ROOMS = {
         fx: 0.5,
         fy: 0.12,
         line: '"Edmund and I had our differences, but I never once wished this on him — whatever the rest of this house might prefer to believe."',
-        lineAlt: '"Whatever this house wants to believe about me and Edmund, I never once wanted him gone. We simply disagreed, same as always."'
+        lineAlt: '"Whatever this house wants to believe about me and Edmund, I never once wanted him gone. We simply disagreed, same as always."',
+        altHomeRoom: 'musicroom', altFx: 0.5, altFy: 0.18
       }
     ]
   },
@@ -898,6 +943,16 @@ export const ROOMS = {
         requires: { killer: 'Priya Thorne-Kapoor', evidenceRotation: { group: 'priya-support', index: 1, count: 2 } },
         implicates: 'Priya Thorne-Kapoor',
         alibiBreak: true
+      },
+      {
+        id: 'E-141',
+        fx: 0.75,
+        fy: 0.2,
+        name: 'A pressed crease in the counterpane',
+        note: "Just the shape of someone having sat here a while — not Edmund's side of the bed, the other. Nathaniel swears he never once set foot in this room that night.",
+        requires: { killer: 'Nathaniel Cole', evidenceRotation: { group: 'nathaniel-support', index: 0, count: 2 } },
+        implicates: 'Nathaniel Cole',
+        alibiBreak: true
       }
     ],
     npcs: [
@@ -1026,6 +1081,16 @@ export const ROOMS = {
         requires: { killer: 'Diana Reyes', evidenceRotation: { group: 'diana-support', index: 0, count: 2 } },
         implicates: 'Diana Reyes',
         alibiBreak: true
+      },
+      {
+        id: 'E-142',
+        fx: 0.85,
+        fy: 0.85,
+        name: 'A tea tray, still faintly warm, left outside the door',
+        note: "Later than her usual rounds, by her own tidy account of the evening — though Eleanor swears everything that night went exactly to schedule.",
+        requires: { killer: 'Eleanor Pemberton', evidenceRotation: { group: 'eleanor-support', index: 0, count: 2 } },
+        implicates: 'Eleanor Pemberton',
+        alibiBreak: true
       }
     ],
     npcs: [
@@ -1052,7 +1117,11 @@ export const ROOMS = {
         fx: 0.3,
         fy: 0.5,
         name: 'The butler\'s account',
-        note: 'He swears he heard raised voices from the study around 10:50 PM.'
+        note: 'He swears he heard raised voices from the study around 10:50 PM.',
+        // Phase 8 (broader sweep) — standalone universal testimony, no
+        // implicates, not in any keyEvidence array, no dependents. Safe to
+        // hide same as the earlier batch (E-10/E-75/etc).
+        requires: { optional: true }
       },
       {
         id: 'W-09',
@@ -1159,6 +1228,16 @@ export const ROOMS = {
         alibiBreak: true
       },
       {
+        id: 'E-146',
+        fx: 0.4,
+        fy: 0.9,
+        name: 'An empty glass, rinsed but left on the wrong shelf',
+        note: "Eleanor notices it out of place the next morning — not where any of the staff would have set it down. Julian swears he never once came down here that night.",
+        requires: { killer: 'Julian Voss', evidenceRotation: { group: 'julian-support', index: 1, count: 2 } },
+        implicates: 'Julian Voss',
+        alibiBreak: true
+      },
+      {
         id: 'E-137',
         fx: 0.7,
         fy: 0.7,
@@ -1232,6 +1311,16 @@ export const ROOMS = {
         note: "A fresh chip in the crystal stopper, and a faint bitter film clinging to the rim that doesn't belong there. Tucked behind the sideboard: a stack of gambling markers in Marcus's name, and a letter Edmund had drafted to read aloud at the announcement — naming the debts publicly before naming any heir at all.",
         requires: { killer: 'Marcus Thorne', killerMethod: 'poison' },
         implicates: 'Marcus Thorne'
+      },
+      {
+        id: 'E-143',
+        fx: 0.75,
+        fy: 0.3,
+        name: 'A chair, pushed back further than the others',
+        note: "Marcus's usual seat at dinner — shoved back hard enough to nearly tip, the kind of thing nobody bothers fixing before the next course arrives. Odd, for a man who claims to have slipped out quietly.",
+        requires: { killer: 'Marcus Thorne', evidenceRotation: { group: 'marcus-support', index: 1, count: 2 } },
+        implicates: 'Marcus Thorne',
+        alibiBreak: true
       }
     ],
     npcs: []
@@ -1268,6 +1357,16 @@ export const ROOMS = {
         note: "Set with a small pearl — not a style anyone in the family wears. Eleanor recognizes it at once: one of the upstairs maids borrows this room some evenings to practice, when she thinks no one's listening. Nothing stranger than that.",
         requires: { optional: true },
         redHerring: true
+      },
+      {
+        id: 'E-144',
+        fx: 0.55,
+        fy: 0.65,
+        name: 'The piano bench, slightly out of place',
+        note: "Nudged a few inches from where it always sits — small enough that most wouldn't notice, though Vivienne insists she never once came down from the parlor that night.",
+        requires: { killer: 'Vivienne Thorne', evidenceRotation: { group: 'vivienne-support', index: 1, count: 2 } },
+        implicates: 'Vivienne Thorne',
+        alibiBreak: true
       }
     ],
     npcs: []
@@ -1352,6 +1451,16 @@ export const ROOMS = {
         note: "Flung, not dropped — the pieces are scattered too wide for an accident. Marcus had been drinking heavily all night, by every account, and the argument in the study was the loudest anyone could remember. Whatever was said in there, it didn't end with words.",
         requires: { killer: 'Marcus Thorne', killerMethod: 'strangulation' },
         implicates: 'Marcus Thorne'
+      },
+      {
+        id: 'E-145',
+        fx: 0.35,
+        fy: 0.4,
+        name: "A boot print, smaller than the groundskeeper's own",
+        note: "Fresh enough that Tom notices it the next morning — though Julian swears he never once left his room that night.",
+        requires: { killer: 'Julian Voss', evidenceRotation: { group: 'julian-support', index: 0, count: 2 } },
+        implicates: 'Julian Voss',
+        alibiBreak: true
       }
     ],
     npcs: [
@@ -1371,7 +1480,8 @@ export const ROOMS = {
         fx: 0.08,
         fy: 0.2,
         line: '"Storm knocked half the hedge over. Been out here most of the night seeing to it."',
-        lineAlt: '"This storm\'s made a mess of the hedge and half the grounds besides. I\'ve been out here dealing with it most of the night."'
+        lineAlt: '"This storm\'s made a mess of the hedge and half the grounds besides. I\'ve been out here dealing with it most of the night."',
+        altHomeRoom: 'diningroom', altFx: 0.5, altFy: 0.15
       }
     ]
   },
@@ -1544,7 +1654,7 @@ export const ROOMS = {
         fy: 0.64,
         name: 'A pawnshop receipt',
         note: "Pawned three weeks ago: a set of silver cufflinks engraved \"E.T.\" — Edmund's own initials, taken from his desk without asking and sold for cash Julian badly needed. Theft, not murder — but it's exactly the theft Edmund found out about, and exactly why he meant to report him for it.",
-        requires: { npc: 'Julian Voss' },
+        requires: { npc: 'Julian Voss', optional: true },
         redHerring: true,
         implicates: 'Julian Voss'
       },
@@ -1640,7 +1750,14 @@ export const ROOMS = {
         fy: 0.63,
         name: "A trunk of a dead man's clothes, never given away",
         note: "A soldier's old uniform, carefully folded, smelling faintly of cedar. Harriet's husband, by the look of the photograph tucked in the breast pocket — she's kept every stitch of him longer than most people stay married at all.",
-        requires: { npc: 'Harriet Voss' },
+        // Phase 8 (broader sweep) — flagged during the audit: this carries
+        // `implicates` without a killer gate, same shape as the W-09 bug,
+        // though unlike W-09 this reads as personal-history characterization
+        // rather than accusatory physical evidence — closer in kind to the
+        // established "motive clues always visible" pattern than to a
+        // missing-gate bug. Left `implicates` untouched (not confident
+        // enough to reclassify it); made optional for presence variety only.
+        requires: { npc: 'Harriet Voss', optional: true },
         implicates: 'Harriet Voss'
       },
       {
@@ -1659,8 +1776,28 @@ export const ROOMS = {
         fy: 0.59,
         name: 'A stack of ledgers, decades out of date',
         note: "Nathaniel's own hand fills the margins of the oldest ones — matters the firm settled quietly long before Edmund ever inherited the company. He's been managing this family's secrets for far longer than anyone here has actually known him.",
-        requires: { npc: 'Nathaniel Cole' },
+        requires: { npc: 'Nathaniel Cole', optional: true },
         implicates: 'Nathaniel Cole'
+      },
+      {
+        id: 'E-147',
+        fx: 0.4,
+        fy: 0.4,
+        name: "A ledger, moved from its usual shelf",
+        note: "Out of order by exactly one place, the kind of small precision only its usual keeper would notice — or disturb. Nathaniel swears he never once set foot up here that night.",
+        requires: { killer: 'Nathaniel Cole', evidenceRotation: { group: 'nathaniel-support', index: 1, count: 2 } },
+        implicates: 'Nathaniel Cole',
+        alibiBreak: true
+      },
+      {
+        id: 'E-148',
+        fx: 0.9,
+        fy: 0.4,
+        name: 'A faint scuff on the back stairwell',
+        note: "Fresh enough to still show — the kind of mark her own house shoes would leave, after twenty-six years of the same careful steps up and down these stairs. Eleanor swears she never once came up here that night.",
+        requires: { killer: 'Eleanor Pemberton', evidenceRotation: { group: 'eleanor-support', index: 1, count: 2 } },
+        implicates: 'Eleanor Pemberton',
+        alibiBreak: true
       }
     ],
     npcs: []

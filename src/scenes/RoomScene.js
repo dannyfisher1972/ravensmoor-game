@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { ROOMS } from '../data/rooms.js';
+import { ROOMS, ROOM_ORDER_VARIANTS } from '../data/rooms.js';
 import { CHARACTERS } from '../data/characters.js';
 import { BASE_QUESTIONS, FOLLOWUPS } from '../data/questions.js';
 import { SOLUTIONS } from '../data/solutions.js';
@@ -13,6 +13,11 @@ import { playClick, playTypeTick } from '../audio.js';
 const CURRENT_KILLER = SOLUTIONS[killerIndex].killer;
 const CURRENT_METHOD = SOLUTIONS[killerIndex].method;
 const CURRENT_SCENE_NOTES = SOLUTIONS[killerIndex].sceneNotes || {};
+// Phase 8 — a curated subset of scenarios carry a second wording for the
+// body close-up (EN-10), re-narrating the same physical facts from a
+// different observational angle. Never a different weapon/room (see the
+// comment on resolveNote below for why that's structurally off the table).
+const CURRENT_ALT_EN10 = SOLUTIONS[killerIndex].altEN10;
 // Same 5-category grouping already used for the Case File impression, W-01,
 // and the other universal-clue variations (all in main.js/solutions.js) —
 // reused here so a character's answer can read differently depending on
@@ -82,7 +87,7 @@ export default class RoomScene extends Phaser.Scene {
     this.fitBackgroundToScene();
 
     this.npcs = [];
-    (cfg.npcs || []).forEach(n => this.addNPC(n));
+    this.resolveEffectiveRoomNPCs(this.roomKey).forEach(n => this.addNPC(n));
 
     this.evidenceMarkers = [];
     if (this.preDiscovery) {
@@ -182,6 +187,16 @@ export default class RoomScene extends Phaser.Scene {
   resolveNote(hotspot) {
     const reloc = this.resolveClueRelocation(hotspot);
     if (reloc) return reloc.note;
+    // Phase 8 — EN-10 alternate wording (see CURRENT_ALT_EN10 above). This
+    // is deliberately NOT a different weapon in a different room: that
+    // would require making a keyEvidence-listed hotspot conditionally
+    // unreachable in the games where the alternate is picked, which breaks
+    // the reachability guarantee every scenario has been audited against
+    // since Phase 7B. Same underlying facts, re-narrated only.
+    if (hotspot.id === 'EN-10' && CURRENT_ALT_EN10) {
+      const variant = pickDialogueVariant(`en10Alt:${killerIndex}`, 2);
+      if (variant === 1) return CURRENT_ALT_EN10;
+    }
     if (hotspot.noteVariants && hotspot.puzzleVariantGroup) {
       const idx = pickDialogueVariant(`puzzleVariant:${hotspot.puzzleVariantGroup}`, hotspot.noteVariants.length);
       return hotspot.noteVariants[idx];
@@ -242,6 +257,33 @@ export default class RoomScene extends Phaser.Scene {
       return hotspot.positionVariants[idx];
     }
     return { fx: hotspot.fx, fy: hotspot.fy };
+  }
+
+  // Phase 8 — NPC placement rotation: an NPC with altHomeRoom (rooms.js)
+  // has a 50/50 chance, picked once per story slot, of standing in that
+  // alternate room instead of their usual one. npcName (the fixed internal
+  // identifier every TALKED_TO/ASKED_QUESTIONS entry and hotspot `requires`
+  // gate keys off of) never changes — only where the player finds them to
+  // talk, which carries no narrative weight (see the comment on Harriet's
+  // altHomeRoom in rooms.js for why this doesn't contradict alibi claims).
+  resolveNpcHomeRoom(cfg) {
+    if (cfg.altHomeRoom) {
+      const variant = pickDialogueVariant(`npcHome:${cfg.name}`, 2);
+      if (variant === 1) return { room: cfg.altHomeRoom, fx: cfg.altFx, fy: cfg.altFy };
+    }
+    return { room: cfg.homeRoomKey, fx: cfg.fx, fy: cfg.fy };
+  }
+
+  // Every room's real npc roster this story slot: NPCs originally defined
+  // here who didn't roll a move away, plus any NPCs defined elsewhere who
+  // rolled a move INTO this room. ROOMS is read in full (not just this
+  // room's cfg.npcs) so a moved-in NPC can be found here too.
+  resolveEffectiveRoomNPCs(roomKey) {
+    return Object.entries(ROOMS)
+      .flatMap(([rk, room]) => (room.npcs || []).map(n => ({ ...n, homeRoomKey: rk })))
+      .map(n => ({ cfg: n, resolved: this.resolveNpcHomeRoom(n) }))
+      .filter(x => x.resolved.room === roomKey)
+      .map(x => ({ ...x.cfg, fx: x.resolved.fx, fy: x.resolved.fy }));
   }
 
   // Phase 7 — an NPC's opening line (rooms.js's `line`) is the single most
@@ -435,7 +477,7 @@ export default class RoomScene extends Phaser.Scene {
   renderTalkedToPanel() {
     const panelEl = document.getElementById('talkedToPanel');
     if (!panelEl) return;
-    const inRoom = new Set((this.roomConfig.npcs || []).map(n => n.name));
+    const inRoom = new Set(this.resolveEffectiveRoomNPCs(this.roomKey).map(n => n.name));
     const list = CHARACTERS.filter(c => TALKED_TO.has(c.name) && !inRoom.has(c.name));
 
     panelEl.innerHTML = '';
@@ -571,18 +613,39 @@ export default class RoomScene extends Phaser.Scene {
     this.pendingPuzzleEntry = null;
   }
 
+  // Phase 8 — which of the 3 valid 12-room loops (rooms.js's
+  // ROOM_ORDER_VARIANTS) this story slot uses, picked once and cached the
+  // same way every other variant in this file is.
+  resolveRoomOrder() {
+    const idx = pickDialogueVariant('roomOrderVariant', ROOM_ORDER_VARIANTS.length);
+    return ROOM_ORDER_VARIANTS[idx];
+  }
+
   setupRoomNav(cfg) {
     const nameEl = document.getElementById('room-name');
     const prevBtn = document.getElementById('room-prev');
     const nextBtn = document.getElementById('room-next');
     if (nameEl) nameEl.textContent = cfg.label;
+
+    // studyBody isn't part of any loop (see rooms.js's note on it), so it
+    // keeps its own fixed prevRoom/nextRoom ('study' both ways) — the
+    // lookup below only kicks in for a room that's actually in the active
+    // loop this story slot.
+    let prevKey = cfg.prevRoom, nextKey = cfg.nextRoom;
+    const order = this.resolveRoomOrder();
+    const idx = order.indexOf(this.roomKey);
+    if (idx !== -1) {
+      prevKey = order[(idx - 1 + order.length) % order.length];
+      nextKey = order[(idx + 1) % order.length];
+    }
+
     if (prevBtn) {
-      prevBtn.textContent = '← ' + (ROOMS[cfg.prevRoom]?.label ?? '');
-      prevBtn.onclick = () => this.goToRoom(cfg.prevRoom);
+      prevBtn.textContent = '← ' + (ROOMS[prevKey]?.label ?? '');
+      prevBtn.onclick = () => this.goToRoom(prevKey);
     }
     if (nextBtn) {
-      nextBtn.textContent = (ROOMS[cfg.nextRoom]?.label ?? '') + ' →';
-      nextBtn.onclick = () => this.goToRoom(cfg.nextRoom);
+      nextBtn.textContent = (ROOMS[nextKey]?.label ?? '') + ' →';
+      nextBtn.onclick = () => this.goToRoom(nextKey);
     }
   }
 
