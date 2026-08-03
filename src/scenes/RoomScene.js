@@ -167,11 +167,40 @@ export default class RoomScene extends Phaser.Scene {
   // this — see the Phase 7 report for which puzzle was left out because its
   // hint clues DO overlap with sceneNotes).
   resolveNote(hotspot) {
+    const reloc = this.resolveClueRelocation(hotspot);
+    if (reloc) return reloc.note;
     if (hotspot.noteVariants && hotspot.puzzleVariantGroup) {
       const idx = pickDialogueVariant(`puzzleVariant:${hotspot.puzzleVariantGroup}`, hotspot.noteVariants.length);
       return hotspot.noteVariants[idx];
     }
-    return CURRENT_SCENE_NOTES[hotspot.id] ?? hotspot.note;
+    const base = CURRENT_SCENE_NOTES[hotspot.id] ?? hotspot.note;
+    // Phase 7B — a hotspot whose digit-bearing prefix is fixed identically
+    // across every scenario/category (rooms.js's prefixVariants) can still
+    // vary its puzzle code even though its FULL note is also overridden per
+    // scenario by CURRENT_SCENE_NOTES (the West Parlor lock's hint clues):
+    // a targeted substring swap on just the shared prefix, leaving whatever
+    // category-specific suffix is active completely untouched.
+    if (hotspot.prefixVariants && hotspot.puzzleVariantGroup) {
+      const idx = pickDialogueVariant(`puzzleVariant:${hotspot.puzzleVariantGroup}`, hotspot.prefixVariants.length);
+      if (idx > 0 && base.includes(hotspot.prefixVariants[0])) {
+        return base.replace(hotspot.prefixVariants[0], hotspot.prefixVariants[idx]);
+      }
+    }
+    return base;
+  }
+
+  // Phase 7B — "true" clue relocation: a hotspot with relocationVariants
+  // (rooms.js) picks a whole {fx, fy, note} bundle once per story slot, so
+  // it isn't just nudged a few pixels but genuinely found in a different
+  // container with matching text (desk vs. bookshelf vs. side table). The
+  // id never changes, so INVENTORY/itemLock/keyEvidence checks are
+  // completely unaffected by which variant gets picked.
+  resolveClueRelocation(hotspot) {
+    if (hotspot.relocationVariants && hotspot.relocationVariants.length) {
+      const idx = pickDialogueVariant(`relocation:${hotspot.id}`, hotspot.relocationVariants.length);
+      return hotspot.relocationVariants[idx];
+    }
+    return null;
   }
 
   // The active code for a combination-lock hotspot — either its single fixed
@@ -193,6 +222,8 @@ export default class RoomScene extends Phaser.Scene {
   // identical pixel every replay, without needing new descriptive text
   // (the note never claims an exact spot, just the same drawer/shelf).
   resolveHotspotPosition(hotspot) {
+    const reloc = this.resolveClueRelocation(hotspot);
+    if (reloc) return { fx: reloc.fx, fy: reloc.fy };
     if (hotspot.positionVariants && hotspot.positionVariants.length) {
       const idx = pickDialogueVariant(`posVariant:${hotspot.id}`, hotspot.positionVariants.length);
       return hotspot.positionVariants[idx];

@@ -179,11 +179,17 @@ export const ROOMS = {
         fy: 0.75,
         name: "The desk's spare key",
         note: "A small brass key, kept in the drawer for emergencies. It looks like it might fit the greenhouse cabinet.",
-        // Phase 7 — a couple of the always-present pickups shift slightly
-        // within the same described nook each story slot (never far enough
-        // to contradict the note, which never claims an exact spot), so a
-        // repeat player can't tap the identical pixel from memory.
-        positionVariants: [{ fx: 0.65, fy: 0.75 }, { fx: 0.6, fy: 0.7 }],
+        // Phase 7B — upgraded from simple jitter to true relocation: a
+        // different container (and matching note) each story slot, not just
+        // a nudged pixel. The id, and therefore every downstream check
+        // (INVENTORY, itemLock:'I-01' on E-57), stays identical regardless
+        // of which variant is picked — only where the player finds it and
+        // what it says about that spot change.
+        relocationVariants: [
+          { fx: 0.65, fy: 0.75, note: "A small brass key, kept in the drawer for emergencies. It looks like it might fit the greenhouse cabinet." },
+          { fx: 0.12, fy: 0.45, note: "A small brass key, tucked on the bookshelf behind a row of ledgers. It looks like it might fit the greenhouse cabinet." },
+          { fx: 0.85, fy: 0.35, note: "A small brass key, left in a side-table dish by the window. It looks like it might fit the greenhouse cabinet." }
+        ],
         pickup: true,
         icon: 'key-desk.png'
       },
@@ -241,6 +247,14 @@ export const ROOMS = {
         requires: { optional: true },
         redHerring: true,
         implicates: 'Marcus Thorne'
+      },
+      {
+        id: 'E-127',
+        fx: 0.3,
+        fy: 0.75,
+        name: "A half-finished crossword, folded into yesterday's paper",
+        note: "Only three answers filled in, in a hand that isn't Edmund's. Nothing sinister — just someone's unfinished distraction from before all this began.",
+        requires: { optional: true }
       }
     ],
     npcs: [
@@ -443,7 +457,11 @@ export const ROOMS = {
         fy: 0.65,
         name: 'A tarnished luggage key',
         note: 'Wedged into the spine of an old atlas, like a bookmark someone forgot about.',
-        positionVariants: [{ fx: 0.95, fy: 0.65 }, { fx: 0.88, fy: 0.6 }],
+        relocationVariants: [
+          { fx: 0.95, fy: 0.65, note: 'Wedged into the spine of an old atlas, like a bookmark someone forgot about.' },
+          { fx: 0.15, fy: 0.5, note: 'Tucked into a drawer of the writing desk, half-hidden beneath old correspondence.' },
+          { fx: 0.75, fy: 0.45, note: 'Left in a small dish on the side cabinet, forgotten among spare buttons and old stamps.' }
+        ],
         pickup: true,
         icon: 'key-luggage.png'
       },
@@ -498,6 +516,14 @@ export const ROOMS = {
         fy: 0.3,
         name: 'A pressed flower, forgotten between two pages',
         note: "Long since faded to brown, tucked in a book no one's opened in years. Some sentimental keepsake of nobody's in particular, going by the dust on the shelf around it.",
+        requires: { optional: true }
+      },
+      {
+        id: 'E-128',
+        fx: 0.45,
+        fy: 0.55,
+        name: 'A bundle of unopened correspondence, tied with string',
+        note: "Addressed to Edmund, postmarked over a year ago and never opened. Whatever this was, it stopped mattering to him a long time before tonight.",
         requires: { optional: true }
       }
     ],
@@ -590,14 +616,34 @@ export const ROOMS = {
         fx: 0.2,
         fy: 0.68,
         name: 'A faded ticket stub',
-        note: 'Tucked behind a cushion, half the ink gone: "2 – 0 – _ – 7." A keepsake of some kind, going by the box it was found next to.'
+        note: 'Tucked behind a cushion, half the ink gone: "2 – 0 – _ – 7." A keepsake of some kind, going by the box it was found next to.',
+        // Phase 7B — unlike Study/Dr. Wren's Room, this hotspot's note is
+        // ALSO overridden per-scenario by every one of the 37 entries in
+        // solutions.js's sceneNotes (the Universal Clue Variation system),
+        // so a plain noteVariants swap would silently erase that method-
+        // category flavor. The digit-bearing PREFIX is identical across
+        // every single scenario/category, though (only the trailing
+        // sentence after it varies) — verified across all 37 entries before
+        // relying on this — so resolveNote does a targeted substring
+        // replace on just that prefix, leaving whatever category suffix is
+        // active completely untouched.
+        prefixVariants: [
+          'Tucked behind a cushion, half the ink gone: "2 – 0 – _ – 7." A keepsake of some kind, going by the box it was found next to',
+          'Tucked behind a cushion, half the ink gone: "3 – 1 – _ – 8." A keepsake of some kind, going by the box it was found next to'
+        ],
+        puzzleVariantGroup: 'westparlor-lock'
       },
       {
         id: 'E-84',
         fx: 0.47,
         fy: 0.18,
         name: 'A hand-stitched sampler',
-        note: 'On the wall, a little uneven with age: six roses stitched round the border, one for each year the room says it took to finish.'
+        note: 'On the wall, a little uneven with age: six roses stitched round the border, one for each year the room says it took to finish.',
+        prefixVariants: [
+          'On the wall, a little uneven with age: six roses stitched round the border, one for each year the room says it took to finish.',
+          'On the wall, a little uneven with age: four roses stitched round the border, one for each year the room says it took to finish.'
+        ],
+        puzzleVariantGroup: 'westparlor-lock'
       },
       {
         id: 'E-85',
@@ -606,7 +652,9 @@ export const ROOMS = {
         name: 'A locked keepsake box',
         note: "A small photograph inside, corners worn soft from handling — Vivienne, decades younger, laughing at something just out of frame. Whatever this marriage became, someone kept this all the same.",
         puzzle: true,
-        puzzleCode: '2067'
+        puzzleCode: '2067',
+        puzzleCodeVariants: ['2067', '3148'],
+        puzzleVariantGroup: 'westparlor-lock'
       },
       {
         id: 'E-95',
@@ -722,7 +770,11 @@ export const ROOMS = {
         fy: 0.58,
         name: 'A small iron curio key',
         note: "In Edmund's own writing box, labeled in faded ink: \"V's cabinet.\"",
-        positionVariants: [{ fx: 0.93, fy: 0.58 }, { fx: 0.86, fy: 0.52 }],
+        relocationVariants: [
+          { fx: 0.93, fy: 0.58, note: "In Edmund's own writing box, labeled in faded ink: \"V's cabinet.\"" },
+          { fx: 0.2, fy: 0.5, note: "Slipped inside the nightstand drawer, labeled in faded ink: \"V's cabinet.\"" },
+          { fx: 0.6, fy: 0.3, note: "Left on top of a stack of books by the window, labeled in faded ink: \"V's cabinet.\"" }
+        ],
         pickup: true,
         icon: 'key-curio.png'
       },
@@ -775,6 +827,14 @@ export const ROOMS = {
         name: 'A framed photograph, slightly askew on the wall',
         note: "An old family portrait, the frame knocked a little crooked — dusted around recently, unlike the rest of the room. Probably nothing more than someone straightening up.",
         requires: { optional: true }
+      },
+      {
+        id: 'E-129',
+        fx: 0.4,
+        fy: 0.75,
+        name: 'A pressed corsage, kept in a drawer',
+        note: "Long dried, tied with a faded ribbon. Could be from any occasion in forty years of marriages and mistresses in this house. Impossible to say whose it was, or why it's still here.",
+        requires: { optional: true }
       }
     ],
     npcs: [
@@ -823,7 +883,11 @@ export const ROOMS = {
         fy: 0.62,
         name: "A brass key, tagged \"Dining Rm. Sideboard\"",
         note: "Eleanor's doing, most likely — physicians keeping late hours get given odd keys, for medicinal brandy and the like.",
-        positionVariants: [{ fx: 0.82, fy: 0.62 }, { fx: 0.76, fy: 0.68 }],
+        relocationVariants: [
+          { fx: 0.82, fy: 0.62, note: "Eleanor's doing, most likely — physicians keeping late hours get given odd keys, for medicinal brandy and the like." },
+          { fx: 0.25, fy: 0.5, note: "Tucked in a drawer of the medical cabinet, tagged same as always — Eleanor's doing, most likely, physicians keeping late hours get given odd keys, for medicinal brandy and the like." },
+          { fx: 0.6, fy: 0.75, note: "Left on a side table by the window, tagged same as always — Eleanor's doing, most likely, physicians keeping late hours get given odd keys, for medicinal brandy and the like." }
+        ],
         pickup: true,
         icon: 'key-sideboard.png'
       },
@@ -879,6 +943,14 @@ export const ROOMS = {
         fy: 0.2,
         name: 'A half-written letter to a colleague',
         note: "Dr. Wren, drafting a request for a second opinion on a difficult case — unsigned, unfinished, and not addressed to anyone in this house. Doctors worry about all sorts of patients, not just this one.",
+        requires: { optional: true }
+      },
+      {
+        id: 'E-130',
+        fx: 0.35,
+        fy: 0.55,
+        name: 'A dog-eared medical journal, left open',
+        note: "Open to an article on cardiac strain, heavily annotated in Dr. Wren's own hand. Professional curiosity, or something closer to home — hard to say which.",
         requires: { optional: true }
       }
     ],
