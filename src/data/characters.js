@@ -74,7 +74,8 @@ const META = {
       'confirm-victoria-stairs': "That's about right. Everything's a blur after the argument, but I remember passing her, yes.",
       'confirm-priya-visit': "I wanted her backing before the announcement. She wasn't interested — she never is. I left and went looking for Father instead.",
       'dispute-julian-timing': "Julian's sense of time has never been reliable, especially after a few drinks. I was with him closer to eleven.",
-      'confirm-argument-heard': "Yes. It always got loud with him eventually. That's just how we talked, near the end."
+      'confirm-argument-heard': "Yes. It always got loud with him eventually. That's just how we talked, near the end.",
+      'confront-marcus-ledger': "Fine — yes, I've borrowed against the company more than once. It's not the crime everyone's about to decide it is. A man's allowed to need money without it meaning he'd kill his own father over it."
     }
   },
   'Priya Thorne-Kapoor': {
@@ -103,7 +104,8 @@ const META = {
       suspicion: "Marcus has his father's temper without his father's patience. That worries me more than it should.",
       suspicionAlt: "I couldn't possibly say — I was asleep, remember. Whatever happened, it happened without me hearing a thing.",
       'ask-harriet-noises': "I told you, I'd already dozed off by then. Ask someone less prone to napping through a murder.",
-      'ask-harriet-trunk': "I knew he was short on money — he always is. I didn't know it had gotten that bad, or that he'd started selling things that weren't only his to sell. I'll have words with him, once all this is behind us."
+      'ask-harriet-trunk': "I knew he was short on money — he always is. I didn't know it had gotten that bad, or that he'd started selling things that weren't only his to sell. I'll have words with him, once all this is behind us.",
+      'ask-harriet-uniform': "Every day, if I let myself. It's easier to keep his things where I won't stumble on them by accident than to pretend I've moved past a man I was married to for thirty years. I don't expect you to understand that, and I don't much need you to."
     }
   },
   'Julian Voss': {
@@ -129,7 +131,8 @@ const META = {
       suspicion: "Victoria's been quieter than usual all week. I don't think that's grief.",
       suspicionAlt: "I was with Nathaniel the entire evening, going over paperwork — he'll tell you the same. Beyond that, I really couldn't say.",
       'confirm-nathaniel-library': "That's right. Not exactly thrilling company, but reliable — Nathaniel doesn't so much as refill his own glass without a receipt.",
-      'ask-diana-fire': "I hadn't even noticed, if I'm honest — we were both too buried in the paperwork to think about the fire. Ask Nathaniel, he tends to it more than I do. I wouldn't have thought twice about it."
+      'ask-diana-fire': "I hadn't even noticed, if I'm honest — we were both too buried in the paperwork to think about the fire. Ask Nathaniel, he tends to it more than I do. I wouldn't have thought twice about it.",
+      'ask-diana-scorch': "Kessler-Vance. Edmund and I disagreed about them more than once — hardly a secret, and hardly a reason to burn anything over. I couldn't tell you who fed that particular page to the fire, or why."
     }
   },
   'Nathaniel Cole': {
@@ -172,7 +175,8 @@ const META = {
       suspicion: "That woman he replaced me with is hiding something. I saw it the moment I met her — I always know.",
       suspicionAlt: "Victoria, obviously. It's always the young wife, isn't it? I knew the moment I met her. I always know.",
       'ask-vivienne-hearth': "That parlor's always draughty, fire or no fire. I never trouble Eleanor for one unless I'm actually cold enough to complain about it — and that night, I had better things on my mind than comfort.",
-      'ask-vivienne-letters': "I didn't, no. Though I can't say I'm surprised — sentimental old fool, underneath all that bluster. Doesn't change how he actually treated me these last few years, though."
+      'ask-vivienne-letters': "I didn't, no. Though I can't say I'm surprised — sentimental old fool, underneath all that bluster. Doesn't change how he actually treated me these last few years, though.",
+      'ask-vivienne-music': "Some evenings, when the house is finally quiet enough to let me pretend it's still mine to sit in. That piano's the one thing in this house that's never once made me feel unwelcome."
     }
   },
   'Dr. Wren': {
@@ -184,7 +188,8 @@ const META = {
       relationship: "I've treated this family for over a decade. Edmund was a difficult patient — he hated being told he couldn't do something, which made my job considerably harder these last few months.",
       relationshipAlt: "Over a decade treating this family, and Edmund never once liked being told 'no' by his own physician. These last few months made that considerably harder to manage.",
       suspicion: "I'm a physician, not a detective. If you're asking whether natural causes explain everything I saw tonight, I'd rather not guess out loud.",
-      'ask-wren-heart': "In my professional opinion? Yes — plainly, and without a shadow of anyone's help. I'd warned him for months. A man his age, with a heart that tired, under that kind of stress — I only wish he'd let me say it to his face instead of leaving that letter unopened."
+      'ask-wren-heart': "In my professional opinion? Yes — plainly, and without a shadow of anyone's help. I'd warned him for months. A man his age, with a heart that tired, under that kind of stress — I only wish he'd let me say it to his face instead of leaving that letter unopened.",
+      'ask-wren-notes': "Closer than he ever let his own family see. I'd have called it a matter of when, not if, months ago — stress like tonight's would only have hastened whatever was already coming. That's a medical opinion, not an alibi for anyone."
     }
   },
   'Tom Yarrow': {

@@ -41,6 +41,29 @@ document.querySelectorAll('.spouse-word').forEach((el) => {
   el.textContent = victoriaStatus === 'wife' ? 'wife' : 'girlfriend';
 });
 
+// Beta 1.1 replayability pass — a one-line preliminary impression on the
+// Case File, grouped by this game's method category rather than by killer.
+// Every real killer can land on any of these methods (see solutions.js), so
+// the label never correlates with who's actually responsible — it's the
+// same ambiguity a first responder would have looking at the body, not a
+// hint. Deliberately doesn't distinguish murder from genuine accident/
+// natural-causes within a category (e.g. 'none' and 'tampered-medication'
+// share a label) so it never gives away more than that.
+const CASE_IMPRESSION_BY_METHOD = {
+  poison: 'Preliminary impression: possible poisoning. The housekeeper mentions a bitter smell that has nothing to do with the whisky.',
+  'blunt-force': "Preliminary impression: possible struggle. Whatever happened in that study, it didn't happen quietly.",
+  stabbing: "Preliminary impression: possible struggle. Whatever happened in that study, it didn't happen quietly.",
+  strangulation: "Preliminary impression: possible struggle. Whatever happened in that study, it didn't happen quietly.",
+  smothering: 'Preliminary impression: unclear so far — no obvious wound, no sign of a struggle. If anything happened at all, it happened fast, and quietly.',
+  asphyxiation: 'Preliminary impression: unclear so far — no obvious wound, no sign of a struggle. If anything happened at all, it happened fast, and quietly.',
+  'staged-accident': 'Preliminary impression: possibly just a terrible accident. Nothing about the study looks disturbed — which may be exactly the point.',
+  fall: 'Preliminary impression: possibly just a terrible accident. Nothing about the study looks disturbed — which may be exactly the point.',
+  'tampered-medication': "Preliminary impression: possibly a natural death. Dr. Wren had been warning him about his heart for months.",
+  none: "Preliminary impression: possibly a natural death. Dr. Wren had been warning him about his heart for months."
+};
+const caseImpressionEl = document.getElementById('caseImpression');
+if (caseImpressionEl) caseImpressionEl.textContent = CASE_IMPRESSION_BY_METHOD[SOLUTION.method] || '';
+
 // Note: no global `pixelArt: true` here — it would force nearest-neighbor
 // filtering on every texture, which would ruin the photorealistic
 // AI-generated backgrounds and portraits (crunchy/aliased instead of smooth).

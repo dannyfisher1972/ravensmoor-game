@@ -155,5 +155,44 @@ export const FOLLOWUPS = [
     target: 'Nathaniel Cole',
     unlocksAfter: { evidence: 'E-15' },
     text: 'There are love letters between you and Victoria, hidden in a hollow book. Does that have anything to do with why Edmund is dead?'
+  },
+
+  // --- Beta 1.1 replayability pass -----------------------------------------
+  // Five new follow-ups off clues that were already universal (present in
+  // every one of the 37 scenarios) but had no conversation attached to them
+  // yet. Not killer-aware and not guilt-tied — same reason the base
+  // suspicion answers stay random-per-slot rather than guilt-linked (see
+  // STORY-TRACKER.md's cross-cutting notes on that). These just give a
+  // thorough replay more to discover, regardless of which scenario got
+  // picked.
+  {
+    id: 'ask-diana-scorch',
+    target: 'Diana Reyes',
+    unlocksAfter: { evidence: 'E-10' },
+    text: "There's a scorched page in the study hearth — burned down to just the initials \"K-V.\" Anything you'd like to explain about that?"
+  },
+  {
+    id: 'confront-marcus-ledger',
+    target: 'Marcus Thorne',
+    unlocksAfter: { evidence: 'E-65' },
+    text: "There's a petty cash ledger in your own toolbox — months of company \"loans\" in your handwriting, never repaid. Want to explain that?"
+  },
+  {
+    id: 'ask-vivienne-music',
+    target: 'Vivienne Thorne',
+    unlocksAfter: { evidence: 'E-112' },
+    text: "There's a waltz left open on the piano stand in the music room, with your own fingering notes in the margin. You still play?"
+  },
+  {
+    id: 'ask-harriet-uniform',
+    target: 'Harriet Voss',
+    unlocksAfter: { evidence: 'E-115' },
+    text: "There's a trunk in the attic with your husband's old uniform, kept all these years. Does he come up much, these days?"
+  },
+  {
+    id: 'ask-wren-notes',
+    target: 'Dr. Wren',
+    unlocksAfter: { evidence: 'E-59' },
+    text: 'Your case notes describe a weak heart, worsening for months. How close was he to the edge, medically speaking?'
   }
 ];
