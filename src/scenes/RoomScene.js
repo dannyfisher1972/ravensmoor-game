@@ -200,6 +200,20 @@ export default class RoomScene extends Phaser.Scene {
     return { fx: hotspot.fx, fy: hotspot.fy };
   }
 
+  // Phase 7 — an NPC's opening line (rooms.js's `line`) is the single most
+  // frequently-seen static text in the game, since it plays on every talk-to
+  // click before any question is asked, yet no earlier replayability phase
+  // ever touched it. A second phrasing (`lineAlt`) is picked once per story
+  // slot via the same generic Alt mechanism the base-question answers use —
+  // never tied to the killer, so it's flavor, not a tell.
+  resolveNpcLine(cfg) {
+    if (cfg.lineAlt) {
+      const variant = pickDialogueVariant(`npcLine:${cfg.name}`, 2);
+      if (variant === 1) return cfg.lineAlt;
+    }
+    return cfg.line;
+  }
+
   renderUnlockedHotspots() {
     const glowKey = this.ensureGlowDot();
     const foundKey = this.ensureFoundBadge();
@@ -400,7 +414,7 @@ export default class RoomScene extends Phaser.Scene {
         span.textContent = shownName.charAt(0);
         btn.appendChild(span);
       }
-      btn.onclick = () => this.talkToNPC({ npcName: c.name, npcDisplayName: shownName, npcLine: c.line, npcPortraitKey: c.portraitKey, answers: c.answers });
+      btn.onclick = () => this.talkToNPC({ npcName: c.name, npcDisplayName: shownName, npcLine: this.resolveNpcLine(c), npcPortraitKey: c.portraitKey, answers: c.answers });
       panelEl.appendChild(btn);
     });
     panelEl.style.display = (list.length && this.dialogEl.style.display !== 'flex') ? 'flex' : 'none';
@@ -715,7 +729,7 @@ export default class RoomScene extends Phaser.Scene {
     const texKey = this.ensureCircularBadge(npcKey, cfg.portraitKey, cfg.tint, cfg.name.charAt(0));
     const npc = this.add.image(p.x, p.y, texKey);
     npc.npcName = cfg.name;
-    npc.npcLine = cfg.line;
+    npc.npcLine = this.resolveNpcLine(cfg);
     npc.npcPortraitKey = cfg.portraitKey;
     const matched = CHARACTERS.find(c => c.name === cfg.name);
     npc.answers = matched?.answers;

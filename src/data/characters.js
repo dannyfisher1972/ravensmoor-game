@@ -103,11 +103,17 @@ const META = {
       suspicionAlt: "Ask about Julian's debts, if you want. Though I know how this looks — the son who argued with his father, alone out back with no one to vouch for him. Draw whatever conclusions you like.",
       // Follow-ups, unlocked by asking specific other people first (see FOLLOWUPS).
       'confirm-victoria-stairs': "That's about right. Everything's a blur after the argument, but I remember passing her, yes.",
+      'confirm-victoria-stairsAlt': "She's right, as far as I recall — the whole night's a blur after that argument, but yes, we passed each other on the stairs.",
       'confirm-priya-visit': "I wanted her backing before the announcement. She wasn't interested — she never is. I left and went looking for Father instead.",
+      'confirm-priya-visitAlt': "I went to get her on my side before Father's announcement. She turned me down flat, same as always, so I went to find him instead.",
       'dispute-julian-timing': "Julian's sense of time has never been reliable, especially after a few drinks. I was with him closer to eleven.",
+      'dispute-julian-timingAlt': "Julian's timing is never reliable once he's had a drink or two. My memory has us together closer to eleven, not half past ten.",
       'confirm-argument-heard': "Yes. It always got loud with him eventually. That's just how we talked, near the end.",
+      'confirm-argument-heardAlt': "That was us, yes. Things got loud between us eventually — always did, toward the end.",
       'confront-marcus-ledger': "Fine — yes, I've borrowed against the company more than once. It's not the crime everyone's about to decide it is. A man's allowed to need money without it meaning he'd kill his own father over it.",
-      'confirm-tom-sighting-detail': "Haven't the faintest. I was out by the garage the whole time, same as I told you — wherever that figure was headed, it wasn't toward me."
+      'confront-marcus-ledgerAlt': "All right, it's true — I've taken more than one loan against the company. That's not the same as murdering my own father over needing money.",
+      'confirm-tom-sighting-detail': "Haven't the faintest. I was out by the garage the whole time, same as I told you — wherever that figure was headed, it wasn't toward me.",
+      'confirm-tom-sighting-detailAlt': "No idea who that could've been. I was by the garage that whole time, exactly as I told you — whoever Tom saw, it wasn't me."
     }
   },
   'Priya Thorne-Kapoor': {
@@ -136,9 +142,13 @@ const META = {
       suspicionMedical: "Victoria smiles at everyone and tells them exactly what they want to hear. Though if his heart simply gave out, I suppose it hardly matters what any of us think about her tonight.",
       suspicionAlt: "I don't know. Everyone in this house wanted something from him. I just wanted to be left alone with my plants — and now I can't even have that.",
       'ask-priya-ledger': "Not remotely. I've watched him resent that company for years while still needing it to bankroll the life he thinks he's owed. I just didn't expect him to be stupid enough to write it all down.",
+      'ask-priya-ledgerAlt': "Not even slightly. He resented that company for years and still leaned on it to fund the life he felt he deserved. I just never thought he'd be careless enough to put it all in writing.",
       'ask-priya-cabinet': "I always assumed the second compartment was just for the concentrated stock — the really dangerous stuff. I never once suspected he was watching who came and went that closely. That's unsettling, honestly, now that you mention it.",
+      'ask-priya-cabinetAlt': "I'd always figured that second compartment was purely for the concentrated stock. I never imagined he was tracking comings and goings that carefully — unsettling, now that you say it.",
       'ask-priya-vial': "That cabinet's never been as locked as everyone likes to pretend. There's a spare key in the study desk half this house knows about, and Eleanor's had reason to be in and out of here for years besides. I keep foxglove for the borders — I don't exactly hide that, and I don't much like being the obvious answer just because it's my greenhouse.",
-      'ask-priya-key-habit': "Longer than I'd like, honestly. I've meant to move it for years and never quite gotten around to it. Half this staff could probably find it blindfolded, same as I could."
+      'ask-priya-vialAlt': "That cabinet's far less secure than people want to believe. A spare key sits in the study desk that half the house could name, and Eleanor's been in and out of here plenty over the years. I grow foxglove for the borders openly enough — I just don't love being the easy answer purely because it's my greenhouse.",
+      'ask-priya-key-habit': "Longer than I'd like, honestly. I've meant to move it for years and never quite gotten around to it. Half this staff could probably find it blindfolded, same as I could.",
+      'ask-priya-key-habitAlt': "Longer than I'd care to admit. I keep meaning to relocate it and never manage to. Most of the staff could probably locate it without even trying, same as I could."
     }
   },
   'Harriet Voss': {
@@ -167,8 +177,11 @@ const META = {
       suspicionMedical: "Marcus has his father's temper without his father's patience. A temper like his needs something to fight. A quiet, failing heart wouldn't have given him anything to push against.",
       suspicionAlt: "I couldn't possibly say — I was asleep, remember. Whatever happened, it happened without me hearing a thing.",
       'ask-harriet-noises': "I told you, I'd already dozed off by then. Ask someone less prone to napping through a murder.",
+      'ask-harriet-noisesAlt': "As I said, I was already asleep by then. You'll want someone who wasn't dozing through the whole business.",
       'ask-harriet-trunk': "I knew he was short on money — he always is. I didn't know it had gotten that bad, or that he'd started selling things that weren't only his to sell. I'll have words with him, once all this is behind us.",
-      'ask-harriet-uniform': "Every day, if I let myself. It's easier to keep his things where I won't stumble on them by accident than to pretend I've moved past a man I was married to for thirty years. I don't expect you to understand that, and I don't much need you to."
+      'ask-harriet-trunkAlt': "I've always known he was short on money. I didn't realize it had reached the point of selling things that weren't his alone to sell. I'll be having a word with him, once this is all settled.",
+      'ask-harriet-uniform': "Every day, if I let myself. It's easier to keep his things where I won't stumble on them by accident than to pretend I've moved past a man I was married to for thirty years. I don't expect you to understand that, and I don't much need you to.",
+      'ask-harriet-uniformAlt': "More often than I'd admit to most people. Keeping his things close is easier than pretending I'm past a man I spent thirty years married to. You needn't understand it — I don't ask you to."
     }
   },
   'Julian Voss': {
@@ -224,9 +237,13 @@ const META = {
       suspicionMedical: "Victoria's been quieter than usual all week. I don't think that's grief — though if it was simply his heart, I suppose it hardly matters now.",
       suspicionAlt: "I was with Nathaniel the entire evening, going over paperwork — he'll tell you the same. Beyond that, I really couldn't say.",
       'confirm-nathaniel-library': "That's right. Not exactly thrilling company, but reliable — Nathaniel doesn't so much as refill his own glass without a receipt.",
+      'confirm-nathaniel-libraryAlt': "That matches what I'd say. Hardly lively company, but dependable — the man accounts for every glass he pours.",
       'ask-diana-fire': "I hadn't even noticed, if I'm honest — we were both too buried in the paperwork to think about the fire. Ask Nathaniel, he tends to it more than I do. I wouldn't have thought twice about it.",
+      'ask-diana-fireAlt': "Honestly, I didn't notice at all — we were too deep in that paperwork to think about the hearth. Nathaniel tends to that more than I ever do; it wouldn't have crossed my mind.",
       'ask-diana-scorch': "Kessler-Vance. Edmund and I disagreed about them more than once — hardly a secret, and hardly a reason to burn anything over. I couldn't tell you who fed that particular page to the fire, or why.",
-      'ask-diana-glass': "Not especially. That greenhouse has never been as locked up as Priya likes to think. I wouldn't read too much into a second glass on its own."
+      'ask-diana-scorchAlt': "Kessler-Vance, if you must know. Edmund and I clashed over them more than once, though that's no secret and hardly worth setting anything alight over. Who actually burned that page, I couldn't begin to guess.",
+      'ask-diana-glass': "Not especially. That greenhouse has never been as locked up as Priya likes to think. I wouldn't read too much into a second glass on its own.",
+      'ask-diana-glassAlt': "Not really, no. That greenhouse has never been half as secure as Priya likes to think it is. A second glass on its own doesn't tell you much."
     }
   },
   'Nathaniel Cole': {
@@ -255,9 +272,11 @@ const META = {
       suspicionMedical: "I'd look harder at whoever benefits most from the version of the will he never got to sign. A will only ever answers who benefits. A tired heart doesn't need a motive to finally give out.",
       suspicionAlt: "I really couldn't say. I barely left the library all night — Diana can confirm as much, if it comes to that.",
       'ask-nathaniel-toast': "I drafted three different versions this year alone, and he changed his mind each time. Whatever he meant to say that night, I couldn't tell you which draft he'd finally settled on — if he'd settled on any of them at all.",
+      'ask-nathaniel-toastAlt': "Three separate drafts this year, and he kept changing his mind on every one. Whatever he intended to announce, I couldn't say which version he'd actually landed on by the end — if he'd landed on one at all.",
       'ask-nathaniel-affair': "I'd rather not discuss my personal affairs with an amateur detective, if it's all the same to you. Whatever you think you've found, it isn't a confession.",
       'ask-nathaniel-affairAlt': "Those letters are exactly what they look like, and I won't insult either of us by denying it. What they aren't is an answer to anything you're actually here to solve.",
-      'ask-nathaniel-stain': "Not that I noticed, and I was watching him fairly closely that night, given everything else on the table besides food. If something was already wrong by dinner, he hid it better than I've ever known him to."
+      'ask-nathaniel-stain': "Not that I noticed, and I was watching him fairly closely that night, given everything else on the table besides food. If something was already wrong by dinner, he hid it better than I've ever known him to.",
+      'ask-nathaniel-stainAlt': "Not that I saw, and I was paying close attention to him that evening, for more reasons than the meal. If something was already amiss at dinner, he concealed it better than I'd have thought possible."
     }
   },
   'Eleanor Pemberton': {
@@ -286,8 +305,11 @@ const META = {
       suspicionMedical: "I try not to speculate about the family I serve. A man's heart failing him isn't really something anyone in this house gets to take credit for, myself included.",
       suspicionAlt: "I try not to speculate about the family I serve. Twenty-six years teaches you that much, if nothing else.",
       'ask-eleanor-parlor': "The west parlor's on the other side of the house from my kitchen. I couldn't tell you one way or the other — though I don't recall laying a fire there all evening.",
+      'ask-eleanor-parlorAlt': "My kitchen's clear on the other side of the house from that parlor. I couldn't say either way — though I don't remember tending a fire there that night.",
       'confirm-wren-eleanor': "I always fetch the doctor myself if something feels wrong in this house — it's faster than sending anyone else stumbling around at that hour. That night was no different, whatever anyone wants to read into it.",
-      'ask-eleanor-payment': "That's between me and Edmund, and he's not here to say otherwise. I'll only tell you it wasn't idle generosity — whatever you're imagining, I'd rather you didn't."
+      'confirm-wren-eleanorAlt': "I make a point of fetching the doctor myself whenever something seems wrong here — quicker than waking someone else to do it at that hour. That night was no exception, whatever anyone reads into it.",
+      'ask-eleanor-payment': "That's between me and Edmund, and he's not here to say otherwise. I'll only tell you it wasn't idle generosity — whatever you're imagining, I'd rather you didn't.",
+      'ask-eleanor-paymentAlt': "That was a private matter between Edmund and myself, and he isn't here to explain it otherwise. I'll say only that it wasn't given lightly — whatever you're picturing, I'd rather you didn't."
     }
   },
   'Vivienne Thorne': {
@@ -316,10 +338,15 @@ const META = {
       suspicionMedical: "That woman he replaced me with is hiding something. Even a failing heart couldn't resist one last dramatic exit, in a house like this one.",
       suspicionAlt: "Victoria, obviously. It's always the young wife, isn't it? I knew the moment I met her. I always know.",
       'ask-vivienne-hearth': "That parlor's always draughty, fire or no fire. I never trouble Eleanor for one unless I'm actually cold enough to complain about it — and that night, I had better things on my mind than comfort.",
+      'ask-vivienne-hearthAlt': "That parlor's draughty whether there's a fire or not. I only bother Eleanor for one when I'm genuinely cold enough to complain — and that night, comfort wasn't exactly on my mind.",
       'ask-vivienne-letters': "I didn't, no. Though I can't say I'm surprised — sentimental old fool, underneath all that bluster. Doesn't change how he actually treated me these last few years, though.",
+      'ask-vivienne-lettersAlt': "No, I had no idea. Though it hardly surprises me — sentimental old fool, underneath everything. Doesn't change a thing about how he actually treated me these last years.",
       'ask-vivienne-music': "Some evenings, when the house is finally quiet enough to let me pretend it's still mine to sit in. That piano's the one thing in this house that's never once made me feel unwelcome.",
+      'ask-vivienne-musicAlt': "Some nights, when the house finally quiets down enough to let me imagine it's still mine. That piano's about the only thing here that's never once made me feel like an outsider.",
       'ask-vivienne-sampler': "I did, if you can believe it. A lifetime ago, when I still thought needlework was something a proper wife did with her evenings. I don't imagine I could manage it now.",
-      'ask-vivienne-cold-hearth': "I've sat in colder rooms than that and called it fine, thank you. Cold has never been reason enough to trouble Eleanor for something as small as a fire."
+      'ask-vivienne-samplerAlt': "I did, believe it or not. A lifetime ago, back when I thought needlework was simply what a proper wife did of an evening. I doubt I'd have the patience for it now.",
+      'ask-vivienne-cold-hearth': "I've sat in colder rooms than that and called it fine, thank you. Cold has never been reason enough to trouble Eleanor for something as small as a fire.",
+      'ask-vivienne-cold-hearthAlt': "I've endured colder rooms than that without complaint. Cold has never once been reason enough for me to bother Eleanor over something as trivial as a fire."
     }
   },
   'Dr. Wren': {
@@ -347,7 +374,9 @@ const META = {
       suspicionAccident: "I'm a physician, not a detective. If you're asking whether an accident could explain everything I saw tonight, I'd rather not guess out loud.",
       suspicionMedical: "I'm a physician, not a detective. If you're asking whether natural causes alone could explain everything I saw tonight, I'd rather not guess out loud — though I have my professional opinion, for what it's worth.",
       'ask-wren-heart': "In my professional opinion? Yes — plainly, and without a shadow of anyone's help. I'd warned him for months. A man his age, with a heart that tired, under that kind of stress — I only wish he'd let me say it to his face instead of leaving that letter unopened.",
-      'ask-wren-notes': "Closer than he ever let his own family see. I'd have called it a matter of when, not if, months ago — stress like tonight's would only have hastened whatever was already coming. That's a medical opinion, not an alibi for anyone."
+      'ask-wren-heartAlt': "Professionally speaking, yes — without question, and without anyone's assistance. I'd cautioned him for months. A man of his age, a heart that worn, under that much strain that night — I only regret he never let me tell him so directly instead of leaving that letter unread.",
+      'ask-wren-notes': "Closer than he ever let his own family see. I'd have called it a matter of when, not if, months ago — stress like tonight's would only have hastened whatever was already coming. That's a medical opinion, not an alibi for anyone.",
+      'ask-wren-notesAlt': "Nearer the edge than he ever showed his own family. I'd have said it was only a matter of time, months back — and a night like this one would only have sped along whatever was already coming. That's my medical judgment, not an alibi for any one of them."
     }
   },
   'Tom Yarrow': {
@@ -372,7 +401,8 @@ const META = {
       suspicionSuffocation: "Not my place to say. I mind the hedges, not the house — though I'll say this much, nothing tonight was loud enough to carry as far as the garden.",
       suspicionAccident: "Not my place to say. I mind the hedges, not the house — accident or not, whatever's between that family, they've kept it well away from me.",
       suspicionMedical: "Not my place to say. A man's heart is between him and his doctor, same as it's always been — nothing out here changes that.",
-      'confirm-groundskeeper-sighting': "Same build as most in this house — dark coat, quick steps, keeping to the shadow of the hedge. I didn't think a thing of it till I heard what happened. Wish now I'd looked harder."
+      'confirm-groundskeeper-sighting': "Same build as most in this house — dark coat, quick steps, keeping to the shadow of the hedge. I didn't think a thing of it till I heard what happened. Wish now I'd looked harder.",
+      'confirm-groundskeeper-sightingAlt': "Built like most of the men in that house — dark coat, moving quick, sticking close to the hedge's shadow. Didn't think twice about it until I heard what happened. Wish I'd paid closer attention now."
     }
   }
 };

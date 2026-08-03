@@ -250,7 +250,8 @@ export const ROOMS = {
         portraitKey: 'portrait-harriet',
         fx: 0.95,
         fy: 0.15,
-        line: '"I read until I fell asleep. This family, honestly — always something."'
+        line: '"I read until I fell asleep. This family, honestly — always something."',
+        lineAlt: '"I dozed off somewhere in the middle of a chapter, same as most nights. This family never does make it easy to relax, though."'
       }
     ]
   },
@@ -490,6 +491,14 @@ export const ROOMS = {
         note: "Gone from the lamp on Diana's own side of the library, never replaced. Tucked behind the same lamp: a telegram, torn in half, from a firm neither Edmund nor Kessler-Vance had ever done business with — a third company entirely, one Diana had been quietly feeding both of her partners' secrets to, playing every side against the other for a payout bigger than any single deal alone. Edmund had only just pieced together whose interests she was actually serving.",
         requires: { killer: 'Diana Reyes', killerMethod: 'strangulation' },
         implicates: 'Diana Reyes'
+      },
+      {
+        id: 'E-125',
+        fx: 0.4,
+        fy: 0.3,
+        name: 'A pressed flower, forgotten between two pages',
+        note: "Long since faded to brown, tucked in a book no one's opened in years. Some sentimental keepsake of nobody's in particular, going by the dust on the shelf around it.",
+        requires: { optional: true }
       }
     ],
     npcs: [
@@ -499,7 +508,8 @@ export const ROOMS = {
         portraitKey: 'portrait-nathaniel',
         fx: 0.25,
         fy: 0.15,
-        line: '"I\'ve drafted this family\'s wills more times than I care to count. I never once expected to need an alibi for one of them."'
+        line: '"I\'ve drafted this family\'s wills more times than I care to count. I never once expected to need an alibi for one of them."',
+        lineAlt: '"Redrafting his will has been half my job for over a decade. Needing my own alibi over it is a new experience entirely."'
       },
       {
         tint: 0x8fb49a,
@@ -507,7 +517,8 @@ export const ROOMS = {
         portraitKey: 'portrait-diana',
         fx: 0.75,
         fy: 0.22,
-        line: '"Edmund and I disagreed about the direction of the company. That\'s Tuesday, not motive."'
+        line: '"Edmund and I disagreed about the direction of the company. That\'s Tuesday, not motive."',
+        lineAlt: '"Edmund and I argued about the company more often than either of us cared to admit. Doesn\'t make it a reason to kill him."'
       },
       {
         tint: 0xc76b4a,
@@ -515,7 +526,8 @@ export const ROOMS = {
         portraitKey: 'portrait-vivienne',
         fx: 0.5,
         fy: 0.12,
-        line: '"Edmund and I had our differences, but I never once wished this on him — whatever the rest of this house might prefer to believe."'
+        line: '"Edmund and I had our differences, but I never once wished this on him — whatever the rest of this house might prefer to believe."',
+        lineAlt: '"Whatever this house wants to believe about me and Edmund, I never once wanted him gone. We simply disagreed, same as always."'
       }
     ]
   },
@@ -755,6 +767,14 @@ export const ROOMS = {
         note: "Not the sort of thing that bends on its own — and long enough, sharpened enough, to have done exactly what it looks like it did. Beside it, a note in Edmund's hand naming Nathaniel outright — not just the affair, but a formal complaint to the bar association, drafted and ready to send. Whatever she was willing to risk for herself, she wasn't willing to let Edmund take Nathaniel down with her.",
         requires: { killer: 'Victoria Thorne', killerMethod: 'stabbing' },
         implicates: 'Victoria Thorne'
+      },
+      {
+        id: 'E-126',
+        fx: 0.25,
+        fy: 0.2,
+        name: 'A framed photograph, slightly askew on the wall',
+        note: "An old family portrait, the frame knocked a little crooked — dusted around recently, unlike the rest of the room. Probably nothing more than someone straightening up.",
+        requires: { optional: true }
       }
     ],
     npcs: [
@@ -764,7 +784,8 @@ export const ROOMS = {
         portraitKey: 'portrait-victoria',
         fx: 0.82,
         fy: 0.22,
-        line: '"Edmund and I said our goodnights same as any other evening. I still can\'t quite believe I\'m being asked to account for what came after."'
+        line: '"Edmund and I said our goodnights same as any other evening. I still can\'t quite believe I\'m being asked to account for what came after."',
+        lineAlt: '"We said goodnight the same as every other evening, nothing more. I still haven\'t quite absorbed that I\'m the one being questioned about it."'
       }
     ]
   },
@@ -868,7 +889,8 @@ export const ROOMS = {
         portraitKey: 'portrait-drwren',
         fx: 0.15,
         fy: 0.15,
-        line: '"Weak heart. I told him for months. He never did know how to slow down."'
+        line: '"Weak heart. I told him for months. He never did know how to slow down."',
+        lineAlt: '"I lost count of how many times I warned him about that heart of his. The man simply refused to slow down."'
       }
     ]
   },
@@ -983,7 +1005,8 @@ export const ROOMS = {
         portraitKey: 'portrait-eleanor',
         fx: 0.5,
         fy: 0.15,
-        line: '"I found him and I touched nothing. I called for Dr. Wren immediately."'
+        line: '"I found him and I touched nothing. I called for Dr. Wren immediately."',
+        lineAlt: '"I found him exactly as he was and didn\'t touch a thing. Sent for Dr. Wren the moment I knew something was wrong."'
       }
     ]
   },
@@ -1167,7 +1190,8 @@ export const ROOMS = {
         portraitKey: 'portrait-marcus',
         fx: 0.6,
         fy: 0.15,
-        line: '"Go on and ask what everyone\'s already thinking. I know exactly how it looks — the son who argued with his father, tonight of all nights."'
+        line: '"Go on and ask what everyone\'s already thinking. I know exactly how it looks — the son who argued with his father, tonight of all nights."',
+        lineAlt: '"Ask what you came here to ask. I already know how it looks — the son who argued with his father, the same night he died."'
       },
       {
         tint: 0xa8925c,
@@ -1175,7 +1199,8 @@ export const ROOMS = {
         portraitKey: 'portrait-groundskeeper',
         fx: 0.08,
         fy: 0.2,
-        line: '"Storm knocked half the hedge over. Been out here most of the night seeing to it."'
+        line: '"Storm knocked half the hedge over. Been out here most of the night seeing to it."',
+        lineAlt: '"This storm\'s made a mess of the hedge and half the grounds besides. I\'ve been out here dealing with it most of the night."'
       }
     ]
   },
@@ -1320,7 +1345,8 @@ export const ROOMS = {
         portraitKey: 'portrait-priya',
         fx: 0.4,
         fy: 0.15,
-        line: '"I already know what this family thinks of me. Ask your questions — I doubt they\'ll surprise me."'
+        line: '"I already know what this family thinks of me. Ask your questions — I doubt they\'ll surprise me."',
+        lineAlt: '"I\'ve heard what this family thinks of me plenty of times already. Go ahead and ask — nothing you say will surprise me."'
       }
     ]
   },
@@ -1415,7 +1441,8 @@ export const ROOMS = {
         portraitKey: 'portrait-julian',
         fx: 0.6,
         fy: 0.15,
-        line: '"Quite a party, in the end. I don\'t imagine Uncle Edmund planned on this being the toast of the evening."'
+        line: '"Quite a party, in the end. I don\'t imagine Uncle Edmund planned on this being the toast of the evening."',
+        lineAlt: '"Quite the evening, all told. I doubt Uncle Edmund pictured this as how his birthday toast would end."'
       }
     ]
   },
