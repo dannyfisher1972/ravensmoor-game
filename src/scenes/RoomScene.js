@@ -13,6 +13,20 @@ import { playClick, playTypeTick } from '../audio.js';
 const CURRENT_KILLER = SOLUTIONS[killerIndex].killer;
 const CURRENT_METHOD = SOLUTIONS[killerIndex].method;
 const CURRENT_SCENE_NOTES = SOLUTIONS[killerIndex].sceneNotes || {};
+// Same 5-category grouping already used for the Case File impression, W-01,
+// and the other universal-clue variations (all in main.js/solutions.js) —
+// reused here so a character's answer can read differently depending on
+// this game's method, without ever depending on who the killer actually is.
+// Any method maps to exactly one category regardless of which of the 9 real
+// suspects got assigned it this game, so this can never correlate with guilt.
+const METHOD_CATEGORY = {
+  poison: 'Poisoning',
+  'blunt-force': 'Struggle', stabbing: 'Struggle', strangulation: 'Struggle',
+  smothering: 'Suffocation', asphyxiation: 'Suffocation',
+  'staged-accident': 'Accident', fall: 'Accident',
+  'tampered-medication': 'Medical', none: 'Medical'
+};
+const CURRENT_METHOD_CATEGORY = METHOD_CATEGORY[CURRENT_METHOD];
 // A handful of scenarios (see solutions.js's discoveryDelayed) have a death
 // that looks natural at a glance — for those, the study opens without a
 // visible body until the player takes a closer look. Every other scenario
@@ -402,14 +416,30 @@ export default class RoomScene extends Phaser.Scene {
   // text always restates the same underlying facts as the original (same
   // alibi location, same claimed timing, etc.) so cross-referencing followups
   // stay valid no matter which phrasing came up.
+  //
+  // Method-aware variants (characters.js's `${id}Poisoning` / `Struggle` /
+  // `Suffocation` / `Accident` / `Medical` fields) take priority over the
+  // random Alt system when present — deterministic on this game's method
+  // category rather than rolled per slot, but just as safe: CURRENT_METHOD
+  // is assigned independent of which suspect is guilty, so every character
+  // gets the same category treatment regardless of who actually did it.
+  // Only `suspicion` has these authored so far (Beta 1.1 Phase 4B pilot);
+  // any question without them falls straight through to the existing
+  // random-Alt behavior, unchanged.
   askQuestion(npc, q) {
     playClick();
     markQuestionAsked(npc.npcName, q.id);
-    let answer = npc.answers[q.id];
-    const altKey = `${q.id}Alt`;
-    if (npc.answers[altKey]) {
-      const variant = pickDialogueVariant(`${q.id}:${npc.npcName}`, 2);
-      if (variant === 1) answer = npc.answers[altKey];
+    let answer;
+    const methodKey = CURRENT_METHOD_CATEGORY ? `${q.id}${CURRENT_METHOD_CATEGORY}` : null;
+    if (methodKey && npc.answers[methodKey]) {
+      answer = npc.answers[methodKey];
+    } else {
+      answer = npc.answers[q.id];
+      const altKey = `${q.id}Alt`;
+      if (npc.answers[altKey]) {
+        const variant = pickDialogueVariant(`${q.id}:${npc.npcName}`, 2);
+        if (variant === 1) answer = npc.answers[altKey];
+      }
     }
     this.showDialog(npc.npcDisplayName || npc.npcName, answer, this.resolvePortrait(npc), this.buildQuestionButtons(npc));
   }
