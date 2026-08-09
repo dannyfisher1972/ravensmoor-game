@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Ravensmoor Hall</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
@@ -88,6 +88,7 @@
   #dialog{
     position:absolute; left:50%; bottom:0; transform:translateX(-50%); width:min(620px, 92%);
     background:rgba(12,11,10,0.96); color:var(--ink); padding:20px 24px 16px 24px; margin-bottom:0;
+    padding-bottom:max(16px, env(safe-area-inset-bottom));
     display:none; pointer-events:auto; font-family:'Lora', Georgia, serif;
     font-size:var(--dialog-font-size); line-height:1.55; border-radius:6px 6px 0 0;
     border:3px solid var(--line); border-bottom:none;
@@ -178,7 +179,7 @@
     position:fixed; inset:0; overflow-y:auto; z-index:20; pointer-events:auto;
     background:
       linear-gradient(rgba(8,7,6,0.82), rgba(8,7,6,0.9)),
-      url('assets/ai-art/study.png') center / cover no-repeat;
+      url('assets/ai-art/study.jpg') center / cover no-repeat;
     display:flex; flex-direction:column; align-items:center; justify-content:flex-start; padding:56px 20px 24px 20px;
   }
   .brief-layout{ display:flex; align-items:flex-start; justify-content:center; gap:22px; max-width:900px; width:100%; }
@@ -480,7 +481,10 @@
     #hint-touch{ display:block; }
   }
 
-  #room-nav{ position:absolute; top:14px; left:14px; right:14px; display:flex; align-items:center; justify-content:space-between; pointer-events:none; }
+  #room-nav{
+    position:absolute; display:flex; align-items:center; justify-content:space-between; pointer-events:none;
+    top:max(14px, env(safe-area-inset-top)); left:max(14px, env(safe-area-inset-left)); right:max(14px, env(safe-area-inset-right));
+  }
   #room-nav button{
     pointer-events:auto; font-family:'Lora', Georgia, serif; font-size:13px;
     background:rgba(20,18,15,0.8); border:1px solid var(--line); color:var(--ink-soft);
@@ -500,7 +504,8 @@
      gets the bar's full width to wrap its buttons into, rather than
      splitting that width with the badge and wrapping sooner than it needs to. */
   #bottomBar{
-    position:absolute; bottom:14px; left:14px; right:14px;
+    position:absolute;
+    bottom:max(14px, env(safe-area-inset-bottom)); left:max(14px, env(safe-area-inset-left)); right:max(14px, env(safe-area-inset-right));
     display:flex; flex-direction:column; align-items:stretch; gap:6px;
     pointer-events:none;
   }
@@ -552,7 +557,7 @@
      Portrait/narrow viewports don't match this query, so they keep the
      original over-the-art placement, where there's no margin to move into. */
   @media (orientation:landscape) and (min-aspect-ratio:3/2){
-    #zoomControls{ position:fixed; left:20px; top:50%; }
+    #zoomControls{ position:fixed; left:max(20px, env(safe-area-inset-left)); top:50%; }
   }
   #zoomControls button:hover{ border-color:var(--foxglove); color:var(--foxglove); }
   #zoomControls button:disabled{ opacity:.35; cursor:not-allowed; }
@@ -562,7 +567,7 @@
      physically standing in the current room (they're already clickable
      there). Hidden while a dialog is open so it never overlaps it. --- */
   #talkedToPanel{
-    position:absolute; right:10px; top:60px; bottom:60px; width:56px;
+    position:absolute; right:max(10px, env(safe-area-inset-right)); top:60px; bottom:60px; width:56px;
     display:none; flex-direction:column; align-items:center; gap:10px;
     overflow-y:auto; overflow-x:hidden; pointer-events:auto; z-index:5;
   }
@@ -587,7 +592,9 @@
      nav row to visually overlap it. Shrinking both and giving the retalk
      panel more clearance fixes that without changing anything on desktop. */
   @media (max-height:480px){
-    #room-nav{ top:6px; left:8px; right:8px; }
+    #room-nav{
+      top:max(6px, env(safe-area-inset-top)); left:max(8px, env(safe-area-inset-left)); right:max(8px, env(safe-area-inset-right));
+    }
     #room-nav button{ font-size:11px; padding:4px 8px; }
     #room-name{ font-size:12px; padding:4px 10px; }
     #talkedToPanel{ top:40px; bottom:44px; right:6px; width:38px; gap:6px; }
@@ -597,7 +604,9 @@
        action row) — shrinking them leaves more margin against the bottom
        edge, which mobile Safari's own collapsing toolbar chrome can eat
        into (see #app/#game-container's dvh notes above). */
-    #bottomBar{ bottom:8px; left:8px; right:8px; gap:5px; }
+    #bottomBar{
+      bottom:max(8px, env(safe-area-inset-bottom)); left:max(8px, env(safe-area-inset-left)); right:max(8px, env(safe-area-inset-right)); gap:5px;
+    }
     #actionButtons{ gap:5px; }
     #actionButtons button{ font-size:10px; padding:5px 8px; }
     #progressBadge{ font-size:10px; padding:4px 8px; }
@@ -619,12 +628,12 @@
        3 34px buttons + 2 6px gaps — vertically centered, so its bottom
        edge sits at 50% + 57px; +10px clears it from that stack). */
     #progressBadge{
-      position:fixed; left:20px; top:calc(50% + 67px);
+      position:fixed; left:max(20px, env(safe-area-inset-left)); top:calc(50% + 67px);
     }
     /* Right rail: same 5 buttons, stacked vertically instead of wrapped
        rows, with roomier padding for a larger touch target. */
     #actionButtons{
-      position:fixed; right:20px; top:50%; transform:translateY(-50%);
+      position:fixed; right:max(20px, env(safe-area-inset-right)); top:50%; transform:translateY(-50%);
       flex-direction:column;
     }
     #actionButtons button{
@@ -1153,6 +1162,7 @@
       display:flex; position:fixed; inset:0; z-index:9999;
       flex-direction:column; align-items:center; justify-content:center; gap:22px;
       background:#0a0908; color:var(--ink); text-align:center; padding:32px;
+      padding-top:max(32px, env(safe-area-inset-top)); padding-bottom:max(32px, env(safe-area-inset-bottom));
       font-family:'Lora', Georgia, serif;
     }
     #rotate-hint .rotate-glyph{
@@ -1168,8 +1178,32 @@
   @keyframes rotate-tip{
     0%,55%{ transform:rotate(0deg); } 75%,100%{ transform:rotate(-90deg); }
   }
+
+  /* Commercial Polish 1 — touch target pass. These buttons read fine and
+     match their desktop siblings visually, but several are meaningfully
+     under the ~44x44 CSS px touch-target guideline once you're tapping
+     instead of clicking (room nav, view toggles, suspect-status, dialogue
+     questions, zoom/action rails, modal close, More menu). Rather than
+     growing the visible buttons themselves (which would also inflate them
+     for mouse/keyboard users), each gets an invisible ::after sized up to
+     the minimum, centered over the real button — expands the hit area only,
+     scoped to coarse-pointer/no-hover so desktop sizing/hover states and
+     keyboard focus behavior are completely untouched. */
+  @media (hover:none) and (pointer:coarse){
+    #room-nav button, #zoomControls button, #actionButtons button,
+    .dialog-question-btn, .view-toggle-btn, .suspect-status-btn,
+    .person-modal-close, .more-menu button{
+      position:relative;
+    }
+    #room-nav button::after, #zoomControls button::after, #actionButtons button::after,
+    .dialog-question-btn::after, .view-toggle-btn::after, .suspect-status-btn::after,
+    .person-modal-close::after, .more-menu button::after{
+      content:''; position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
+      width:max(100%, 44px); height:max(100%, 44px);
+    }
+  }
 </style>
-  <script type="module" crossorigin src="/ravensmoor-game/assets/index-BEcPBXME.js"></script>
+  <script type="module" crossorigin src="/ravensmoor-game/assets/index-FOO9hM8S.js"></script>
 </head>
 <body>
 <div id="rotate-hint" aria-hidden="true">
@@ -1236,7 +1270,7 @@
           <div class="brief-subtitle">The Thorne Inheritance</div>
 
           <div class="victim-row">
-            <img class="victim-portrait" id="victimPortrait" src="assets/ai-art/edmund.png" alt="Edmund Thorne — click to enlarge">
+            <img class="victim-portrait" id="victimPortrait" src="assets/ai-art/edmund.jpg" alt="Edmund Thorne — click to enlarge">
             <div class="victim-info">
               <b>Edmund Thorne, 70</b>
               <span>Founder &amp; Chairman, Thorne Pharmaceutical Holdings</span>
@@ -1331,7 +1365,7 @@
         <div class="case-file-section">
           <h3>The Victim</h3>
           <div class="victim-row">
-            <img class="victim-portrait" id="caseFilePortrait" src="assets/ai-art/edmund.png" alt="Edmund Thorne">
+            <img class="victim-portrait" id="caseFilePortrait" src="assets/ai-art/edmund.jpg" alt="Edmund Thorne">
             <div class="victim-info">
               <b>Edmund Thorne, 70</b>
               <span>Founder &amp; Chairman, Thorne Pharmaceutical Holdings</span>
@@ -1361,7 +1395,7 @@
       <div class="victim-modal-card">
         <button class="person-modal-close" data-close aria-label="Close">&times;</button>
         <div class="victim-modal-photo">
-          <img id="victimModalImg" src="assets/ai-art/edmund.png" alt="Edmund Thorne">
+          <img id="victimModalImg" src="assets/ai-art/edmund.jpg" alt="Edmund Thorne">
         </div>
         <div class="victim-modal-text">
           <b>Edmund Thorne, 70</b>
