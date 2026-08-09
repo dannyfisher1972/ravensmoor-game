@@ -174,6 +174,20 @@
     }
   }
   .dialog-question-btn.asked{ color:var(--ink-soft); opacity:.6; }
+  /* Commercial Polish 2 (Task 12) — Ask/Challenge/Confront legibility.
+     Plain 'ask' questions (the large majority — every base question, most
+     follow-ups) get no badge at all, so the two RARER, higher-stakes types
+     are what actually stand out, textually and not just by border color —
+     screen readers get the same distinction via aria-label (see
+     RoomScene.js's buildQuestionButtons/showDialog). */
+  .dialog-question-btn.q-type-challenge{ border-left:3px solid var(--sepia); }
+  .dialog-question-btn.q-type-confront{ border-left:3px solid var(--danger); }
+  .q-type-badge{
+    display:inline-block; font-family:'Lora', Georgia, serif; font-size:10px; font-weight:700;
+    letter-spacing:.06em; text-transform:uppercase; margin-right:6px; opacity:0.85;
+  }
+  .q-type-challenge .q-type-badge{ color:var(--sepia); }
+  .q-type-confront .q-type-badge{ color:var(--danger); }
 
   #titleScreen{
     position:fixed; inset:0; overflow-y:auto; z-index:20; pointer-events:auto;
@@ -255,6 +269,19 @@
   }
   .story-name-input:focus{ outline:none; border-color:var(--foxglove); }
   .story-controls .btn{ font-size:11px; padding:6px 14px; }
+  /* Commercial Polish 2 — "Your name," distinct from the existing "Name
+     this investigation" row above: that names a SAVE SLOT (can differ per
+     case), this names the PLAYER (one global value, carried into every
+     case's notebook header — see state.js's getPlayerName/setPlayerName).
+     Purely presentational; never touches Case Code/RNG/solution state. */
+  .player-name-row{
+    margin-top:14px; display:flex; flex-direction:column; align-items:center; gap:6px;
+  }
+  .player-name-label{
+    font-family:'Lora', Georgia, serif; font-size:12px; color:var(--ink-soft); letter-spacing:.03em;
+  }
+  .player-name-sub{ opacity:0.7; font-size:11px; }
+  #playerNameInput{ text-align:center; min-width:220px; }
 
   /* --- Difficulty (item 2) --- */
   .difficulty-picker-section{
@@ -653,6 +680,13 @@
      flex child to actually shrink and scroll instead of overflowing). */
   .modal-scroll-body{ overflow-y:auto; min-height:0; }
   .notebook-card h2{ font-family:'Playfair Display', Georgia, serif; color:var(--sepia); font-size:24px; margin:0 0 4px 0; text-align:center; }
+  /* Commercial Polish 2 (Task 15) — light player-identity touch: whose
+     notes these are, once, not repeated on every panel/screen. */
+  .notebook-owner-line{
+    margin:0 0 10px 0; text-align:center; font-family:'Lora', Georgia, serif; font-style:italic;
+    font-size:12px; color:var(--ink-soft); opacity:0.8;
+  }
+  .accuse-proof-reminder{ max-width:480px; margin:6px auto 10px auto; opacity:0.85; }
   .notebook-columns{ display:flex; gap:30px; margin-top:20px; }
   .notebook-col{ flex:1; min-width:0; }
   .notebook-col h3{ font-family:'Lora', Georgia, serif; font-size:13px; letter-spacing:.08em; text-transform:uppercase; color:var(--foxglove); border-bottom:1px solid var(--line); padding-bottom:8px; margin:0 0 12px 0; }
@@ -1203,7 +1237,7 @@
     }
   }
 </style>
-  <script type="module" crossorigin src="/ravensmoor-game/assets/index-FOO9hM8S.js"></script>
+  <script type="module" crossorigin src="/ravensmoor-game/assets/index-Bkn8RzGe.js"></script>
 </head>
 <body>
 <div id="rotate-hint" aria-hidden="true">
@@ -1279,9 +1313,15 @@
           </div>
 
           <div class="brief-text">
-            <p>Tonight was his seventieth birthday — and the night he'd promised to announce who would inherit the company, and what would happen to everything else. The storm took out the causeway bridge before dinner was even served. No police are coming for three more days.</p>
+            <p class="brief-identity-line">You hadn't seen Edmund Thorne in years — not since a case, long since closed, first put the two of you in each other's orbit. He always said he trusted your judgment more than most people's. When his invitation arrived for tonight, it came with a private note: there was something he wanted your opinion on. He never got the chance to raise it.</p>
+            <p>Tonight was his seventieth birthday — and the night he'd promised to announce who would inherit the company, and what would happen to everything else. The storm took out the causeway bridge before dinner was even served. No police are coming for three more days — which leaves you, long retired from that line of work but still the only person in this house who has ever done it, to make sure nothing about tonight gets lost before they arrive.</p>
             <p class="body-discovery-line">At 11:47 PM, the housekeeper found him slumped at his study desk. Whether it was his heart, a terrible accident, or something else entirely is what you're here to find out.</p>
             <p>Eleven people were in this house tonight. At least eight of them had a reason to want him gone.</p>
+          </div>
+
+          <div class="player-name-row">
+            <label for="playerNameInput" class="player-name-label">Your name <span class="player-name-sub">(optional — for your own case notes)</span></label>
+            <input id="playerNameInput" type="text" class="story-name-input" maxlength="40" placeholder="Detective">
           </div>
 
           <div class="meet-household-row">
@@ -1435,6 +1475,7 @@
         <button class="person-modal-close" data-close aria-label="Close">&times;</button>
         <div class="modal-scroll-body">
         <h2>Case Notebook</h2>
+        <p id="notebookOwnerLine" class="notebook-owner-line"></p>
         <div class="notebook-view-toggle">
           <button id="notebookListBtn" class="view-toggle-btn active">List</button>
           <button id="notebookTimelineBtn" class="view-toggle-btn">Timeline</button>
@@ -1598,6 +1639,7 @@
         <div class="modal-scroll-body">
         <h2>Name the Killer</h2>
         <p class="accuse-sub" id="accuseSub">Choose carefully — you only get one accusation.</p>
+        <p class="accuse-sub accuse-proof-reminder">Naming someone is only half the case. When authorities finally reach Ravensmoor, they'll want to know how you know — so present the strongest proof you've actually established, not just your best guess.</p>
         <div id="accuseGrid" class="accuse-grid"></div>
         <div id="evidenceMeter" class="evidence-meter" style="display:none;">
           <div class="evidence-meter-bar"><div id="evidenceMeterFill" class="evidence-meter-fill"></div></div>
@@ -1688,6 +1730,16 @@
             <input type="checkbox" id="reducedMotionToggle">
             <span>Reduce animation (marker pulsing, transitions, toasts)</span>
           </label>
+        </div>
+
+        <div class="case-file-section">
+          <h3>Investigator's Instincts</h3>
+          <p class="accuse-sub" style="margin-bottom:8px;">Brief, one-time notes on how to use Compare, Deduce, Challenge, and Confront — shown the first time each becomes relevant, never repeated once seen.</p>
+          <label class="pref-checkbox-row">
+            <input type="checkbox" id="guidanceToggle">
+            <span>Show these notes</span>
+          </label>
+          <button id="resetGuidanceBtn" class="btn secondary" style="margin-top:8px; font-size:11px; padding:6px 14px;">Reset — show them all again</button>
         </div>
         </div>
       </div>
