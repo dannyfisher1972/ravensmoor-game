@@ -1161,6 +1161,59 @@
   .end-card p{ font-family:'Lora', Georgia, serif; font-size:16px; line-height:1.6; color:var(--ink); text-align:left; margin:0 0 13px 0; }
   .end-card .end-strength-note{ color:var(--ink-soft); font-size:14px; border-top:1px solid var(--line); padding-top:12px; margin-top:6px; }
   .end-card .end-epilogue-intro{ color:var(--sepia); font-size:15px; margin-bottom:16px; }
+
+  /* --- Commercial Polish 3: accusation climax --- */
+  /* Task 1 — suspect front-and-center the moment the result is in; the
+     Accident tile has no portrait, so this stays hidden for that case
+     (see main.js's isAccident branch) rather than showing a placeholder. */
+  .end-portrait{ display:flex; justify-content:center; margin-bottom:10px; }
+  .end-portrait img{
+    width:84px; height:84px; border-radius:50%; object-fit:cover;
+    border:2px solid var(--sepia); box-shadow:0 0 18px rgba(217,183,90,0.35);
+  }
+  /* Task 2/3/4/5/10 — the player's own curated case: proof they picked,
+     the strongest deduction they actually established, a contradiction
+     they actually exposed, a suspect they actually cleared. Any row simply
+     doesn't render when the player's investigation didn't produce it (see
+     main.js's renderCaseSummary) — never padded out to look complete. */
+  .end-case-summary{
+    margin:14px 0; padding:14px 16px; border:1px solid var(--line); border-radius:6px;
+    background:rgba(255,255,255,0.02); text-align:left;
+  }
+  .end-case-summary h3{
+    font-family:'Playfair Display', Georgia, serif; color:var(--sepia); font-size:15px;
+    text-align:center; margin:0 0 10px 0; letter-spacing:.03em; text-transform:uppercase;
+  }
+  .case-summary-row{ margin-bottom:10px; }
+  .case-summary-row:last-child{ margin-bottom:0; }
+  .case-summary-row b{
+    display:block; font-family:'Lora', Georgia, serif; font-size:11px; color:var(--ink-soft);
+    text-transform:uppercase; letter-spacing:.05em; margin-bottom:3px;
+  }
+  .case-summary-row p{ margin:0; font-size:14px; }
+  .case-summary-row ul{ margin:0; padding-left:18px; font-size:14px; }
+  .case-summary-row li{ margin-bottom:2px; }
+  /* Task 6/8/9/13 — the accused's reaction beat, ahead of the canonical
+     scenario explanation below it (accusation -> reaction -> the truth). */
+  .end-accused-reaction{
+    font-family:'Lora', Georgia, serif; font-style:italic; font-size:15px; color:var(--ink);
+    text-align:left; border-left:3px solid var(--line); padding-left:12px; margin:0 0 16px 0;
+  }
+  /* Task 16 — compact investigation summary, secondary to the narrative
+     above it (Casebook remains the place for full statistics). */
+  .end-stats{
+    margin:16px 0 0 0; padding-top:12px; border-top:1px solid var(--line);
+    display:flex; flex-direction:column; gap:2px;
+  }
+  .end-stat-row{
+    display:flex; justify-content:space-between; font-family:'Lora', Georgia, serif;
+    font-size:13px; color:var(--ink-soft); padding:3px 0;
+  }
+  .end-stat-row span:last-child{ color:var(--ink); font-weight:600; }
+  .end-replay-hint{
+    text-align:center; font-family:'Lora', Georgia, serif; font-style:italic; font-size:13px;
+    color:var(--ink-soft); opacity:0.85; margin:14px 0 0 0;
+  }
   .end-actions{ margin-top:26px; display:flex; gap:14px; justify-content:center; flex-wrap:wrap; }
   .feedback-prompt{ margin-top:20px; padding-top:20px; border-top:1px solid var(--line); text-align:center; }
   .feedback-prompt p{ font-family:'Lora', Georgia, serif; font-style:italic; color:var(--ink-soft); font-size:14px; margin:0 0 10px 0; }
@@ -1237,7 +1290,7 @@
     }
   }
 </style>
-  <script type="module" crossorigin src="/ravensmoor-game/assets/index-Bkn8RzGe.js"></script>
+  <script type="module" crossorigin src="/ravensmoor-game/assets/index-DwL21XJU.js"></script>
 </head>
 <body>
 <div id="rotate-hint" aria-hidden="true">
@@ -1670,15 +1723,20 @@
 
     <div id="endModal" class="person-modal">
       <div id="endCard" class="end-card">
+        <div id="endPortrait" class="end-portrait" style="display:none;"></div>
         <h2 id="endTitle"></h2>
         <p class="end-sub" id="endSub"></p>
         <div id="accusationBreakdown" class="accusation-breakdown" style="display:none;"></div>
+        <div id="endCaseSummary" class="end-case-summary" style="display:none;"></div>
+        <p id="endAccusedReaction" class="end-accused-reaction" style="display:none;"></p>
         <div id="endExplanation"></div>
+        <div id="endStats" class="end-stats"></div>
         <div class="case-code-display">
           <span class="case-code-value" id="endCodeValue"></span>
           <button class="case-code-copy-btn" id="endCodeCopyBtn" aria-label="Copy case code to clipboard">📋 Copy Case Code</button>
         </div>
         <p class="case-code-feedback" id="endCodeFeedback" role="status" aria-live="polite"></p>
+        <p class="end-replay-hint">Ravensmoor never tells quite the same story twice.</p>
         <div class="end-actions">
           <button id="endKeepBtn" class="btn secondary">Keep Investigating</button>
           <button id="endCasebookBtn" class="btn secondary" style="display:none;">View Casebook</button>
