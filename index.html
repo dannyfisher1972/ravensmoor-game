@@ -1290,7 +1290,7 @@
     }
   }
 </style>
-  <script type="module" crossorigin src="/ravensmoor-game/assets/index-DwL21XJU.js"></script>
+  <script type="module" crossorigin src="/ravensmoor-game/assets/index-CDMZ-Lzz.js"></script>
 </head>
 <body>
 <div id="rotate-hint" aria-hidden="true">
@@ -1435,7 +1435,7 @@
             <div id="savedStoriesList" class="saved-stories-list"></div>
           </div>
 
-          <div id="versionStamp" class="version-stamp">Beta 1.0</div>
+          <div id="versionStamp" class="version-stamp">Beta 1.1</div>
         </div>
       </div>
     </div>
@@ -1681,6 +1681,45 @@
           <button id="analyticsBtn">📊 My Stats</button>
           <button id="feedbackBtn">💬 Give Feedback</button>
           <button id="reportBtn">🐛 Report an Issue</button>
+          <button id="creditsBtn">© Credits &amp; Legal</button>
+        </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="creditsModal" class="person-modal">
+      <div class="notebook-card">
+        <button class="person-modal-close" data-close aria-label="Close">&times;</button>
+        <div class="modal-scroll-body">
+        <h2>Credits &amp; Legal</h2>
+
+        <div class="case-file-section">
+          <h3>Credits</h3>
+          <p class="accuse-sub">Ravensmoor Hall was designed, written, and built by its developer as an independent project.</p>
+        </div>
+
+        <div class="case-file-section">
+          <h3>Artwork</h3>
+          <p class="accuse-sub">All character portraits, room backgrounds, and other illustrated artwork in Ravensmoor Hall were generated using ChatGPT / OpenAI's image-generation tools, then selected, arranged, and integrated by the developer. No stock photography and no other artist's work is used.</p>
+        </div>
+
+        <div class="case-file-section">
+          <h3>Copyright</h3>
+          <p class="accuse-sub" id="creditsCopyrightLine">© Ravensmoor Hall. All rights reserved.</p>
+        </div>
+
+        <div class="case-file-section">
+          <h3>Support &amp; Contact</h3>
+          <p class="accuse-sub" id="creditsSupportLine">Support contact not yet configured.</p>
+        </div>
+
+        <div class="case-file-section">
+          <h3>Privacy (Beta)</h3>
+          <p class="accuse-sub">Ravensmoor Hall runs entirely in your browser. This build has no account system, no backend server, and collects nothing that ever leaves your device.</p>
+          <p class="accuse-sub" style="margin-top:8px;"><b>What's stored, and where:</b> every investigation, your Casebook, achievements, and your preferences are saved with your browser's local storage, on this device only. Nothing is uploaded anywhere.</p>
+          <p class="accuse-sub" style="margin-top:8px;"><b>Local stats ("My Stats"):</b> a small local play-activity log stays on this device and is never transmitted, sold, or shared — it exists only to power your own My Stats screen.</p>
+          <p class="accuse-sub" style="margin-top:8px;"><b>Feedback &amp; issue reports:</b> Give Feedback and Report an Issue open an external form or your own email client. Nothing is sent automatically — only if you choose to submit it yourself, and only what you choose to include.</p>
+          <p class="accuse-sub" style="margin-top:8px;"><em>This policy describes the current local-only build. It will need to be rewritten if Ravensmoor Hall later adds a mobile app-store build, crash reporting, or any other form of remote telemetry.</em></p>
         </div>
         </div>
       </div>
@@ -1798,6 +1837,17 @@
             <span>Show these notes</span>
           </label>
           <button id="resetGuidanceBtn" class="btn secondary" style="margin-top:8px; font-size:11px; padding:6px 14px;">Reset — show them all again</button>
+        </div>
+
+        <div class="case-file-section">
+          <h3>Backup &amp; Restore</h3>
+          <p class="accuse-sub" style="margin-bottom:8px;">Everything stays on this device only — export a backup file to keep a copy of your investigations, Casebook, and preferences, or restore from one you saved earlier.</p>
+          <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <button id="exportBackupBtn" class="btn secondary">Export Backup</button>
+            <button id="importBackupBtn" class="btn secondary">Import Backup</button>
+          </div>
+          <input type="file" id="importBackupInput" accept="application/json,.json" style="display:none;">
+          <p id="backupStatus" class="accuse-sub" style="margin-top:8px;" aria-live="polite"></p>
         </div>
         </div>
       </div>
