@@ -1290,7 +1290,7 @@
     }
   }
 </style>
-  <script type="module" crossorigin src="/ravensmoor-game/assets/index-CDMZ-Lzz.js"></script>
+  <script type="module" crossorigin src="/ravensmoor-game/assets/index-DYJhTcb_.js"></script>
 </head>
 <body>
 <div id="rotate-hint" aria-hidden="true">
@@ -1679,7 +1679,7 @@
           <button id="casebookBtn">📔 Casebook</button>
           <button id="settingsBtn">⚙ Settings &amp; Accessibility</button>
           <button id="analyticsBtn">📊 My Stats</button>
-          <button id="feedbackBtn">💬 Give Feedback</button>
+          <button id="feedbackBtn">💬 Submit Beta Feedback</button>
           <button id="reportBtn">🐛 Report an Issue</button>
           <button id="creditsBtn">© Credits &amp; Legal</button>
         </div>
@@ -1718,7 +1718,7 @@
           <p class="accuse-sub">Ravensmoor Hall runs entirely in your browser. This build has no account system, no backend server, and collects nothing that ever leaves your device.</p>
           <p class="accuse-sub" style="margin-top:8px;"><b>What's stored, and where:</b> every investigation, your Casebook, achievements, and your preferences are saved with your browser's local storage, on this device only. Nothing is uploaded anywhere.</p>
           <p class="accuse-sub" style="margin-top:8px;"><b>Local stats ("My Stats"):</b> a small local play-activity log stays on this device and is never transmitted, sold, or shared — it exists only to power your own My Stats screen.</p>
-          <p class="accuse-sub" style="margin-top:8px;"><b>Feedback &amp; issue reports:</b> Give Feedback and Report an Issue open an external form or your own email client. Nothing is sent automatically — only if you choose to submit it yourself, and only what you choose to include.</p>
+          <p class="accuse-sub" style="margin-top:8px;"><b>Feedback &amp; issue reports:</b> Submit Beta Feedback copies a plain-text summary to your clipboard (when your browser allows it) and opens an external Google Form; Report an Issue opens your own share/email options instead. Nothing is sent automatically — only if you choose to paste it in and submit it yourself.</p>
           <p class="accuse-sub" style="margin-top:8px;"><em>This policy describes the current local-only build. It will need to be rewritten if Ravensmoor Hall later adds a mobile app-store build, crash reporting, or any other form of remote telemetry.</em></p>
         </div>
         </div>
@@ -1776,6 +1776,10 @@
         </div>
         <p class="case-code-feedback" id="endCodeFeedback" role="status" aria-live="polite"></p>
         <p class="end-replay-hint">Ravensmoor never tells quite the same story twice.</p>
+        <p style="margin-top:4px;">
+          <button id="copyBetaReportEndBtn" class="btn secondary" style="font-size:11px; padding:6px 14px; opacity:.8;">Copy Beta Report</button>
+        </p>
+        <p id="betaReportStatusEnd" class="case-code-feedback" role="status" aria-live="polite"></p>
         <div class="end-actions">
           <button id="endKeepBtn" class="btn secondary">Keep Investigating</button>
           <button id="endCasebookBtn" class="btn secondary" style="display:none;">View Casebook</button>
@@ -1784,7 +1788,7 @@
         <div id="feedbackPrompt" class="feedback-prompt" style="display:none;">
           <p>Help improve Ravensmoor Hall?</p>
           <div class="end-actions">
-            <button id="feedbackGiveBtn" class="btn">Give Feedback</button>
+            <button id="feedbackGiveBtn" class="btn">Submit Beta Feedback</button>
             <button id="feedbackLaterBtn" class="btn secondary">Maybe Later</button>
           </div>
         </div>
@@ -1848,6 +1852,13 @@
           </div>
           <input type="file" id="importBackupInput" accept="application/json,.json" style="display:none;">
           <p id="backupStatus" class="accuse-sub" style="margin-top:8px;" aria-live="polite"></p>
+        </div>
+
+        <div class="case-file-section">
+          <h3>Beta Report</h3>
+          <p class="accuse-sub" style="margin-bottom:8px;">A plain-text summary for beta feedback — difficulty, how you've used Compare/Challenge/Confront/hints, and your accusation results. No player name, no solution, nothing sent automatically.</p>
+          <button id="copyBetaReportSettingsBtn" class="btn secondary">Copy Beta Report</button>
+          <p id="betaReportStatusSettings" class="accuse-sub" style="margin-top:8px;" aria-live="polite"></p>
         </div>
         </div>
       </div>
