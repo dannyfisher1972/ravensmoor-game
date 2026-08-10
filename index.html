@@ -680,6 +680,48 @@
      flex child to actually shrink and scroll instead of overflowing). */
   .modal-scroll-body{ overflow-y:auto; min-height:0; }
   .notebook-card h2{ font-family:'Playfair Display', Georgia, serif; color:var(--sepia); font-size:24px; margin:0 0 4px 0; text-align:center; }
+
+  /* --- Physical Investigation Pass: clue inspection viewer --- */
+  .clue-viewer-card{ max-width:640px; width:100%; display:flex; flex-direction:column; align-items:center; }
+  .clue-viewer-title{ margin:0 0 14px 0; }
+  .clue-viewer-image-wrap{
+    position:relative; width:100%; max-width:520px; aspect-ratio:4/3; overflow:hidden;
+    border:1px solid var(--line); border-radius:8px; background:#0a0908;
+    touch-action:none; cursor:grab;
+  }
+  .clue-viewer-image-wrap img{
+    position:absolute; top:0; left:0; width:100%; height:100%; object-fit:contain;
+    transform-origin:center center; user-select:none; -webkit-user-drag:none;
+  }
+  .clue-viewer-zoom-controls{ display:flex; gap:10px; margin-top:12px; }
+  .clue-viewer-zoom-controls button{
+    width:44px; height:44px; border-radius:50%; border:1px solid var(--line); background:rgba(255,255,255,0.03);
+    color:var(--ink); font-size:22px; line-height:1; cursor:pointer;
+  }
+  .clue-viewer-zoom-controls button:hover:not(:disabled){ border-color:var(--foxglove); color:var(--foxglove); }
+  .clue-viewer-zoom-controls button:disabled{ opacity:0.35; cursor:default; }
+  .clue-viewer-transcription-wrap{ width:100%; max-width:520px; margin-top:16px; }
+  .clue-viewer-transcription-wrap h3{
+    font-family:'Lora', Georgia, serif; font-size:11px; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--foxglove); margin:0 0 8px 0;
+  }
+  .clue-viewer-transcription-wrap p{
+    font-family:'Lora', Georgia, serif; font-style:italic; font-size:15px; line-height:1.6; color:var(--ink);
+    white-space:pre-wrap; margin:0;
+  }
+  .clue-inspect-btn{
+    display:inline-flex; align-items:center; gap:6px; margin-top:10px;
+    font-family:'Lora', Georgia, serif; font-size:12px; letter-spacing:.03em;
+    background:transparent; border:1px solid var(--foxglove); color:var(--foxglove);
+    padding:7px 14px; border-radius:3px; cursor:pointer; min-height:36px;
+  }
+  .clue-inspect-btn:hover{ background:rgba(217,137,188,0.12); }
+  .inventory-inspect-btn{
+    position:absolute; top:2px; right:2px; width:24px; height:24px; border-radius:50%;
+    background:rgba(6,5,4,0.75); border:1px solid var(--line); color:var(--ink-soft);
+    font-size:13px; line-height:1; cursor:pointer; display:flex; align-items:center; justify-content:center;
+  }
+  .inventory-inspect-btn:hover{ border-color:var(--foxglove); color:var(--foxglove); }
   /* Commercial Polish 2 (Task 15) — light player-identity touch: whose
      notes these are, once, not repeated on every panel/screen. */
   .notebook-owner-line{
@@ -1290,7 +1332,7 @@
     }
   }
 </style>
-  <script type="module" crossorigin src="/ravensmoor-game/assets/index-CTihdmkW.js"></script>
+  <script type="module" crossorigin src="/ravensmoor-game/assets/index-C-_wGz-E.js"></script>
 </head>
 <body>
 <div id="rotate-hint" aria-hidden="true">
@@ -1342,6 +1384,7 @@
                 <div id="dialog-body"></div>
                 <div id="dialog-questions"></div>
               </div>
+              <button type="button" id="dialogInspectBtn" class="clue-inspect-btn" style="display:none;">🔍 Inspect Image</button>
               <div class="close-hint">Press Space or click to continue · × to close</div>
             </div>
           </div>
@@ -1654,6 +1697,24 @@
         <h2>Casebook</h2>
         <p class="accuse-sub" id="casebookCount">Solved Cases: 0 / 37</p>
         <div id="casebookGrid" class="casebook-grid"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="clueViewerModal" class="person-modal">
+      <div class="notebook-card clue-viewer-card">
+        <button id="clueViewerCloseBtn" class="person-modal-close" aria-label="Close">&times;</button>
+        <h2 id="clueViewerTitle" class="clue-viewer-title"></h2>
+        <div id="clueViewerImageWrap" class="clue-viewer-image-wrap">
+          <img id="clueViewerImg" alt="">
+        </div>
+        <div class="clue-viewer-zoom-controls">
+          <button id="clueViewerZoomOutBtn" type="button" aria-label="Zoom out">−</button>
+          <button id="clueViewerZoomInBtn" type="button" aria-label="Zoom in">+</button>
+        </div>
+        <div id="clueViewerTranscriptionWrap" class="clue-viewer-transcription-wrap" style="display:none;">
+          <h3>Transcription</h3>
+          <p id="clueViewerTranscription"></p>
         </div>
       </div>
     </div>
