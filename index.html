@@ -596,6 +596,79 @@
   #zoomControls button:disabled{ opacity:.35; cursor:not-allowed; }
   #zoomControls button:disabled:hover{ border-color:var(--line); color:var(--ink-soft); }
 
+  /* --- Multi-View Attic pilot V2: minimal edge-turn controls, replacing
+     V1's full pill buttons (which read as UI chrome sitting on top of
+     hand-painted art, and made a hard LEFT/CENTER/RIGHT structural
+     assumption V2's 4-view loop no longer has). Each control is a large,
+     mostly invisible hit zone at the edge of the room art with just a
+     small, softly-glowing chevron glyph inside — the glow is always on (not
+     hover-only, per direct feedback that a hover-only affordance was too
+     easy to miss), big enough to find and tap comfortably, while the hit
+     zone itself stays transparent so the art stays the focus of the
+     screen. Kept inset
+     (76px/96px, same values V1 used) rather than flush against the true
+     screen edge, so it never overlaps #zoomControls (left:14px, 40px wide)
+     or #talkedToPanel (right, 56px wide). A room without `views` in
+     rooms.js never shows this — RoomScene.js's setupViewControls hides the
+     whole wrapper in that case, so every other room's layout is completely
+     unaffected. --- */
+  #viewControls{ pointer-events:none; }
+  #viewControls button{
+    position:absolute; top:50%; transform:translateY(-50%);
+    pointer-events:auto; z-index:5; display:none;
+    width:56px; height:130px; align-items:center;
+    background:none; border:none; padding:0; margin:0; cursor:pointer;
+    font-family:'Lora', Georgia, serif;
+  }
+  #viewLeftBtn{ left:76px; justify-content:flex-start; }
+  #viewRightBtn{ right:76px; justify-content:flex-end; }
+  @media (orientation:landscape) and (min-aspect-ratio:3/2){
+    #viewLeftBtn{ position:fixed; left:max(96px, env(safe-area-inset-left)); }
+    #viewRightBtn{ position:fixed; right:max(96px, env(safe-area-inset-right)); }
+  }
+  /* The visible chevron — always lit with a soft, persistent glow (not just
+     on hover) so it reads as findable at a glance rather than something a
+     player has to go hunting the edges for. #viewLeftBtn/#viewRightBtn each
+     supply their own glyph via ::before's content so RoomScene.js never has
+     to set textContent (it only ever writes aria-label, for screen readers
+     — nothing about which view is next is ever shown visually; the glow is
+     the only affordance, no direction is ever named on screen). */
+  #viewControls button::before{
+    display:inline-flex; align-items:center; justify-content:center;
+    width:36px; height:36px; border-radius:50%;
+    font-size:20px; line-height:1; color:var(--foxglove);
+    background:rgba(20,18,15,0.5); opacity:.9;
+    box-shadow:0 0 10px 2px rgba(217,137,188,0.4);
+    transition:opacity .15s ease, color .15s ease, background-color .15s ease, box-shadow .15s ease;
+  }
+  #viewLeftBtn::before{ content:'‹'; }
+  #viewRightBtn::before{ content:'›'; }
+  /* Hover/focus brightens the already-lit glow further, so it still reads
+     as "responding to you" without the resting state being dark. */
+  #viewControls button:hover::before,
+  #viewControls button:focus-visible::before{
+    opacity:1; background:rgba(20,18,15,0.7);
+    box-shadow:0 0 0 6px rgba(217,137,188,0.22), 0 0 16px 4px rgba(217,137,188,0.6);
+  }
+  #viewControls button:focus-visible{ outline:none; }
+  #viewControls button:focus-visible::before{ outline:2px solid var(--foxglove); outline-offset:2px; }
+  /* Discoverability cue (see RoomScene.js's viewHasReachableUndiscovered) —
+     a restrained gold pulse on the chevron itself, same accent color as
+     the hotspot markers' glow, so it reads as "part of the same
+     investigative-cue language" rather than a new visual vocabulary. Never
+     reveals what's over there, only that something is. Automatically
+     capped to a single frame under reduced motion by the global
+     animation-duration override above. */
+  #viewControls button.view-cue::before{
+    color:#e8b84b; opacity:.85;
+    box-shadow:0 0 0 0 rgba(232,184,75,0.6); animation:viewCuePulse 2.2s ease-out infinite;
+  }
+  @keyframes viewCuePulse{
+    0%{ box-shadow:0 0 0 0 rgba(232,184,75,0.5); }
+    70%{ box-shadow:0 0 0 8px rgba(232,184,75,0); }
+    100%{ box-shadow:0 0 0 0 rgba(232,184,75,0); }
+  }
+
   /* --- Quick-retalk sidebar: only people already talked to, minus anyone
      physically standing in the current room (they're already clickable
      there). Hidden while a dialog is open so it never overlaps it. --- */
@@ -1338,7 +1411,7 @@
     }
   }
 </style>
-  <script type="module" crossorigin src="/ravensmoor-game/assets/index-C9v27ppY.js"></script>
+  <script type="module" crossorigin src="/ravensmoor-game/assets/index-RZKbgG7j.js"></script>
 </head>
 <body>
 <div id="rotate-hint" aria-hidden="true">
@@ -1362,6 +1435,10 @@
         <button id="zoomOutBtn" aria-label="Zoom out" title="Zoom out" disabled>−</button>
         <button id="lensBtn" aria-label="Investigation Lens — highlight interactable areas" title="Investigation Lens" aria-pressed="false">🔍</button>
         <button id="muteBtn" aria-label="Mute sound" title="Mute sound">🔊</button>
+      </div>
+      <div id="viewControls">
+        <button id="viewLeftBtn" aria-label="Look left"></button>
+        <button id="viewRightBtn" aria-label="Look right"></button>
       </div>
       <div id="armedBanner" style="display:none;">
         Holding: <span id="armedItemName"></span>
