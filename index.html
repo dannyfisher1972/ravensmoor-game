@@ -499,7 +499,13 @@
   .btn.secondary:hover{ border-color:var(--ink-soft); box-shadow:none; background:rgba(255,255,255,0.05); }
   @media (max-width:640px){ .victim-modal-card{ flex-direction:column; } .victim-modal-card img{ width:100%; height:auto; } }
 
-  #hint, #hint-touch{ position:absolute; top:56px; left:50%; transform:translateX(-50%); color:var(--ink-soft); font-family:'Lora', Georgia, serif; font-size:14px; background:rgba(0,0,0,0.4); padding:6px 14px; border-radius:3px; }
+  #hint, #hint-touch{ position:absolute; top:56px; left:50%; transform:translateX(-50%); color:var(--ink-soft); font-family:'Lora', Georgia, serif; font-size:14px; background:rgba(0,0,0,0.4); padding:6px 14px; border-radius:3px; transition:opacity 0.8s ease; }
+  /* RoomScene.js briefly re-shows this on every room entry (a returning
+     player still benefits from the reminder) then fades it via this class
+     after a few seconds, instead of it sitting over the room art
+     indefinitely — it was covering a lot of prime scene real estate
+     (right under the room title) for the entire visit, every visit. */
+  #hint.hint-faded, #hint-touch.hint-faded{ opacity:0; }
   /* Same spot, different copy — coarse-pointer devices get a pinch-to-zoom
      mention instead, since that's not discoverable otherwise. */
   #hint-touch{ display:none; }
@@ -1332,7 +1338,7 @@
     }
   }
 </style>
-  <script type="module" crossorigin src="/ravensmoor-game/assets/index-NKfA9gls.js"></script>
+  <script type="module" crossorigin src="/ravensmoor-game/assets/index-CcFOo2V3.js"></script>
 </head>
 <body>
 <div id="rotate-hint" aria-hidden="true">
