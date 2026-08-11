@@ -199,9 +199,8 @@
   .brief-layout{ display:flex; align-items:flex-start; justify-content:center; gap:22px; max-width:900px; width:100%; }
   .brief-card{
     max-width:840px; flex:1 1 600px; min-width:0; background:rgba(14,13,11,0.94); border:1px solid var(--line);
-    border-radius:8px; padding:24px 36px 26px 36px; box-shadow:0 20px 60px rgba(0,0,0,0.5);
+    border-radius:8px; padding:20px 36px 24px 36px; box-shadow:0 20px 60px rgba(0,0,0,0.5);
   }
-  .meet-household-row{ text-align:center; margin:4px 0 14px 0; }
   @media (max-width:900px){
     .brief-layout{ flex-direction:column; align-items:stretch; }
     .brief-card{ max-width:100%; }
@@ -222,11 +221,52 @@
   .victim-info span{ display:block; color:var(--ink-soft); font-family:'Lora', Georgia, serif; font-size:12px; letter-spacing:.02em; margin-bottom:6px; }
   .victim-info p{ margin:0; color:var(--ink); font-size:14px; line-height:1.4; font-family:'Lora', Georgia, serif; }
 
-  #titleScreen .brief-text p{ color:var(--ink); font-size:14px; line-height:1.45; margin:0 0 8px 0; font-family:'Lora', Georgia, serif; }
+  /* --- Case briefing redesign: cinematic two-column hero ------------------
+     Deliberately its own class set (.case-hero / .victim-portrait-hero /
+     .victim-identity) rather than reusing .victim-row/.victim-portrait/
+     .victim-info above — those three are shared with the in-game Case File
+     modal (#caseFileModal), so touching them would restyle that screen too.
+     Edmund's portrait (public/assets/ai-art/edmund.jpg) is 800x963, not
+     square — aspect-ratio here preserves that instead of force-cropping to
+     a square avatar. */
+  .case-hero{ display:grid; grid-template-columns:minmax(150px, 32%) 1fr; gap:26px; align-items:start; margin:12px 0; }
+  .case-hero-portrait{ display:flex; flex-direction:column; align-items:center; gap:10px; text-align:center; }
+  .victim-portrait-hero{
+    width:100%; max-width:210px; aspect-ratio:800/963; object-fit:cover; border-radius:8px;
+    border:2px solid var(--sepia); box-shadow:0 0 22px rgba(217,183,90,0.3); cursor:pointer;
+    transition:box-shadow .15s, transform .15s;
+  }
+  .victim-portrait-hero:hover{ box-shadow:0 0 30px rgba(217,183,90,0.5); transform:scale(1.02); }
+  .victim-identity b{ display:block; color:var(--sepia); font-family:'Playfair Display', Georgia, serif; font-size:18px; font-weight:700; letter-spacing:.01em; }
+  .victim-identity span{ display:block; color:var(--ink-soft); font-family:'Lora', Georgia, serif; font-size:12px; letter-spacing:.02em; line-height:1.35; margin-top:2px; }
+  .case-hero-text{ min-width:0; }
+  .case-hero-heading{
+    font-family:'Lora', Georgia, serif; font-size:12px; letter-spacing:.16em; text-transform:uppercase;
+    color:var(--foxglove); border-bottom:1px solid var(--line); padding-bottom:7px; margin:0 0 10px 0;
+  }
 
-  .howto{ list-style:none; margin:0 0 14px 0; padding:0; }
-  .howto li{ display:flex; gap:12px; align-items:baseline; font-size:14px; color:var(--ink-soft); font-family:'Lora', Georgia, serif; margin-bottom:5px; }
+  /* Compact restatement of facts already present in .brief-text below —
+     nothing here is new information, just a faster-to-scan summary. */
+  .fact-strip{
+    display:flex; align-items:center; justify-content:center; gap:10px; flex-wrap:wrap;
+    margin:2px 0 12px 0; padding:7px 14px; border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+    font-family:'Lora', Georgia, serif; font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-soft);
+  }
+  .fact-strip .fact-dot{ color:var(--sepia); opacity:.7; }
+
+  #titleScreen .brief-text p{ color:var(--ink); font-size:14px; line-height:1.4; margin:0 0 6px 0; font-family:'Lora', Georgia, serif; }
+  #titleScreen .brief-text p:last-child{ margin-bottom:0; }
+
+  .howto{ list-style:none; margin:0; padding:0; }
+  .howto li{ display:flex; gap:12px; align-items:baseline; font-size:14px; color:var(--ink-soft); font-family:'Lora', Georgia, serif; margin-bottom:10px; }
+  .howto li:last-child{ margin-bottom:0; }
   .howto li b{ color:var(--foxglove); flex-shrink:0; font-family:'Lora', Georgia, serif; font-size:11px; letter-spacing:.04em; text-transform:uppercase; }
+
+  @media (max-width:640px){
+    .case-hero{ grid-template-columns:1fr; gap:14px; }
+    .victim-portrait-hero{ max-width:150px; }
+    .fact-strip{ gap:6px 10px; font-size:10px; }
+  }
 
   #titleScreen .start-row{ text-align:center; }
   /* Kept as its own span (rather than folded into the button's single text
@@ -275,7 +315,7 @@
      case's notebook header — see state.js's getPlayerName/setPlayerName).
      Purely presentational; never touches Case Code/RNG/solution state. */
   .player-name-row{
-    margin-top:14px; display:flex; flex-direction:column; align-items:center; gap:6px;
+    margin-top:10px; display:flex; flex-direction:column; align-items:center; gap:5px;
   }
   .player-name-label{
     font-family:'Lora', Georgia, serif; font-size:12px; color:var(--ink-soft); letter-spacing:.03em;
@@ -416,12 +456,24 @@
     padding:2px 6px; flex-shrink:0;
   }
   .saved-story-delete:hover{ color:#c96a5a; }
-  #titleScreen button{
-    font-family:'Lora', Georgia, serif; font-size:16px; letter-spacing:.08em; text-transform:uppercase;
-    background:transparent; border:1px solid var(--foxglove); color:var(--foxglove); padding:10px 28px;
-    border-radius:3px; cursor:pointer; transition:background .15s, box-shadow .15s;
+  /* Begin Investigation — the one control on this screen meant to visually
+     dominate. Everything else here (rename/random-story/case-code/daily-case/
+     saved-story buttons, Meet the Household, How to Play) uses the ordinary
+     global .btn/.btn.secondary classes instead of a #titleScreen-wide
+     selector, so this rule affects #startBtn alone and nothing competes
+     with it for weight. */
+  #titleScreen #startBtn{
+    font-family:'Playfair Display', Georgia, serif; font-weight:700; font-size:20px;
+    letter-spacing:.03em; text-transform:none; background:var(--sepia); color:#1c1710;
+    border:1px solid var(--sepia); padding:17px 52px; border-radius:5px; cursor:pointer;
+    min-height:56px; transition:box-shadow .15s, transform .15s;
+    box-shadow:0 0 26px rgba(217,183,90,0.45);
   }
-  #titleScreen button:hover{ background:rgba(217,137,188,0.15); box-shadow:0 0 16px rgba(217,137,188,0.35); }
+  #titleScreen #startBtn:hover{ box-shadow:0 0 36px rgba(217,183,90,0.7); transform:translateY(-1px); }
+  #titleScreen #startBtn .start-btn-story-name{ color:rgba(28,23,16,0.72); }
+
+  .hero-secondary-row{ display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin:14px 0 0 0; }
+
   #titleScreen.hidden{ display:none; }
   #titleScreen #titleMuteBtn{
     position:absolute; top:16px; right:16px; z-index:1; white-space:nowrap;
@@ -759,6 +811,9 @@
      flex child to actually shrink and scroll instead of overflowing). */
   .modal-scroll-body{ overflow-y:auto; min-height:0; }
   .notebook-card h2{ font-family:'Playfair Display', Georgia, serif; color:var(--sepia); font-size:24px; margin:0 0 4px 0; text-align:center; }
+
+  .howto-modal-card{ max-width:520px; }
+  .howto-modal-card .howto{ margin-top:6px; }
 
   /* --- Physical Investigation Pass: clue inspection viewer --- */
   .clue-viewer-card{ max-width:640px; width:100%; display:flex; flex-direction:column; align-items:center; }
@@ -1411,7 +1466,7 @@
     }
   }
 </style>
-  <script type="module" crossorigin src="/ravensmoor-game/assets/index-DcGgK16x.js"></script>
+  <script type="module" crossorigin src="/ravensmoor-game/assets/index-CJ0h_0iq.js"></script>
 </head>
 <body>
 <div id="rotate-hint" aria-hidden="true">
@@ -1482,39 +1537,33 @@
           <h1>Ravensmoor Hall</h1>
           <div class="brief-subtitle">The Thorne Inheritance</div>
 
-          <div class="victim-row">
-            <img class="victim-portrait" id="victimPortrait" src="assets/ai-art/edmund.jpg" alt="Edmund Thorne — click to enlarge">
-            <div class="victim-info">
-              <b>Edmund Thorne, 70</b>
-              <span>Founder &amp; Chairman, Thorne Pharmaceutical Holdings</span>
-              <p>Charming in public, exacting in private. Edmund built a fortune on a single cardiac-drug patent and spent the following forty years making sure everyone around him knew exactly what they owed him.</p>
+          <div class="case-hero">
+            <div class="case-hero-portrait">
+              <img class="victim-portrait-hero" id="victimPortrait" src="assets/ai-art/edmund.jpg" alt="Edmund Thorne — click to enlarge">
+              <div class="victim-identity">
+                <b>Edmund Thorne, 70</b>
+                <span>Founder &amp; Chairman, Thorne Pharmaceutical Holdings</span>
+              </div>
+            </div>
+            <div class="case-hero-text">
+              <div class="case-hero-heading">The Case</div>
+              <div class="brief-text">
+                <p class="brief-identity-line">You hadn't seen Edmund Thorne in years — not since a case, long since closed, first put the two of you in each other's orbit. He always said he trusted your judgment more than most people's. When his invitation arrived for tonight, it came with a private note: there was something he wanted your opinion on. He never got the chance to raise it.</p>
+                <p>Tonight was his seventieth birthday — and the night he'd promised to announce who would inherit the company, and what would happen to everything else. The storm took out the causeway bridge before dinner was even served. No police are coming for three more days — which leaves you, long retired from that line of work but still the only person in this house who has ever done it, to make sure nothing about tonight gets lost before they arrive.</p>
+                <p class="body-discovery-line">At 11:47 PM, the housekeeper found him slumped at his study desk. Whether it was his heart, a terrible accident, or something else entirely is what you're here to find out.</p>
+                <p>Eleven people were in this house tonight. At least eight of them had a reason to want him gone.</p>
+              </div>
             </div>
           </div>
 
-          <div class="brief-text">
-            <p class="brief-identity-line">You hadn't seen Edmund Thorne in years — not since a case, long since closed, first put the two of you in each other's orbit. He always said he trusted your judgment more than most people's. When his invitation arrived for tonight, it came with a private note: there was something he wanted your opinion on. He never got the chance to raise it.</p>
-            <p>Tonight was his seventieth birthday — and the night he'd promised to announce who would inherit the company, and what would happen to everything else. The storm took out the causeway bridge before dinner was even served. No police are coming for three more days — which leaves you, long retired from that line of work but still the only person in this house who has ever done it, to make sure nothing about tonight gets lost before they arrive.</p>
-            <p class="body-discovery-line">At 11:47 PM, the housekeeper found him slumped at his study desk. Whether it was his heart, a terrible accident, or something else entirely is what you're here to find out.</p>
-            <p>Eleven people were in this house tonight. At least eight of them had a reason to want him gone.</p>
+          <div class="fact-strip">
+            <span>11 People in the House</span><span class="fact-dot" aria-hidden="true">•</span><span>Bridge Out</span><span class="fact-dot" aria-hidden="true">•</span><span>Police 3 Days Away</span>
           </div>
 
           <div class="player-name-row">
-            <label for="playerNameInput" class="player-name-label">Your name <span class="player-name-sub">(optional — for your own case notes)</span></label>
+            <label for="playerNameInput" class="player-name-label">Your Case Notes <span class="player-name-sub">(optional — your name)</span></label>
             <input id="playerNameInput" type="text" class="story-name-input" maxlength="40" placeholder="Detective">
           </div>
-
-          <div class="meet-household-row">
-            <button id="meetHouseholdBtn" class="btn secondary">🎭 Meet the Household</button>
-          </div>
-
-          <hr class="brief-rule">
-
-          <ul class="howto">
-            <li><b>Click</b> a glowing object to examine it.</li>
-            <li><b>Click</b> a person to talk to them.</li>
-            <li><b>Use the arrows</b> at the top corners to move between rooms of the manor.</li>
-            <li><b>Go back and ask again</b> — new questions open up for people you've already met once you've learned something elsewhere. Their portrait stays on the side panel so you don't have to walk back to find them.</li>
-          </ul>
 
           <div class="start-row">
             <button id="startBtn">
@@ -1523,6 +1572,13 @@
             </button>
           </div>
           <div id="resetLink">Start this investigation over (clears its saved progress)</div>
+
+          <div class="hero-secondary-row">
+            <button id="meetHouseholdBtn" class="btn secondary">🎭 Meet the Household</button>
+            <button id="howToPlayBtn" class="btn secondary">❔ How to Play</button>
+          </div>
+
+          <hr class="brief-rule">
 
           <div class="story-controls">
             <div class="story-rename-row">
@@ -1606,6 +1662,21 @@
           </div>
           <p class="case-code-feedback" id="caseFileCodeFeedback" role="status" aria-live="polite"></p>
         </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="howToPlayModal" class="person-modal">
+      <div class="notebook-card howto-modal-card">
+        <button class="person-modal-close" data-close aria-label="Close">&times;</button>
+        <div class="modal-scroll-body">
+        <h2>How to Play</h2>
+        <ul class="howto">
+          <li><b>Click</b> a glowing object to examine it.</li>
+          <li><b>Click</b> a person to talk to them.</li>
+          <li><b>Use the arrows</b> at the top corners to move between rooms of the manor.</li>
+          <li><b>Go back and ask again</b> — new questions open up for people you've already met once you've learned something elsewhere. Their portrait stays on the side panel so you don't have to walk back to find them.</li>
+        </ul>
         </div>
       </div>
     </div>
