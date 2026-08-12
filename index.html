@@ -194,24 +194,29 @@
     background:
       linear-gradient(rgba(8,7,6,0.82), rgba(8,7,6,0.9)),
       url('assets/ai-art/study.jpg') center / cover no-repeat;
-    display:flex; flex-direction:column; align-items:center; justify-content:flex-start; padding:56px 20px 24px 20px;
+    display:flex; flex-direction:column; align-items:center; justify-content:flex-start; padding:34px 20px 24px 20px;
   }
   .brief-layout{ display:flex; align-items:flex-start; justify-content:center; gap:22px; max-width:900px; width:100%; }
   .brief-card{
     max-width:840px; flex:1 1 600px; min-width:0; background:rgba(14,13,11,0.94); border:1px solid var(--line);
-    border-radius:8px; padding:20px 36px 24px 36px; box-shadow:0 20px 60px rgba(0,0,0,0.5);
+    border-radius:8px; padding:14px 40px 20px 40px; box-shadow:0 20px 60px rgba(0,0,0,0.5);
   }
   @media (max-width:900px){
     .brief-layout{ flex-direction:column; align-items:stretch; }
     .brief-card{ max-width:100%; }
+    /* Below this width the card spans (near-)full width, so it now sits
+       under #titleMuteBtn's fixed top-right position — the reduced desktop
+       padding-top (34px) would put the card's top-right corner directly
+       behind the button. Restore enough top padding here to clear it. */
+    #titleScreen{ padding-top:56px; }
   }
   @media (max-width:480px){
     .brief-card{ padding:26px 20px 30px 20px; }
     .victim-row{ flex-direction:column; align-items:center; text-align:center; gap:14px; }
   }
   .brief-eyebrow{ font-family:'Lora', Georgia, serif; font-size:13px; letter-spacing:.18em; color:var(--foxglove); text-align:center; }
-  #titleScreen h1{ font-family:'Playfair Display', Georgia, serif; font-weight:700; color:var(--ink); font-size:clamp(30px, 6vw, 46px); margin:6px 0 4px 0; letter-spacing:.01em; text-shadow:0 0 18px rgba(217,137,188,0.3); text-align:center; }
-  .brief-subtitle{ color:var(--ink-soft); font-family:'Playfair Display', Georgia, serif; font-style:italic; font-size:17px; text-align:center; margin:0 0 14px 0; }
+  #titleScreen h1{ font-family:'Playfair Display', Georgia, serif; font-weight:700; color:var(--ink); font-size:clamp(30px, 6vw, 44px); margin:3px 0 2px 0; letter-spacing:.01em; text-shadow:0 0 18px rgba(217,137,188,0.3); text-align:center; }
+  .brief-subtitle{ color:var(--ink-soft); font-family:'Playfair Display', Georgia, serif; font-style:italic; font-size:16px; text-align:center; margin:0 0 10px 0; }
   .brief-rule{ border:none; border-top:1px solid var(--line); margin:14px 0; }
 
   .victim-row{ display:flex; gap:18px; align-items:flex-start; margin-bottom:14px; }
@@ -229,10 +234,10 @@
      Edmund's portrait (public/assets/ai-art/edmund.jpg) is 800x963, not
      square — aspect-ratio here preserves that instead of force-cropping to
      a square avatar. */
-  .case-hero{ display:grid; grid-template-columns:minmax(150px, 32%) 1fr; gap:26px; align-items:start; margin:12px 0; }
-  .case-hero-portrait{ display:flex; flex-direction:column; align-items:center; gap:10px; text-align:center; }
+  .case-hero{ display:grid; grid-template-columns:minmax(130px, 26%) 1fr; gap:22px; align-items:start; margin:8px 0 6px 0; }
+  .case-hero-portrait{ display:flex; flex-direction:column; align-items:center; gap:8px; text-align:center; }
   .victim-portrait-hero{
-    width:100%; max-width:210px; aspect-ratio:800/963; object-fit:cover; border-radius:8px;
+    width:100%; max-width:182px; aspect-ratio:800/963; object-fit:cover; border-radius:8px;
     border:2px solid var(--sepia); box-shadow:0 0 22px rgba(217,183,90,0.3); cursor:pointer;
     transition:box-shadow .15s, transform .15s;
   }
@@ -242,19 +247,22 @@
   .case-hero-text{ min-width:0; }
   .case-hero-heading{
     font-family:'Lora', Georgia, serif; font-size:12px; letter-spacing:.16em; text-transform:uppercase;
-    color:var(--foxglove); border-bottom:1px solid var(--line); padding-bottom:7px; margin:0 0 10px 0;
+    color:var(--foxglove); border-bottom:1px solid var(--line); padding-bottom:5px; margin:0 0 6px 0;
   }
 
-  /* Compact restatement of facts already present in .brief-text below —
-     nothing here is new information, just a faster-to-scan summary. */
+  /* Compact restatement of facts already present in .brief-text above —
+     nothing here is new information, just a faster-to-scan summary. Reads
+     as a full-width band (spans the whole card, not the narrower action
+     zone below it) — it's the transition point between the two-column
+     hero and the calmer, centered lower action zone. */
   .fact-strip{
     display:flex; align-items:center; justify-content:center; gap:10px; flex-wrap:wrap;
-    margin:2px 0 12px 0; padding:7px 14px; border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+    margin:6px 0 0 0; padding:6px 14px; border-top:1px solid var(--line); border-bottom:1px solid var(--line);
     font-family:'Lora', Georgia, serif; font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-soft);
   }
   .fact-strip .fact-dot{ color:var(--sepia); opacity:.7; }
 
-  #titleScreen .brief-text p{ color:var(--ink); font-size:14px; line-height:1.4; margin:0 0 6px 0; font-family:'Lora', Georgia, serif; }
+  #titleScreen .brief-text p{ color:var(--ink); font-size:14.5px; line-height:1.42; margin:0 0 7px 0; font-family:'Lora', Georgia, serif; }
   #titleScreen .brief-text p:last-child{ margin-bottom:0; }
 
   .howto{ list-style:none; margin:0; padding:0; }
@@ -262,13 +270,55 @@
   .howto li:last-child{ margin-bottom:0; }
   .howto li b{ color:var(--foxglove); flex-shrink:0; font-family:'Lora', Georgia, serif; font-size:11px; letter-spacing:.04em; text-transform:uppercase; }
 
+  /* --- Case assignment row: replaces the earlier centered "form" stack ----
+     A compact, two-column intake row sitting directly under the fact strip
+     — reads as the case file assigning the player to the case, not as a
+     web form appended to a dossier. Left column is the name field (a case
+     record: label -> input -> support line); right column is Begin
+     Investigation, vertically centered against the field column so the two
+     halves feel like one balanced row rather than a stack of decisions.
+     No border-top here — the fact strip's own border-bottom just above is
+     the one clean divider between "the facts" and "the assignment"; a
+     second rule this close to it read as a stacked double-divider. */
+  .case-assignment{
+    display:grid; grid-template-columns:1fr auto; gap:28px; align-items:center;
+    margin:28px 0 0 0;
+  }
+  .case-assignment-field{ min-width:0; }
+  /* Small case-file field label, not a section heading — deliberately the
+     same visual weight as "THE CASE" above it, not larger. */
+  .case-assignment-label{
+    display:block; font-family:'Lora', Georgia, serif; font-size:11px; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--foxglove); margin:0 0 6px 0; cursor:text;
+  }
+  .detective-name-input{
+    box-sizing:border-box; width:100%; max-width:380px; min-height:46px; padding:10px 16px;
+    font-family:'Lora', Georgia, serif; font-size:16px; letter-spacing:.01em; color:var(--ink);
+    background:rgba(255,255,255,0.04); border:1px solid var(--sepia); border-radius:5px;
+  }
+  .detective-name-input::placeholder{ color:var(--ink-soft); font-style:italic; opacity:.65; }
+  .detective-name-input:focus{
+    outline:none; border-color:var(--sepia); background:rgba(255,255,255,0.07);
+    box-shadow:0 0 0 3px rgba(217,183,90,0.28);
+  }
+  .case-assignment-support{
+    font-family:'Lora', Georgia, serif; font-size:11px; color:var(--ink-soft); opacity:.75; margin:5px 0 0 0;
+  }
+  .case-assignment-cta{ display:flex; flex-direction:column; align-items:center; gap:4px; }
+
   @media (max-width:640px){
     .case-hero{ grid-template-columns:1fr; gap:14px; }
     .victim-portrait-hero{ max-width:150px; }
     .fact-strip{ gap:6px 10px; font-size:10px; }
+    /* Below this width the two-column intake row stacks: label -> input ->
+       support -> Begin Investigation, matching the rest of the mobile
+       reading order. */
+    .case-assignment{ grid-template-columns:1fr; gap:14px; }
+    .case-assignment-cta{ width:100%; }
+    .detective-name-input{ max-width:none; }
   }
 
-  #titleScreen .start-row{ text-align:center; }
+  #titleScreen .case-assignment-cta #startBtn{ margin:0; }
   /* Kept as its own span (rather than folded into the button's single text
      node) so it can opt out of the button's uppercase/wide-letter-spacing
      styling below — otherwise "Resume Investigation" and the player's own
@@ -309,20 +359,6 @@
   }
   .story-name-input:focus{ outline:none; border-color:var(--foxglove); }
   .story-controls .btn{ font-size:11px; padding:6px 14px; }
-  /* Commercial Polish 2 — "Your name," distinct from the existing "Name
-     this investigation" row above: that names a SAVE SLOT (can differ per
-     case), this names the PLAYER (one global value, carried into every
-     case's notebook header — see state.js's getPlayerName/setPlayerName).
-     Purely presentational; never touches Case Code/RNG/solution state. */
-  .player-name-row{
-    margin-top:10px; display:flex; flex-direction:column; align-items:center; gap:5px;
-  }
-  .player-name-label{
-    font-family:'Lora', Georgia, serif; font-size:12px; color:var(--ink-soft); letter-spacing:.03em;
-  }
-  .player-name-sub{ opacity:0.7; font-size:11px; }
-  #playerNameInput{ text-align:center; min-width:220px; }
-
   /* --- Difficulty (item 2) --- */
   .difficulty-picker-section{
     margin-top:10px; padding-top:9px; border-top:1px solid var(--line);
@@ -1560,18 +1596,25 @@
             <span>11 People in the House</span><span class="fact-dot" aria-hidden="true">•</span><span>Bridge Out</span><span class="fact-dot" aria-hidden="true">•</span><span>Police 3 Days Away</span>
           </div>
 
-          <div class="player-name-row">
-            <label for="playerNameInput" class="player-name-label">Your Case Notes <span class="player-name-sub">(optional — your name)</span></label>
-            <input id="playerNameInput" type="text" class="story-name-input" maxlength="40" placeholder="Detective">
+          <!-- Case assignment row: the player's name here is global
+               (state.js's getPlayerName/setPlayerName) and purely
+               presentational — leaving it blank preserves the game's
+               existing "Detective" fallback untouched; it is never
+               mandatory and never touches Case Code/RNG/solution state. -->
+          <div class="case-assignment">
+            <div class="case-assignment-field">
+              <label for="playerNameInput" class="case-assignment-label">Assigned Detective</label>
+              <input id="playerNameInput" type="text" class="detective-name-input" maxlength="40" placeholder="Enter your name…" autocomplete="off">
+              <p class="case-assignment-support">Enter your name for the case file.</p>
+            </div>
+            <div class="case-assignment-cta">
+              <button id="startBtn">
+                <span id="startBtnVerb">Begin the Investigation</span>
+                <span id="startBtnStoryName" class="start-btn-story-name"></span>
+              </button>
+              <div id="resetLink">Start this investigation over (clears its saved progress)</div>
+            </div>
           </div>
-
-          <div class="start-row">
-            <button id="startBtn">
-              <span id="startBtnVerb">Begin the Investigation</span>
-              <span id="startBtnStoryName" class="start-btn-story-name"></span>
-            </button>
-          </div>
-          <div id="resetLink">Start this investigation over (clears its saved progress)</div>
 
           <div class="hero-secondary-row">
             <button id="meetHouseholdBtn" class="btn secondary">🎭 Meet the Household</button>
