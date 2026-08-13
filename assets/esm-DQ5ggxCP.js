@@ -1,2 +1,0 @@
-const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["assets/web-D0Uhtj-a.js","assets/index-BNDdeP2D.js"])))=>i.map(i=>d[i]);
-import{r as e,t}from"./index-BNDdeP2D.js";var n=e(`Browser`,{web:()=>t(()=>import(`./web-D0Uhtj-a.js`).then(e=>new e.BrowserWeb),__vite__mapDeps([0,1]))});export{n as Browser};
