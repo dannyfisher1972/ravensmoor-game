@@ -96,6 +96,12 @@
     background:rgba(20,18,15,0.85); color:var(--sepia); border:1px solid var(--sepia);
     padding:7px 16px; border-radius:2px; font-family:'Lora', Georgia, serif;
     font-size:16px; letter-spacing:.02em; display:none;
+    /* Visual Investigation vertical slice — this line now also carries the
+       result of searching a piece of furniture ("The dressing table — powder,
+       pins, and a jewel case..."), which is a sentence rather than the two or
+       three words the hover prompt used to hold, so it needs to wrap instead
+       of running off both edges of a phone screen. */
+    max-width:min(620px, 88%); text-align:center;
   }
   #dialog{
     position:absolute; left:50%; bottom:0; transform:translateX(-50%); width:min(620px, 92%);
@@ -916,6 +922,17 @@
      a recovered document" heading/italics, just the note text sitting
      directly below the image, since forcing document chrome onto a key or
      curio would misrepresent what the player is looking at. */
+  /* Visual Investigation vertical slice — the "available investigative
+     actions" row of the examination hierarchy (large evidence image -> short
+     objective observation -> what you can actually DO with it). Only rendered
+     when a caller passes real actions; never a decorative button that leads
+     to more prose. */
+  .clue-viewer-actions{ width:100%; max-width:520px; margin-top:16px; display:flex; flex-wrap:wrap; gap:10px; justify-content:center; }
+  .clue-viewer-actions button{
+    background:rgba(232,184,75,0.08); border:1px solid var(--sepia); color:var(--sepia);
+    font-family:'Lora', Georgia, serif; font-size:15px; padding:9px 16px; border-radius:3px; cursor:pointer;
+  }
+  .clue-viewer-actions button:hover{ background:rgba(232,184,75,0.18); border-color:var(--foxglove); color:var(--foxglove); }
   .clue-viewer-description-wrap{ width:100%; max-width:520px; margin-top:16px; }
   .clue-viewer-description-wrap p{
     font-family:'Lora', Georgia, serif; font-size:15px; line-height:1.6; color:var(--ink);
@@ -1552,7 +1569,7 @@
     }
   }
 </style>
-  <script type="module" crossorigin src="/ravensmoor-game/assets/index-DmnLn2_x.js"></script>
+  <script type="module" crossorigin src="/ravensmoor-game/assets/index-1USwqj29.js"></script>
 </head>
 <body>
 <div id="rotate-hint" aria-hidden="true">
@@ -1962,6 +1979,7 @@
         <div id="clueViewerDescriptionWrap" class="clue-viewer-description-wrap" style="display:none;">
           <p id="clueViewerDescription"></p>
         </div>
+        <div id="clueViewerActions" class="clue-viewer-actions" style="display:none;"></div>
         <div id="clueViewerTranscriptionWrap" class="clue-viewer-transcription-wrap" style="display:none;">
           <h3>Transcription</h3>
           <p id="clueViewerTranscription"></p>
