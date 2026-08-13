@@ -21,6 +21,18 @@
     --ui-scale: 1;
     --dialog-font-size: 19px;
     --notebook-font-size: 15px;
+    /* HUD collision fix — single source of truth for #zoomControls' real
+       stack height, so anything positioned relative to it (see
+       #progressBadge's wide-landscape rule) derives the number instead of a
+       hand-copied guess. This is exactly how the collision bug happened:
+       the clue counter's offset was hardcoded for a 3-button stack and
+       never updated when the Investigation Lens button became a 4th.
+       Bump --zoom-btn-count here (and nowhere else) if a button is ever
+       added or removed from #zoomControls. */
+    --zoom-btn-count: 4;
+    --zoom-btn-size: 40px;
+    --zoom-btn-gap: 6px;
+    --zoom-stack-height: calc(var(--zoom-btn-count) * var(--zoom-btn-size) + (var(--zoom-btn-count) - 1) * var(--zoom-btn-gap));
   }
   html[data-text-size="small"]{ --dialog-font-size:16px; --notebook-font-size:13px; }
   html[data-text-size="normal"]{ --dialog-font-size:19px; --notebook-font-size:15px; }
@@ -657,10 +669,10 @@
      a bigger look at a clue. --- */
   #zoomControls{
     position:absolute; left:14px; top:50%; transform:translateY(-50%);
-    display:flex; flex-direction:column; gap:6px; pointer-events:auto; z-index:5;
+    display:flex; flex-direction:column; gap:var(--zoom-btn-gap); pointer-events:auto; z-index:5;
   }
   #zoomControls button{
-    width:40px; height:40px; font-size:18px; line-height:1;
+    width:var(--zoom-btn-size); height:var(--zoom-btn-size); font-size:18px; line-height:1;
     background:rgba(20,18,15,0.8); border:1px solid var(--line); color:var(--ink-soft);
     border-radius:3px; cursor:pointer; font-family:'Lora', Georgia, serif;
   }
@@ -679,6 +691,20 @@
      original over-the-art placement, where there's no margin to move into. */
   @media (orientation:landscape) and (min-aspect-ratio:3/2){
     #zoomControls{ position:fixed; left:max(20px, env(safe-area-inset-left)); top:50%; }
+  }
+  /* HUD collision fix (second instance) — on a narrow, tall viewport
+     (portrait phones/tablets, and a desktop window resized that way — the
+     rotate-hint above only covers actual touch+portrait devices, not every
+     shape this can happen in), #actionButtons' 5 buttons wrap into extra
+     rows, which grows #bottomBar upward from its bottom:14px anchor far
+     enough that #progressBadge (its first child) can reach into
+     #zoomControls' vertically-centered (top:50%) territory on the left
+     edge. Pinning #zoomControls near the top instead — clear of #room-nav
+     above it, and always well above where a wrapped bottom bar can reach —
+     is a structural fix that holds regardless of exactly how many rows the
+     toolbar wraps into. */
+  @media (max-width:480px) and (orientation:portrait){
+    #zoomControls{ top:76px; transform:none; }
   }
   #zoomControls button:hover{ border-color:var(--foxglove); color:var(--foxglove); }
   #zoomControls button:disabled{ opacity:.35; cursor:not-allowed; }
@@ -818,11 +844,17 @@
      the max-height:480px block above so it wins the cascade when both
      apply at once (e.g. 932x430 matches both). */
   @media (orientation:landscape) and (min-aspect-ratio:3/2){
-    /* Left rail: clue counter sits below the zoom/mute stack (114px tall —
-       3 34px buttons + 2 6px gaps — vertically centered, so its bottom
-       edge sits at 50% + 57px; +10px clears it from that stack). */
+    /* Left rail: clue counter sits below the zoom/lens/mute stack, whose
+       real height is --zoom-stack-height (declared on :root, single source
+       of truth — see its comment). The stack is vertically centered via
+       top:50%/translateY(-50%), so its bottom edge sits at
+       50% + (stack height / 2); +16px clears it from that edge. This used
+       to be a hand-copied pixel guess that silently went stale the moment
+       a 4th button (Investigation Lens) was added to the stack — exactly
+       the collision this task fixes — so it's now derived instead. */
     #progressBadge{
-      position:fixed; left:max(20px, env(safe-area-inset-left)); top:calc(50% + 67px);
+      position:fixed; left:max(20px, env(safe-area-inset-left));
+      top:calc(50% + (var(--zoom-stack-height) / 2) + 16px);
     }
     /* Right rail: same 5 buttons, stacked vertically instead of wrapped
        rows, with roomier padding for a larger touch target. */
@@ -879,6 +911,16 @@
     font-family:'Lora', Georgia, serif; font-style:italic; font-size:15px; line-height:1.6; color:var(--ink);
     white-space:pre-wrap; margin:0;
   }
+  /* Item Presentation pass — a physical Inventory item's plain description,
+     distinct from a document's `transcription` block above: no "reads like
+     a recovered document" heading/italics, just the note text sitting
+     directly below the image, since forcing document chrome onto a key or
+     curio would misrepresent what the player is looking at. */
+  .clue-viewer-description-wrap{ width:100%; max-width:520px; margin-top:16px; }
+  .clue-viewer-description-wrap p{
+    font-family:'Lora', Georgia, serif; font-size:15px; line-height:1.6; color:var(--ink);
+    white-space:pre-wrap; margin:0; text-align:center;
+  }
   .clue-inspect-btn{
     display:inline-flex; align-items:center; gap:6px; margin-top:10px;
     font-family:'Lora', Georgia, serif; font-size:12px; letter-spacing:.03em;
@@ -886,12 +928,20 @@
     padding:7px 14px; border-radius:3px; cursor:pointer; min-height:36px;
   }
   .clue-inspect-btn:hover{ background:rgba(217,137,188,0.12); }
-  .inventory-inspect-btn{
-    position:absolute; top:2px; right:2px; width:24px; height:24px; border-radius:50%;
+  /* Item Presentation pass — clicking an Inventory card now opens the item
+     modal directly (view), so the small circular corner button is no
+     longer a redundant "Inspect" trigger; it's the one remaining way to
+     arm/disarm an item for use-on-lock, kept visually distinct (its own
+     small control, not the whole card) so viewing an item never doubles as
+     selecting it for use. */
+  .inventory-use-btn{
+    position:absolute; top:2px; right:2px; height:24px; min-width:24px; padding:0 7px; border-radius:12px;
     background:rgba(6,5,4,0.75); border:1px solid var(--line); color:var(--ink-soft);
-    font-size:13px; line-height:1; cursor:pointer; display:flex; align-items:center; justify-content:center;
+    font-family:'Lora', Georgia, serif; font-size:10px; letter-spacing:.03em;
+    line-height:1; cursor:pointer; display:flex; align-items:center; justify-content:center;
   }
-  .inventory-inspect-btn:hover{ border-color:var(--foxglove); color:var(--foxglove); }
+  .inventory-use-btn:hover{ border-color:var(--foxglove); color:var(--foxglove); }
+  .inventory-use-btn.armed{ border-color:var(--sepia); color:var(--sepia); background:rgba(217,183,90,0.18); }
   /* Commercial Polish 2 (Task 15) — light player-identity touch: whose
      notes these are, once, not repeated on every panel/screen. */
   .notebook-owner-line{
@@ -1502,7 +1552,7 @@
     }
   }
 </style>
-  <script type="module" crossorigin src="/ravensmoor-game/assets/index-NzfjJ3ph.js"></script>
+  <script type="module" crossorigin src="/ravensmoor-game/assets/index-De4HBoiT.js"></script>
 </head>
 <body>
 <div id="rotate-hint" aria-hidden="true">
@@ -1908,6 +1958,9 @@
         <div class="clue-viewer-zoom-controls">
           <button id="clueViewerZoomOutBtn" type="button" aria-label="Zoom out">−</button>
           <button id="clueViewerZoomInBtn" type="button" aria-label="Zoom in">+</button>
+        </div>
+        <div id="clueViewerDescriptionWrap" class="clue-viewer-description-wrap" style="display:none;">
+          <p id="clueViewerDescription"></p>
         </div>
         <div id="clueViewerTranscriptionWrap" class="clue-viewer-transcription-wrap" style="display:none;">
           <h3>Transcription</h3>
