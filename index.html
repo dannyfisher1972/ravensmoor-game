@@ -640,6 +640,11 @@
     padding:6px 12px; border-radius:3px; cursor:pointer; max-width:38%;
   }
   #room-nav button:hover{ border-color:var(--foxglove); color:var(--foxglove); }
+  /* Reasoning UX clarity pass — studyBody's "Back to Study" reads visually
+     distinct from an ordinary ← previous-room chevron (a real hairline
+     ring), since it isn't room navigation even though it lives in the same
+     row. */
+  #room-nav button.room-nav-exit{ border-color:var(--sepia); box-shadow:inset 0 0 0 1px rgba(217,183,90,0.25); }
   #room-name{ font-family:'Lora', Georgia, serif; font-size:15px; color:var(--sepia); background:rgba(20,18,15,0.8); padding:6px 14px; border-radius:3px; border:1px solid var(--line); }
 
   /* Shared bottom bar: the clue counter and the button toolbar used to be
@@ -1309,6 +1314,17 @@
   #achievementToast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
   #achievementToast b{ display:block; font-family:'Playfair Display', Georgia, serif; color:var(--sepia); font-size:14px; }
   #achievementToast span{ display:block; font-family:'Lora', Georgia, serif; color:var(--ink-soft); font-size:12px; margin-top:2px; }
+  /* Reasoning UX clarity pass — the toast itself keeps pointer-events:none
+     (see the comment above it) so a passive achievement/tip toast never
+     blocks a room click underneath it; the action button opts back in on
+     its own, and RoomScene.js's HUD_CONTROL_IDS guards it the same way as
+     every other DOM control drawn over the canvas. */
+  .toast-action-btn{
+    display:block; pointer-events:auto; margin:10px auto 0; font-family:'Lora', Georgia, serif; font-size:12px;
+    background:rgba(217,183,90,0.12); border:1px solid var(--sepia); color:var(--sepia);
+    padding:6px 16px; border-radius:3px; cursor:pointer;
+  }
+  .toast-action-btn:hover{ background:rgba(217,183,90,0.22); border-color:var(--foxglove); color:var(--foxglove); }
   @media (max-width:640px){ .notebook-columns{ flex-direction:column; gap:24px; } }
 
   /* --- Accusation --- */
@@ -1667,7 +1683,7 @@
     }
   }
 </style>
-  <script type="module" crossorigin src="/ravensmoor-game/assets/index-nGHPqJdo.js"></script>
+  <script type="module" crossorigin src="/ravensmoor-game/assets/index-BOr0zZwz.js"></script>
 </head>
 <body>
 <div id="rotate-hint" aria-hidden="true">
