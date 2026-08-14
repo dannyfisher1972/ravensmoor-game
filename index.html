@@ -645,7 +645,77 @@
      ring), since it isn't room navigation even though it lives in the same
      row. */
   #room-nav button.room-nav-exit{ border-color:var(--sepia); box-shadow:inset 0 0 0 1px rgba(217,183,90,0.25); }
-  #room-name{ font-family:'Lora', Georgia, serif; font-size:15px; color:var(--sepia); background:rgba(20,18,15,0.8); padding:6px 14px; border-radius:3px; border:1px solid var(--line); }
+  /* House Navigation — the room name is now the entry point to the House
+     Plan panel, so it's a real <button> (native focus/Enter/Space, proper
+     semantics) rather than the old inert <span>. It keeps its own distinct
+     "you are here" plaque look instead of inheriting the chevrons' styling,
+     and carries a small house glyph via ::after so its clickability is
+     discoverable without a tutorial and without adding another control to
+     an already busy HUD. #room-nav sets pointer-events:none on the row and
+     back to auto on its buttons, so becoming a button is also what makes it
+     clickable at all. */
+  #room-name{
+    pointer-events:auto; font-family:'Lora', Georgia, serif; font-size:15px; color:var(--sepia);
+    background:rgba(20,18,15,0.8); padding:6px 14px; border-radius:3px; border:1px solid var(--line);
+    max-width:38%; cursor:pointer; display:inline-flex; align-items:center; gap:8px;
+  }
+  /* ::before, not ::after, on purpose — the coarse-pointer touch-target pass
+     further down already owns every #room-nav button's ::after as an
+     invisible 44px hit expander, and #room-name is now one of those buttons.
+     Putting the glyph on ::before keeps both, so the house mark survives on
+     touch and the enlarged tap target still applies. */
+  #room-name::before{ content:'⌂'; font-size:15px; line-height:1; opacity:0.62; }
+  #room-name:hover, #room-name:focus-visible{ border-color:var(--foxglove); color:var(--foxglove); }
+  #room-name:hover::before, #room-name:focus-visible::before{ opacity:1; }
+
+  /* --- House Plan panel ---------------------------------------------------
+     Deliberately NOT a drawn floorplan: the room loop is genuinely reshuffled
+     per case (see src/data/houseAreas.js), so measured adjacency would be a
+     fabrication. Areas are canon; corridors are not. Grouped plaques inside
+     the standard .person-modal shell, so the existing Escape/backdrop/close
+     handling and the modal pointer guard cover it for free. */
+  .house-nav-sub{ color:var(--ink-soft); font-size:14px; margin:-6px 0 18px; font-style:italic; }
+  #houseNavAreas{ display:flex; flex-direction:column; gap:20px; }
+  .house-area{ border-top:1px solid var(--line); padding-top:14px; }
+  .house-area:first-child{ border-top:none; padding-top:0; }
+  .house-area-head{ margin-bottom:10px; }
+  .house-area-title{
+    font-family:'Playfair Display', Georgia, serif; color:var(--sepia); font-size:16px;
+    letter-spacing:0.06em; text-transform:uppercase; margin:0;
+  }
+  .house-area-blurb{ color:var(--ink-soft); font-size:13px; margin:3px 0 0; opacity:0.78; }
+  .house-area-current .house-area-title{ color:var(--foxglove); }
+  .house-room-list{ display:grid; grid-template-columns:repeat(auto-fill, minmax(210px, 1fr)); gap:10px; }
+  .house-room{
+    display:flex; flex-direction:column; align-items:flex-start; gap:3px;
+    font-family:'Lora', Georgia, serif; font-size:15px; text-align:left;
+    background:rgba(28,25,21,0.75); border:1px solid var(--line); border-radius:4px;
+    color:var(--ink-soft); padding:11px 14px; min-height:48px; cursor:pointer;
+  }
+  .house-room:hover{ border-color:var(--foxglove); color:var(--foxglove); }
+  .house-room:focus-visible{ outline:2px solid var(--foxglove); outline-offset:2px; }
+  .house-room-name{ font-size:15px; }
+  /* Visited is a plain muted plaque; unvisited is slightly dimmer. It answers
+     "have I physically been in there", nothing about what's left to find —
+     no counts, no completion, no color-coded "cleared". */
+  .house-room-visited{ color:var(--sepia); border-color:rgba(217,183,90,0.28); }
+  .house-room-current{
+    border-color:var(--sepia); color:var(--sepia);
+    box-shadow:inset 0 0 0 1px rgba(217,183,90,0.3); cursor:default;
+  }
+  .house-room-current:hover{ border-color:var(--sepia); color:var(--sepia); }
+  .house-room-tag{
+    font-family:'Lora', Georgia, serif; font-size:11.5px; letter-spacing:0.05em;
+    text-transform:uppercase; color:var(--ink-soft); opacity:0.7;
+  }
+  .house-room-current .house-room-tag{ color:var(--sepia); opacity:0.85; }
+  @media (max-width:700px), (max-height:480px){
+    .house-room-list{ grid-template-columns:1fr; gap:8px; }
+    .house-room{ padding:10px 12px; min-height:44px; font-size:14px; }
+    .house-area{ padding-top:11px; }
+    #houseNavAreas{ gap:15px; }
+    .house-nav-sub{ font-size:13px; margin-bottom:13px; }
+  }
 
   /* Shared bottom bar: the clue counter and the button toolbar used to be
      two independently absolute-positioned elements anchored to the same
@@ -1683,7 +1753,7 @@
     }
   }
 </style>
-  <script type="module" crossorigin src="/ravensmoor-game/assets/index-29PJ5gGo.js"></script>
+  <script type="module" crossorigin src="/ravensmoor-game/assets/index-JjKsLlKi.js"></script>
 </head>
 <body>
 <div id="rotate-hint" aria-hidden="true">
@@ -1697,7 +1767,7 @@
       <div id="achievementToast"></div>
       <div id="room-nav">
         <button id="room-prev"></button>
-        <span id="room-name"></span>
+        <button id="room-name" aria-haspopup="dialog" title="House Plan — where you are, and where you can go"></button>
         <button id="room-next"></button>
       </div>
       <div id="hint">Click a glowing object or a person to interact</div>
@@ -2112,12 +2182,27 @@
       </div>
     </div>
 
+    <!-- House Plan. Just another .person-modal, so it inherits the shared
+         dialog semantics, Escape handling, backdrop-click close and the
+         Phaser pointer guard without any bespoke plumbing. -->
+    <div id="houseNavModal" class="person-modal">
+      <div class="notebook-card">
+        <button class="person-modal-close" data-close aria-label="Close">&times;</button>
+        <div class="modal-scroll-body">
+        <h2>Ravensmoor Hall</h2>
+        <p class="house-nav-sub">The house, by wing. Choose a room to walk to.</p>
+        <div id="houseNavAreas"></div>
+        </div>
+      </div>
+    </div>
+
     <div id="moreModal" class="person-modal">
       <div class="notebook-card">
         <button class="person-modal-close" data-close aria-label="Close">&times;</button>
         <div class="modal-scroll-body">
         <h2>More</h2>
         <div class="more-menu">
+          <button id="houseNavMoreBtn">⌂ House Plan</button>
           <button id="caseFileBtn">🗎 Case File</button>
           <button id="casebookBtn">📔 Casebook</button>
           <button id="settingsBtn">⚙ Settings &amp; Accessibility</button>
