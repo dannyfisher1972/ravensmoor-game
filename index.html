@@ -1071,6 +1071,17 @@
     color:var(--foxglove); border:1px solid rgba(217,137,188,0.4); border-radius:3px; padding:2px 6px;
     vertical-align:middle;
   }
+  /* Knowledge Projection pass — the player's own progress with a clue
+     (see src/data/knowledge.js). Only ever drawn for CONNECTED and
+     ESTABLISHED: "Observed" on every card would be noise, and its absence
+     already says it. Distinguished by border weight as well as color, same
+     rule the rest of this UI follows. */
+  .knowledge-tag{
+    display:inline-block; font-family:'Lora', Georgia, serif; font-size:9px; letter-spacing:.05em;
+    border-radius:3px; padding:2px 6px; text-transform:uppercase; vertical-align:middle;
+  }
+  .knowledge-connected{ color:var(--ink-soft); border:1px solid var(--line); }
+  .knowledge-established{ color:var(--sepia); border:2px solid rgba(217,183,90,0.55); }
 
   .case-file-section{ margin-bottom:22px; }
   .case-file-section:last-child{ margin-bottom:0; }
@@ -1199,6 +1210,18 @@
   .board-state-resolved{ color:#d9b75a; border:1px solid rgba(217,183,90,0.4); }
   .board-state-contradicted{ color:var(--ink-soft); border:1px solid var(--line); }
   .board-state-exculpatory{ color:#5aa96a; border:1px solid rgba(90,169,106,0.45); }
+  /* Knowledge Projection pass — a clue the player has found but not yet
+     connected to anybody. It is on the board (it is theirs, they found it)
+     but nothing runs from it, and it reads as unplaced rather than as
+     answered. Opacity + a dashed border, so it is distinguishable without
+     relying on either alone. */
+  .board-evidence-unplaced{
+    opacity:.55; border-style:dashed;
+  }
+  .board-hint{
+    position:absolute; left:8px; right:8px; bottom:26px; margin:0; text-align:center;
+    font-family:'Lora', Georgia, serif; font-size:11px; font-style:italic; color:var(--ink-soft);
+  }
   .board-legend{
     position:absolute; left:8px; bottom:6px; display:flex; gap:12px; flex-wrap:wrap;
     font-family:'Lora', Georgia, serif; font-size:10px; color:var(--ink-soft); margin:0;
@@ -1631,7 +1654,7 @@
     }
   }
 </style>
-  <script type="module" crossorigin src="/ravensmoor-game/assets/index-DGRlWnJ1.js"></script>
+  <script type="module" crossorigin src="/ravensmoor-game/assets/index-z2gOsk8s.js"></script>
 </head>
 <body>
 <div id="rotate-hint" aria-hidden="true">
