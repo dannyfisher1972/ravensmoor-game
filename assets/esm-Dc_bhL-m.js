@@ -1,0 +1,2 @@
+const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["assets/web-Da008Jdb.js","assets/index-Cv5MFcnn.js"])))=>i.map(i=>d[i]);
+import{r as e,t}from"./index-Cv5MFcnn.js";var n=e(`Browser`,{web:()=>t(()=>import(`./web-Da008Jdb.js`).then(e=>new e.BrowserWeb),__vite__mapDeps([0,1]))});export{n as Browser};
