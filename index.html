@@ -33,6 +33,16 @@
     --zoom-btn-size: 40px;
     --zoom-btn-gap: 6px;
     --zoom-stack-height: calc(var(--zoom-btn-count) * var(--zoom-btn-size) + (var(--zoom-btn-count) - 1) * var(--zoom-btn-gap));
+    /* Same idea, same reason, for the RIGHT rail: on a wide-landscape
+       viewport #actionButtons becomes a vertically-centered column of 5
+       buttons, and #talkedToPanel has to stop above it (see that rule).
+       Derived, not guessed, so adding a 6th action button can never
+       silently re-open the collision this replaced. Bump
+       --action-btn-count here and nowhere else. */
+    --action-btn-count: 5;
+    --action-btn-height: 44px;
+    --action-btn-gap: 8px;
+    --action-rail-height: calc(var(--action-btn-count) * var(--action-btn-height) + (var(--action-btn-count) - 1) * var(--action-btn-gap));
   }
   html[data-text-size="small"]{ --dialog-font-size:16px; --notebook-font-size:13px; }
   html[data-text-size="normal"]{ --dialog-font-size:19px; --notebook-font-size:15px; }
@@ -871,6 +881,25 @@
     #actionButtons button{
       width:130px; text-align:left; padding:12px 14px; font-size:13px;
     }
+    /* Playability audit — the third instance of the HUD-collision class,
+       and the first that is HUD-on-HUD rather than HUD-on-artwork. This
+       branch moved #actionButtons into a fixed right rail (x: viewport
+       right - 20 - 130) but left #talkedToPanel on its original
+       right:10px / top:60px / bottom:60px column, which lands INSIDE that
+       rail. With everyone interviewed the panel is 11 portraits tall, runs
+       the full height of the screen, and wins the hit test over the left
+       half of every action button: measured live at 1280x820, clicking the
+       "📓" on Notebook opened a conversation with Vivienne Thorne, and the
+       left edge of Accuse opened one with Eleanor Pemberton. It only
+       appears once enough people have been talked to for the column to
+       reach the vertically-centered rail, which is why no earlier pass
+       caught it.
+       The panel now ends a clear 16px above the rail's top edge, derived
+       from --action-rail-height, and keeps its existing overflow-y:auto so
+       a full cast still scrolls rather than overflowing. */
+    #talkedToPanel{
+      bottom:calc(50% + (var(--action-rail-height) / 2) + 16px);
+    }
   }
 
   /* --- Notebook --- */
@@ -1602,7 +1631,7 @@
     }
   }
 </style>
-  <script type="module" crossorigin src="/ravensmoor-game/assets/index-ag4hs_w1.js"></script>
+  <script type="module" crossorigin src="/ravensmoor-game/assets/index-DGRlWnJ1.js"></script>
 </head>
 <body>
 <div id="rotate-hint" aria-hidden="true">
