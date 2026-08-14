@@ -1218,12 +1218,25 @@
   .board-evidence-unplaced{
     opacity:.55; border-style:dashed;
   }
-  .board-hint{
-    position:absolute; left:8px; right:8px; bottom:26px; margin:0; text-align:center;
+  /* Board Caption Overlap fix (this pass) — .board-footer is the ONE thing
+     bottom-anchored in #boardWrap now; .board-hint and .board-legend stack
+     inside it via normal flex-column flow instead of each guessing its own
+     fixed `bottom` offset independent of the other's real height. Scoped
+     with the #boardWrap ancestor (rather than restyling .board-hint/
+     .board-legend globally) because .board-hint is also used, unscoped and
+     unpositioned, for several unrelated static captions elsewhere in the
+     Notebook (the Timeline and Deduction-panel intro lines) that must keep
+     their original plain, in-flow styling. */
+  #boardWrap .board-footer{
+    position:absolute; left:8px; right:8px; bottom:6px;
+    display:flex; flex-direction:column; align-items:center; gap:4px;
+  }
+  #boardWrap .board-hint{
+    position:static; margin:0; text-align:center;
     font-family:'Lora', Georgia, serif; font-size:11px; font-style:italic; color:var(--ink-soft);
   }
-  .board-legend{
-    position:absolute; left:8px; bottom:6px; display:flex; gap:12px; flex-wrap:wrap;
+  #boardWrap .board-legend{
+    position:static; display:flex; gap:12px; flex-wrap:wrap; justify-content:center;
     font-family:'Lora', Georgia, serif; font-size:10px; color:var(--ink-soft); margin:0;
   }
   .board-legend-item{ display:inline-flex; align-items:center; gap:4px; }
@@ -1654,7 +1667,7 @@
     }
   }
 </style>
-  <script type="module" crossorigin src="/ravensmoor-game/assets/index-DULoIF3D.js"></script>
+  <script type="module" crossorigin src="/ravensmoor-game/assets/index-BjihbThh.js"></script>
 </head>
 <body>
 <div id="rotate-hint" aria-hidden="true">
