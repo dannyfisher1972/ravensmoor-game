@@ -101,6 +101,25 @@
      this can never resize/rescale the game canvas itself (that's Scene
      Zoom's job alone, via RoomScene.js's camera). */
   #hud{ position:absolute; inset:0; pointer-events:none; zoom:var(--ui-scale); }
+  /* Exterior Arrival pass — the exterior threshold (ExteriorScene.js) is not
+     an investigation room: Notebook/Items/Hint/Accuse/Lens/zoom/Prev-Next/
+     House Plan would all make it look like one, so this class (added by
+     ExteriorScene.create(), unconditionally removed again by every real
+     RoomScene.create() — including the Foyer's — so it can never linger)
+     hides exactly those controls. The mute button is deliberately left
+     alone (Part 10: "sound if globally appropriate" is the one HUD control
+     that still makes sense before the front door), and #prompt/#dialog are
+     untouched because the exterior scene simply never opens either. */
+  #hud.exterior-mode #room-nav,
+  #hud.exterior-mode #hint,
+  #hud.exterior-mode #hint-touch,
+  #hud.exterior-mode #zoomInBtn,
+  #hud.exterior-mode #zoomOutBtn,
+  #hud.exterior-mode #lensBtn,
+  #hud.exterior-mode #viewControls,
+  #hud.exterior-mode #armedBanner,
+  #hud.exterior-mode #bottomBar,
+  #hud.exterior-mode #talkedToPanel{ display:none; }
   #prompt{
     position:absolute; left:50%; bottom:34px; transform:translateX(-50%);
     background:rgba(20,18,15,0.85); color:var(--sepia); border:1px solid var(--sepia);
@@ -1753,7 +1772,7 @@
     }
   }
 </style>
-  <script type="module" crossorigin src="/ravensmoor-game/assets/index-JjKsLlKi.js"></script>
+  <script type="module" crossorigin src="/ravensmoor-game/assets/index-BHt6__la.js"></script>
 </head>
 <body>
 <div id="rotate-hint" aria-hidden="true">
