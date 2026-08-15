@@ -60,8 +60,12 @@
   html,body{ margin:0; padding:0; background:#000; height:100%; overflow:hidden; font-family: 'Lora', Georgia, serif; }
   /* touch-action:manipulation is scoped to buttons/dialog (below) rather than
      set globally here — a global rule disables the browser's native
-     pinch/double-tap zoom entirely, which is exactly the "zoom in on a clue"
-     capability mobile players need on this game's detailed background art. */
+     pinch/double-tap zoom entirely, which used to be the only "zoom in on a
+     clue" capability mobile players had on this game's detailed background
+     art. That's no longer true — see #game-container canvas below — but the
+     rest of the page (title screen art, dialog portraits, etc.) still
+     benefits from native pinch-zoom being left open here, so this stays a
+     scoped exception rather than a blanket rule. */
   /* Quick double-taps on these (skip typewriter, close dialog, pick a
      suspect) need to register as two taps, not get reinterpreted as a
      browser double-tap-zoom gesture — so they keep the manipulation
@@ -93,7 +97,20 @@
     width:min(94vw, 1120px, 94vh * 1.5); aspect-ratio: 3 / 2;
     width:min(94vw, 1120px, 94dvh * 1.5);
   }
-  #game-container canvas{ display:block; image-rendering: pixelated; image-rendering: crisp-edges; }
+  /* #193 fix — touch-action:none, scoped to the canvas ONLY (never
+     #game-container itself, which also holds #hud/#dialog — #dialog-
+     scrollarea below needs native touch-scroll to keep working). Before
+     this, the canvas had no touch-action restriction, so a two-finger pinch
+     over the room art was live to BOTH the browser's native page-zoom AND
+     RoomScene.js's own dedicated pinch handler (setupZoomControls) at the
+     same time — two independent systems fighting over the same gesture,
+     the root cause of a real player-reported bug (#193: "if I do any pinch
+     to zoom it touches clues and you never can really zoom correctly").
+     The custom zoom is now the sole handler of two-finger gestures on the
+     canvas; single-finger tap is unaffected (touch-action never governs
+     tap/click). Mirrors the same reasoning clueViewer.js's own
+     #clueViewerImageWrap already uses for its self-managed pinch/pan. */
+  #game-container canvas{ display:block; image-rendering: pixelated; image-rendering: crisp-edges; touch-action:none; }
 
   /* zoom (not transform:scale) — scales layout+rendering together without
      affecting hit-testing math, and critically #hud is a SIBLING of the
@@ -1866,7 +1883,7 @@
     }
   }
 </style>
-  <script type="module" crossorigin src="/ravensmoor-game/assets/index-DhfYX1ej.js"></script>
+  <script type="module" crossorigin src="/ravensmoor-game/assets/index-B4bD8hFc.js"></script>
 </head>
 <body>
 <div id="rotate-hint" aria-hidden="true">
