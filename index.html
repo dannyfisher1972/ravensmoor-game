@@ -1635,6 +1635,33 @@
   }
   .notif-history-action-btn:hover{ background:rgba(217,183,90,0.22); border-color:var(--foxglove); color:var(--foxglove); }
 
+  /* --- How-To Reference (#183) — native <details>/<summary> accordion,
+     styled to match the notebook-card's sepia/serif language rather than a
+     browser-default disclosure widget. */
+  .help-reference-sections{ display:flex; flex-direction:column; gap:8px; }
+  .help-section{
+    border:1px solid var(--line); border-radius:6px; background:rgba(255,255,255,0.02);
+    overflow:hidden;
+  }
+  .help-section > summary{
+    list-style:none; cursor:pointer; padding:11px 14px; display:flex; align-items:center; gap:10px;
+    font-family:'Playfair Display', Georgia, serif; color:var(--sepia); font-size:15px;
+  }
+  .help-section > summary::-webkit-details-marker{ display:none; }
+  .help-section > summary::before{
+    content:'▸'; display:inline-block; font-size:12px; color:var(--ink-soft);
+    transition:transform .15s ease; flex-shrink:0;
+  }
+  .help-section[open] > summary::before{ transform:rotate(90deg); }
+  .help-section > summary:focus-visible{ outline:2px solid var(--sepia); outline-offset:-2px; }
+  .help-section-icon{ flex-shrink:0; }
+  .help-section-body{ padding:0 14px 14px; font-family:'Lora', Georgia, serif; color:var(--ink-soft); font-size:13px; line-height:1.55; }
+  .help-section-body p{ margin:0 0 10px; }
+  .help-section-body p:last-child{ margin-bottom:0; }
+  .help-section-body ol{ margin:0 0 4px; padding-left:20px; }
+  .help-section-body ol li{ margin-bottom:8px; }
+  .help-section-body ol li:last-child{ margin-bottom:0; }
+
   /* Full-width, left-aligned list rows for the secondary-feature menu —
      unlike the compact icon-pill toolbar buttons, these have room to show
      a label alongside the icon, which is the point: these are the icons
@@ -1793,7 +1820,7 @@
     }
   }
 </style>
-  <script type="module" crossorigin src="/ravensmoor-game/assets/index-BX0KuA8s.js"></script>
+  <script type="module" crossorigin src="/ravensmoor-game/assets/index-Cdk6EYhy.js"></script>
 </head>
 <body>
 <div id="rotate-hint" aria-hidden="true">
@@ -2240,6 +2267,28 @@
       </div>
     </div>
 
+    <!-- In-Game How-To/Mechanics Reference (#183) — a plain .person-modal,
+         same pattern as Recent Notices right above (own comment there
+         explains why: shared close/Escape/backdrop wiring and Phaser
+         pointer-guard coverage with zero extra plumbing since
+         pointerIsOverOpenModal matches ANY open .person-modal). Content is
+         rendered from src/data/helpContent.js (see main.js's
+         renderHelpReference) rather than authored here, so the same prose a
+         unit test scans for content-blindness is exactly what the player
+         sees — no second copy to drift out of sync. Sections are native
+         <details>/<summary> (built by renderHelpReference) for a free,
+         keyboard-accessible accordion with no bespoke expand/collapse JS. -->
+    <div id="howToReferenceModal" class="person-modal">
+      <div class="notebook-card">
+        <button class="person-modal-close" data-close aria-label="Close">&times;</button>
+        <div class="modal-scroll-body">
+        <h2>How-To Reference</h2>
+        <p class="accuse-sub">How the interface and mechanics work — not a walkthrough of this case, and not a strategy guide. Tap a heading to expand it.</p>
+        <div id="howToReferenceSections" class="help-reference-sections"></div>
+        </div>
+      </div>
+    </div>
+
     <!-- House Plan. Just another .person-modal, so it inherits the shared
          dialog semantics, Escape handling, backdrop-click close and the
          Phaser pointer guard without any bespoke plumbing. -->
@@ -2261,6 +2310,7 @@
         <h2>More</h2>
         <div class="more-menu">
           <button id="houseNavMoreBtn">⌂ House Plan</button>
+          <button id="howToReferenceBtn">📖 How-To Reference</button>
           <button id="caseFileBtn">🗎 Case File</button>
           <button id="casebookBtn">📔 Casebook</button>
           <button id="notifHistoryBtn">🔔 Recent Notices</button>
