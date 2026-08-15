@@ -1163,6 +1163,28 @@
     padding:7px 14px; border-radius:3px; cursor:pointer; min-height:36px;
   }
   .clue-inspect-btn:hover{ background:rgba(217,137,188,0.12); }
+  /* Player-driven item curation (#190) — deliberately styled in sepia/gold
+     rather than the foxglove pink every OFFICIAL evidence action (Inspect,
+     implicates tags) already uses, so a "Keep this" control reads at a
+     glance as a different, personal kind of action rather than another
+     piece of case machinery. Matches the existing suspect-status-btn's own
+     "player's private read on the case, not the game's" color choice. */
+  .keepsake-toggle-btn{
+    display:inline-flex; align-items:center; gap:6px; margin-top:10px; margin-left:8px;
+    font-family:'Lora', Georgia, serif; font-size:12px; letter-spacing:.03em;
+    background:transparent; border:1px solid rgba(217,183,90,0.5); color:var(--sepia);
+    padding:7px 14px; border-radius:3px; cursor:pointer; min-height:36px;
+  }
+  .keepsake-toggle-btn:hover{ background:rgba(217,183,90,0.12); }
+  .keepsake-toggle-btn.kept{ background:rgba(217,183,90,0.18); border-color:var(--sepia); }
+  .notebook-keepsakes{ margin-top:6px; }
+  .notebook-keepsakes .notebook-entry{ padding-bottom:14px; border-bottom:1px solid var(--line); }
+  .notebook-keepsakes .notebook-entry:last-child{ border-bottom:none; }
+  .keepsake-tag{
+    display:inline-block; font-family:'Lora', Georgia, serif; font-size:9px; letter-spacing:.05em;
+    color:var(--sepia); border:1px solid rgba(217,183,90,0.4); border-radius:3px; padding:2px 6px;
+    text-transform:uppercase; vertical-align:middle;
+  }
   /* Item Presentation pass — clicking an Inventory card now opens the item
      modal directly (view), so the small circular corner button is no
      longer a redundant "Inspect" trigger; it's the one remaining way to
@@ -1886,7 +1908,7 @@
     }
   }
 </style>
-  <script type="module" crossorigin src="/ravensmoor-game/assets/index-cKeGlrv6.js"></script>
+  <script type="module" crossorigin src="/ravensmoor-game/assets/index-Dlh754np.js"></script>
 </head>
 <body>
 <div id="rotate-hint" aria-hidden="true">
@@ -2157,6 +2179,7 @@
           <button id="notebookListBtn" class="view-toggle-btn active">List</button>
           <button id="notebookTimelineBtn" class="view-toggle-btn">Timeline</button>
           <button id="notebookBoardBtn" class="view-toggle-btn">Board</button>
+          <button id="notebookKeepsakesBtn" class="view-toggle-btn">Keepsakes</button>
         </div>
 
         <div id="notebookListView" class="notebook-columns">
@@ -2216,6 +2239,23 @@
               <div id="establishedDeductionsList" class="established-deductions"></div>
             </div>
           </div>
+        </div>
+
+        <!-- Player-driven item curation (#190) — a purely personal,
+             optional layer, deliberately living as a 4th Notebook tab
+             rather than a new permanently-visible HUD button (same "reuse
+             an existing surface" principle as Recent Notices/How-To
+             Reference) and deliberately NOT inside the Items panel (Items
+             is the carry-and-use-on-locks mechanic; Keepsakes never grants
+             any gameplay ability, so keeping it in the Notebook — the
+             surface already framed as "your own case notes" — avoids a
+             player ever mistaking a kept clue for a usable item). Populated
+             only from evidence ids in src/data/itemCuration.js's
+             CURATABLE_EVIDENCE_IDS; see that file's header for the full
+             scope/exclusion audit. -->
+        <div id="notebookKeepsakesView" class="notebook-keepsakes" style="display:none;">
+          <p class="board-hint">A few small things you've chosen to keep for yourself, separate from the official case file — toggle "Keep this" next to an eligible clue in the Evidence list to add it here. Purely for your own reflection; it has no effect on the case.</p>
+          <div id="keepsakesGrid"></div>
         </div>
 
         <div class="notebook-achievements">

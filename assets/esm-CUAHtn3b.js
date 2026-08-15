@@ -1,0 +1,2 @@
+const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["assets/web-DF_x99Qk.js","assets/index-Dlh754np.js"])))=>i.map(i=>d[i]);
+import{r as e,t}from"./index-Dlh754np.js";var n=e(`Browser`,{web:()=>t(()=>import(`./web-DF_x99Qk.js`).then(e=>new e.BrowserWeb),__vite__mapDeps([0,1]))});export{n as Browser};
