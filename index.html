@@ -1090,6 +1090,52 @@
     .clue-viewer-transcription-wrap{ margin-top:10px; }
     .clue-viewer-description-wrap p{ font-size:14px; line-height:1.5; }
   }
+
+  /* #187 PROTOTYPE — Library / Fireplace-Hearth close-up examination.
+     Deliberately its own small block rather than folded into the
+     clue-viewer-* rules above: this image has no zoom/pan (clue-viewer-
+     image-wrap's touch-action:none + cursor:grab are specific to that
+     mechanic and would be wrong here), and it carries an absolutely-
+     positioned layer of invisible-until-touched point buttons that
+     clueViewer.js's single flat image never needed. */
+  .hearth-closeup-card{ max-width:640px; width:100%; display:flex; flex-direction:column; align-items:center; }
+  .hearth-closeup-image-wrap{
+    position:relative; width:100%; max-width:520px; overflow:hidden;
+    border:1px solid var(--line); border-radius:8px; background:#0a0908;
+  }
+  .hearth-closeup-image-wrap img{
+    display:block; width:100%; height:100%; object-fit:cover; user-select:none; -webkit-user-drag:none;
+  }
+  .hearth-closeup-points{ position:absolute; inset:0; }
+  /* Near-invisible at rest, same "full click-through hit-radius, never a
+     loud marker" spirit as a CONCEALED_ALPHA room hotspot and a search
+     area's own zero-fill idle state (searchAreas.js's getSearchAreaPresentation)
+     — the player is meant to look at the photograph, not the button layer. */
+  .hearth-point{
+    position:absolute; margin:0; padding:0; background:transparent; border:none; border-radius:4px;
+    cursor:pointer; touch-action:manipulation; -webkit-tap-highlight-color:transparent;
+  }
+  .hearth-point:hover, .hearth-point:focus-visible{
+    background:rgba(232,184,75,0.12); box-shadow:inset 0 0 0 1px rgba(232,184,75,0.55); outline:none;
+  }
+  /* No hover concept on a touch device — a permanent-but-faint outline
+     instead, the same touchLine idea AREA_LEVELS uses for search areas so
+     touch still avoids pure pixel-hunting without ever reading as a marker. */
+  .touch-mode .hearth-point{ box-shadow:inset 0 0 0 1px rgba(232,184,75,0.22); }
+  .hearth-closeup-note-wrap{ width:100%; max-width:520px; margin-top:16px; min-height:1.6em; }
+  .hearth-closeup-note-wrap p{
+    font-family:'Lora', Georgia, serif; font-size:15px; line-height:1.6; color:var(--ink);
+    white-space:pre-wrap; margin:0; text-align:center;
+  }
+  @media (max-height: 560px){
+    #hearthCloseupModal{ padding:12px; }
+    .hearth-closeup-card{ max-height:100%; overflow-y:auto; padding:16px 18px; }
+    .clue-viewer-title{ font-size:19px; margin:0 0 8px 0; }
+    .hearth-closeup-image-wrap{ max-height:46vh; }
+    .hearth-closeup-note-wrap{ margin-top:10px; }
+    .hearth-closeup-note-wrap p{ font-size:14px; line-height:1.5; }
+  }
+
   .clue-inspect-btn{
     display:inline-flex; align-items:center; gap:6px; margin-top:10px;
     font-family:'Lora', Georgia, serif; font-size:12px; letter-spacing:.03em;
@@ -1820,7 +1866,7 @@
     }
   }
 </style>
-  <script type="module" crossorigin src="/ravensmoor-game/assets/index-D8RlDJEF.js"></script>
+  <script type="module" crossorigin src="/ravensmoor-game/assets/index-DhfYX1ej.js"></script>
 </head>
 <body>
 <div id="rotate-hint" aria-hidden="true">
@@ -2234,6 +2280,29 @@
         <div id="clueViewerTranscriptionWrap" class="clue-viewer-transcription-wrap" style="display:none;">
           <h3>Transcription</h3>
           <p id="clueViewerTranscription"></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- #187 PROTOTYPE — Library / Fireplace-Hearth close-up examination.
+         A plain .person-modal, same reasoning as every other modal in this
+         file (see notifHistoryModal's comment above): the generic
+         close/Escape/backdrop/ARIA wiring in main.js and the generic
+         pointerIsOverOpenModal guard in RoomScene.js both match ANY open
+         .person-modal by class, so this needs zero new plumbing in either
+         place. Content (image, point rects, wording) is entirely
+         data-driven from src/data/hearthCloseup.js via src/hearthCloseup.js
+         — nothing scenario-specific is authored here. -->
+    <div id="hearthCloseupModal" class="person-modal">
+      <div class="notebook-card hearth-closeup-card">
+        <button class="person-modal-close" data-close aria-label="Close">&times;</button>
+        <h2 id="hearthCloseupTitle" class="clue-viewer-title"></h2>
+        <div id="hearthCloseupImageWrap" class="hearth-closeup-image-wrap">
+          <img id="hearthCloseupImg" alt="">
+          <div id="hearthCloseupPoints" class="hearth-closeup-points"></div>
+        </div>
+        <div class="hearth-closeup-note-wrap">
+          <p id="hearthCloseupNote"></p>
         </div>
       </div>
     </div>
