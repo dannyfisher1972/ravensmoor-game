@@ -1614,6 +1614,27 @@
   }
   .analytics-row b{ color:var(--sepia); }
 
+  /* --- Recent Notices (Toast Notification UX pass) --- */
+  .notif-history-list{ display:flex; flex-direction:column; gap:8px; }
+  .notif-history-empty{
+    font-family:'Lora', Georgia, serif; font-size:13px; color:var(--ink-soft);
+    text-align:center; padding:24px 10px;
+  }
+  .notif-history-item{
+    border:1px solid var(--line); border-radius:6px; padding:10px 12px;
+    background:rgba(255,255,255,0.02);
+  }
+  .notif-history-item-head{ display:flex; justify-content:space-between; align-items:baseline; gap:8px; }
+  .notif-history-item b{ font-family:'Playfair Display', Georgia, serif; color:var(--sepia); font-size:13px; }
+  .notif-history-item .notif-history-time{ font-family:'Lora', Georgia, serif; font-size:10px; color:var(--ink-soft); white-space:nowrap; flex-shrink:0; }
+  .notif-history-item span{ display:block; font-family:'Lora', Georgia, serif; color:var(--ink-soft); font-size:12px; margin-top:3px; line-height:1.4; }
+  .notif-history-action-btn{
+    display:block; margin:8px 0 0; font-family:'Lora', Georgia, serif; font-size:12px;
+    background:rgba(217,183,90,0.12); border:1px solid var(--sepia); color:var(--sepia);
+    padding:5px 14px; border-radius:3px; cursor:pointer;
+  }
+  .notif-history-action-btn:hover{ background:rgba(217,183,90,0.22); border-color:var(--foxglove); color:var(--foxglove); }
+
   /* Full-width, left-aligned list rows for the secondary-feature menu —
      unlike the compact icon-pill toolbar buttons, these have room to show
      a label alongside the icon, which is the point: these are the icons
@@ -1772,7 +1793,7 @@
     }
   }
 </style>
-  <script type="module" crossorigin src="/ravensmoor-game/assets/index-B1MXNR1x.js"></script>
+  <script type="module" crossorigin src="/ravensmoor-game/assets/index-BX0KuA8s.js"></script>
 </head>
 <body>
 <div id="rotate-hint" aria-hidden="true">
@@ -2201,6 +2222,24 @@
       </div>
     </div>
 
+    <!-- Toast Notification UX pass — a plain .person-modal like Casebook/
+         Analytics above it, so it inherits the same close/Escape/backdrop
+         wiring and the same Phaser pointer-guard coverage (pointerIsOverOpenModal
+         in RoomScene.js matches ANY open .person-modal, no per-modal id needed)
+         with zero extra plumbing. Lets a player review a toast that already
+         faded before they finished reading it — see #notifHistoryList's
+         render function in main.js for what does and doesn't get recorded. -->
+    <div id="notifHistoryModal" class="person-modal">
+      <div class="notebook-card">
+        <button class="person-modal-close" data-close aria-label="Close">&times;</button>
+        <div class="modal-scroll-body">
+        <h2>Recent Notices</h2>
+        <p class="accuse-sub">The last few things the game has told you this case, newest first — in case one faded before you finished reading it.</p>
+        <div id="notifHistoryList" class="notif-history-list"></div>
+        </div>
+      </div>
+    </div>
+
     <!-- House Plan. Just another .person-modal, so it inherits the shared
          dialog semantics, Escape handling, backdrop-click close and the
          Phaser pointer guard without any bespoke plumbing. -->
@@ -2224,6 +2263,7 @@
           <button id="houseNavMoreBtn">⌂ House Plan</button>
           <button id="caseFileBtn">🗎 Case File</button>
           <button id="casebookBtn">📔 Casebook</button>
+          <button id="notifHistoryBtn">🔔 Recent Notices</button>
           <button id="settingsBtn">⚙ Settings &amp; Accessibility</button>
           <button id="analyticsBtn">📊 My Stats</button>
           <button id="feedbackBtn">💬 Submit Beta Feedback</button>
