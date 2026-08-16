@@ -1185,6 +1185,47 @@
     color:var(--sepia); border:1px solid rgba(217,183,90,0.4); border-radius:3px; padding:2px 6px;
     text-transform:uppercase; vertical-align:middle;
   }
+  /* #199 depth experiment — richer Keepsakes cards: a room/context tag, a
+     "kept on" timestamp, and an optional private note. All still sepia/gold
+     so the whole tab reads as one personal, non-official surface, distinct
+     from both the pink foxglove "case machinery" styling and the plain
+     Evidence Found list. */
+  .keepsake-card{ padding:14px; border:1px solid rgba(217,183,90,0.25); border-radius:6px; background:rgba(217,183,90,0.04); }
+  .keepsake-room-tag{
+    display:inline-block; font-family:'Lora', Georgia, serif; font-size:9px; letter-spacing:.05em;
+    color:var(--ink-soft); border:1px solid var(--line); border-radius:3px; padding:2px 6px;
+    text-transform:uppercase; vertical-align:middle;
+  }
+  .keepsake-kept-at{
+    display:block; font-family:'Lora', Georgia, serif; font-style:italic; font-size:11px;
+    color:var(--ink-soft); opacity:0.75; margin-bottom:6px;
+  }
+  .keepsake-note-wrap{ margin-top:12px; padding-top:12px; border-top:1px dashed rgba(217,183,90,0.3); }
+  .keepsake-note-label{
+    display:block; font-family:'Lora', Georgia, serif; font-size:11px; letter-spacing:.04em; text-transform:uppercase;
+    color:var(--sepia); margin-bottom:6px;
+  }
+  .keepsake-note-hint{ text-transform:none; letter-spacing:normal; color:var(--ink-soft); opacity:0.75; font-size:10px; }
+  .keepsake-note-input{
+    width:100%; box-sizing:border-box; resize:vertical; min-height:60px;
+    font-family:'Lora', Georgia, serif; font-size:14px; line-height:1.5; color:var(--ink);
+    background:rgba(255,255,255,0.03); border:1px solid var(--line); border-radius:4px; padding:8px 10px;
+  }
+  .keepsake-note-input::placeholder{ color:var(--ink-soft); opacity:0.6; font-style:italic; }
+  .keepsake-note-input:focus{ outline:none; border-color:var(--sepia); }
+  /* A note the player has actually written gets a subtle gold left-edge —
+     reads as "this card holds something of mine" without any extra JS
+     state to keep in sync; :placeholder-shown already tracks it for free. */
+  .keepsake-note-input:not(:placeholder-shown){ border-left:3px solid var(--sepia); }
+  .keepsake-note-footer{ display:flex; align-items:center; gap:10px; margin-top:6px; }
+  .keepsake-note-counter{ font-family:'Lora', Georgia, serif; font-size:10px; color:var(--ink-soft); opacity:0.7; }
+  .keepsake-note-save-btn{
+    font-family:'Lora', Georgia, serif; font-size:11px; letter-spacing:.03em;
+    background:transparent; border:1px solid rgba(217,183,90,0.5); color:var(--sepia);
+    padding:5px 12px; border-radius:3px; cursor:pointer; min-height:32px;
+  }
+  .keepsake-note-save-btn:hover{ background:rgba(217,183,90,0.12); }
+  .keepsake-note-saved{ font-family:'Lora', Georgia, serif; font-size:11px; font-style:italic; color:var(--sepia); }
   /* Item Presentation pass — clicking an Inventory card now opens the item
      modal directly (view), so the small circular corner button is no
      longer a redundant "Inspect" trigger; it's the one remaining way to
@@ -1908,7 +1949,7 @@
     }
   }
 </style>
-  <script type="module" crossorigin src="/ravensmoor-game/assets/index-TOyHyzpv.js"></script>
+  <script type="module" crossorigin src="/ravensmoor-game/assets/index-BOC-83tA.js"></script>
 </head>
 <body>
 <div id="rotate-hint" aria-hidden="true">
