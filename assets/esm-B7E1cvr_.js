@@ -1,2 +1,0 @@
-const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["assets/web-DEChGzKU.js","assets/index-CV19StAg.js"])))=>i.map(i=>d[i]);
-import{r as e,t}from"./index-CV19StAg.js";var n=e(`Browser`,{web:()=>t(()=>import(`./web-DEChGzKU.js`).then(e=>new e.BrowserWeb),__vite__mapDeps([0,1]))});export{n as Browser};
