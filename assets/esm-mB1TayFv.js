@@ -1,0 +1,2 @@
+const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["assets/web-DteLM_ei.js","assets/index-CVGwKmqc.js"])))=>i.map(i=>d[i]);
+import{r as e,t}from"./index-CVGwKmqc.js";var n=e(`Browser`,{web:()=>t(()=>import(`./web-DteLM_ei.js`).then(e=>new e.BrowserWeb),__vite__mapDeps([0,1]))});export{n as Browser};
