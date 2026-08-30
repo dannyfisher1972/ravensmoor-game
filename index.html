@@ -371,8 +371,25 @@
   .case-assignment-cta{ display:flex; flex-direction:column; align-items:center; gap:4px; }
 
   @media (max-width:640px){
-    .case-hero{ grid-template-columns:1fr; gap:14px; }
-    .victim-portrait-hero{ max-width:150px; }
+    /* Mobile entry hierarchy: preserve the dossier and its full prose, but
+       put the actual assignment before the long briefing. Previously a
+       phone player had to read/scroll through four paragraphs before the
+       first Start control appeared. display:contents lets the portrait and
+       case text take separate positions without duplicating either. */
+    .brief-card{ display:flex; flex-direction:column; }
+    .brief-card > *{ order:10; }
+    .brief-card > .brief-eyebrow{ order:1; }
+    .brief-card > h1{ order:2; }
+    .brief-card > .brief-subtitle{ order:3; }
+    .brief-card > .case-hero{ display:contents; }
+    .case-hero-portrait{ order:4; }
+    .brief-card > .fact-strip{ order:5; }
+    .brief-card > .case-assignment{ order:6; }
+    .case-hero-text{ order:7; margin-top:22px; }
+    .brief-card > .hero-secondary-row{ order:8; }
+    .victim-portrait-hero{ max-width:112px; }
+    .victim-identity b{ font-size:17px; }
+    .victim-identity span{ max-width:280px; }
     .fact-strip{ gap:6px 10px; font-size:10px; }
     /* Below this width the two-column intake row stacks: label -> input ->
        support -> Begin Investigation, matching the rest of the mobile
@@ -1142,6 +1159,19 @@
      instead, the same touchLine idea AREA_LEVELS uses for search areas so
      touch still avoids pure pixel-hunting without ever reading as a marker. */
   .touch-mode .hearth-point{ box-shadow:inset 0 0 0 1px rgba(232,184,75,0.22); }
+  /* Detective close-ups are observation surfaces, not hotspot maps. The
+     authored buttons keep their complete hit regions, but pointer hover and
+     touch must not draw gold boxes over the photograph and disclose where
+     the player should click. Keyboard focus retains a neutral high-contrast
+     outline only while focus is explicitly being moved. */
+  .unassisted-points .hearth-point,
+  .touch-mode.unassisted-points .hearth-point,
+  .unassisted-points .hearth-point:hover{
+    background:transparent; box-shadow:none; outline:none;
+  }
+  .unassisted-points .hearth-point:focus-visible{
+    background:transparent; box-shadow:none; outline:2px solid rgba(233,230,218,0.9); outline-offset:-3px;
+  }
   .hearth-closeup-note-wrap{ width:100%; max-width:520px; margin-top:16px; min-height:1.6em; }
   .hearth-closeup-note-wrap p{
     font-family:'Lora', Georgia, serif; font-size:15px; line-height:1.6; color:var(--ink);
@@ -1949,7 +1979,7 @@
     }
   }
 </style>
-  <script type="module" crossorigin src="/ravensmoor-game/assets/index-1E2KODIb.js"></script>
+  <script type="module" crossorigin src="/ravensmoor-game/assets/index-MMZ8kiuQ.js"></script>
 </head>
 <body>
 <div id="rotate-hint" aria-hidden="true">
@@ -1966,8 +1996,8 @@
         <button id="room-name" aria-haspopup="dialog" title="House Plan — where you are, and where you can go"></button>
         <button id="room-next"></button>
       </div>
-      <div id="hint">Click a glowing object or a person to interact</div>
-      <div id="hint-touch">Tap a glowing object or person — use + to zoom in for a closer look</div>
+      <div id="hint">Click furniture, objects, or a person to investigate</div>
+      <div id="hint-touch">Tap furniture, objects, or people — use + to zoom in for a closer look</div>
       <div id="zoomControls">
         <button id="zoomInBtn" aria-label="Zoom in" title="Zoom in">+</button>
         <button id="zoomOutBtn" aria-label="Zoom out" title="Zoom out" disabled>−</button>
@@ -2162,7 +2192,7 @@
         <div class="modal-scroll-body">
         <h2>How to Play</h2>
         <ul class="howto">
-          <li><b>Click</b> a glowing object to examine it.</li>
+          <li><b>Click</b> furniture or an object in the scene to examine it.</li>
           <li><b>Click</b> a person to talk to them.</li>
           <li><b>Use the arrows</b> at the top corners to move between rooms of the manor.</li>
           <li><b>Go back and ask again</b> — new questions open up for people you've already met once you've learned something elsewhere. Their portrait stays on the side panel so you don't have to walk back to find them.</li>
@@ -2651,7 +2681,7 @@
           <p class="accuse-sub" style="margin-bottom:8px;">Only affects touchscreens. Mouse and trackpad are unchanged.</p>
           <label class="pref-checkbox-row">
             <input type="checkbox" id="deliberateTapToggle">
-            <span>Prevent accidental touch actions &mdash; requires a deliberate single-finger tap to inspect the room, so pinching or dragging will not open clues, searches, or conversations</span>
+            <span>Require a steady single-finger tap &mdash; also rejects drags and long presses. Multi-touch gestures are always protected and never open clues, searches, or conversations.</span>
           </label>
         </div>
 
